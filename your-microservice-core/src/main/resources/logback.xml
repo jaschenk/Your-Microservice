@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Your Microservice SaaS LogBack Configuration -->
+<!-- Uses Base Spring Boot Configuration -->
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <property name="LOG_FILE" value="${LOG_FILE:-${LOG_PATH:-${LOG_TEMP:-${java.io.tmpdir:-/tmp}}/}spring.log}"/>
+
+    <!-- Rolling Logging Appender -->
+    <property name="FILE_LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %5p ${PID:- } --- [%t] %-40.40logger{39} : %m%n%wex"/>
+
+    <appender name="SAAS-LOG"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/yourms_saas.log</file>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>
+                ${FILE_LOG_PATTERN}
+            </Pattern>
+        </encoder>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- Rollover when File Size is Time is met -->
+            <fileNamePattern>${LOG_PATH}/yourms_saas.%d{yyyy-MM-dd}.%i.log
+            </fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>10MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+
+    </appender>
+
+    <!--
+     | Logging Levels
+     | Ensure additivity="false" is set for each Logger, as Loggers are Cumulative
+     | See http://logback.qos.ch/manual/configuration.html#cumulative
+      -->
+    <logger name="your.microservice" level="DEBUG" additivity="false">
+        <appender-ref ref="SAAS-LOG"/>
+    </logger>
+    <logger name="your.microservice.core.system.sessions.data.jgroups.JGroupsOperationsSessionRepository"
+            level="INFO" additivity="false">
+        <appender-ref ref="SAAS-LOG"/>
+    </logger>
+    <logger name="your.microservice.core.controllers.system.YourSystemBulletinController"
+            level="INFO" additivity="false">
+        <appender-ref ref="SAAS-LOG"/>
+    </logger>
+    <logger name="org.springframework" level="INFO" additivity="false">
+        <appender-ref ref="SAAS-LOG"/>
+    </logger>
+    <logger name="org.springframework.security" level="INFO" additivity="false">
+        <appender-ref ref="SAAS-LOG"/>
+    </logger>
+    <logger name="org.springframework.integration" level="INFO" additivity="false">
+        <appender-ref ref="SAAS-LOG"/>
+    </logger>
+    <logger name="org.springframework.web.socket" level="WARN" additivity="false">
+        <appender-ref ref="SAAS-LOG"/>
+    </logger>
+    <logger name="org.springframework.boot.actuate.audit.listener.AuditListener" level="INFO" additivity="false">
+        <appender-ref ref="SAAS-LOG"/>
+    </logger>
+    <logger name="org.apache.tomcat.websocket" level="INFO" additivity="false">
+        <appender-ref ref="SAAS-LOG"/>
+    </logger>
+    <root level="ERROR">
+        <appender-ref ref="SAAS-LOG"/>
+    </root>
+
+</configuration>

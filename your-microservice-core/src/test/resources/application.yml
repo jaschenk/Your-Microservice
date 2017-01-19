@@ -1,0 +1,49 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb;MODE=Mysql;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+    platform: h2
+
+  # enable H2 web console and set url for web console
+  # http://localhost:8080/h2console
+  h2:
+    console:
+      enabled: true
+      path: /h2console
+
+  jpa:
+        generate-ddl: true
+        hibernate.ddl-auto: create-drop
+        hibernate.naming.physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        database: H2
+        database-platform: org.hibernate.dialect.H2Dialect
+        show-sql: true
+        format-sql: true
+
+# ****************************************************
+# Your Microservice IdP Configuration
+# ****************************************************
+your.microservice:
+      security:
+         #
+         # IdP KeyStore Definition
+         keystore.credentials: ks-yourMS
+         keystore.entry.name: Your-Microservice-IdP
+         keystore.filename: ./your-microservice-core/target/.yourMicroservice-IdP.keystore
+
+         #
+         # IdP Properties
+         token.expiration: 14400
+
+         #
+         # IdP Routes
+         route:
+          authentication: /api/auth
+          authentication.refresh: refresh
+          authentication.logout: logout
+
+#
+# Spring Fox Swagger Generation
+springfox.documentation.swagger.v2.path: /api/docs

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Your Microservice SaaS LogBack Configuration -->
+<!-- Uses Base Spring Boot Configuration -->
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+
+    <logger name="your.microservice" level="DEBUG"/>
+    <logger name="org.springframework" level="INFO"/>
+    <logger name="org.springframework.security" level="INFO"/>
+    <logger name="org.springframework.integration" level="INFO"/>
+    <logger name="org.springframework.web.socket" level="INFO"/>
+    <logger name="org.apache.tomcat.websocket" level="INFO"/>
+    <!-- Spring Debugging -->
+    <logger name="org.springframework.security" level="INFO"/>
+    <logger name="org.springframework.web" level="INFO"/>
+    <!-- Hibernate Debugging -->
+    <logger name="org.hibernate" level="DEBUG"/>
+
+</configuration>
