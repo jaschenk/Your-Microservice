@@ -82,7 +82,7 @@ public class YourEntityEventHistory implements Serializable {
      * Defined Scope of this Event to Entity.
      */
     @JsonBackReference
-    @OneToOne(optional=false)
+    @OneToOne(optional=false, fetch = FetchType.EAGER)
     @JoinColumn(name = "entityId")
     private YourEntity yourEntity;
 
@@ -93,10 +93,10 @@ public class YourEntityEventHistory implements Serializable {
     @Column(name = "eventtagname", nullable = false, length = 64)
     private String eventTagName;
 
-    /**
+   /**
      * Event Tag Properties.
      */
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @MapKeyColumn(name="name")
     @Column(name="value")
     @CollectionTable(name="EventTagProperties", joinColumns=@JoinColumn(name="eventTagProperties_id"))

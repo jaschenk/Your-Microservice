@@ -6,7 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.util.*;
 
 
 @Entity
@@ -22,7 +22,8 @@ public class YourEntity implements Serializable {
      */
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "entityId", nullable = false)
+    private Long entityId;
 
     @NotNull
     @Column(name = "givenname", nullable = false, length = 64)
@@ -56,6 +57,33 @@ public class YourEntity implements Serializable {
     @Column(name = "updatedbyid", nullable = false, length = 128)
     private String updatedByIdentifier;
 
+    /**
+     * Entity Properties.
+     */
+    @ElementCollection(fetch = FetchType.EAGER)
+    @MapKeyColumn(name="name")
+    @Column(name="value")
+    @CollectionTable(name="YourEntityProperties",
+            joinColumns=@JoinColumn(name="yourEntityProperties_id"))
+    private Map<String, String> entityProperties = new HashMap<>();
+
+    /**
+     * Entity Organizations
+     */
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "yourentity_organizations",
+            joinColumns = @JoinColumn(name = "yourentity_entityId",referencedColumnName = "entityId"),
+            inverseJoinColumns = @JoinColumn(name = "yourentityorg_entityId", referencedColumnName = "entityOrgId"))
+    private Set<YourEntityOrganization> yourEntityOrganizations;
+
+    /**
+     * Entity Organizations
+     */
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "yourentity_roles",
+            joinColumns = @JoinColumn(name = "yourentity_entityId",referencedColumnName = "entityId"),
+            inverseJoinColumns = @JoinColumn(name = "yourentityrole_entityId", referencedColumnName = "entityRoleId"))
+    private Set<YourEntityRole> yourEntityRoles;
 
     /**
      * Default Constructor
@@ -95,12 +123,12 @@ public class YourEntity implements Serializable {
     }
 
 
-    public Long getId() {
-        return id;
+    public Long getEntityId() {
+        return entityId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setEntityId(Long entityId) {
+        this.entityId = entityId;
     }
 
     public String getCreatedByIdentifier() {
@@ -135,6 +163,29 @@ public class YourEntity implements Serializable {
         this.updatedByDate = updatedByDate;
     }
 
+    public Map<String, String> getEntityProperties() {
+        return entityProperties;
+    }
+
+    public void setEntityProperties(Map<String, String> entityProperties) {
+        this.entityProperties = entityProperties;
+    }
+
+    public Set<YourEntityOrganization> getYourEntityOrganizations() {
+        return yourEntityOrganizations;
+    }
+
+    public void setYourEntityOrganizations(Set<YourEntityOrganization> yourEntityOrganizations) {
+        this.yourEntityOrganizations = yourEntityOrganizations;
+    }
+
+    public Set<YourEntityRole> getYourEntityRoles() {
+        return yourEntityRoles;
+    }
+
+    public void setYourEntityRoles(Set<YourEntityRole> yourEntityRoles) {
+        this.yourEntityRoles = yourEntityRoles;
+    }
 
     @Override
     public String toString() {
