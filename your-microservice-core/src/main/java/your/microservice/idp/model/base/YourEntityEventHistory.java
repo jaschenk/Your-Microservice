@@ -82,8 +82,9 @@ public class YourEntityEventHistory implements Serializable {
      * Defined Scope of this Event to Entity.
      */
     @JsonBackReference
-    @Column(name = "entityId", nullable = false)
-    private Long entityId;
+    @OneToOne(optional=false)
+    @JoinColumn(name = "entityId")
+    private YourEntity yourEntity;
 
     /**
      * Event Tag Name.
@@ -115,15 +116,15 @@ public class YourEntityEventHistory implements Serializable {
     /**
      * YourEntityEventHistory
      *
-     * @param entityId -- ODocument Reference of Person who has just performed the Event.
+     * @param yourEntity -- Reference of Entity which has just performed the Event.
      * @param eventTagName       -- Event Tag Name
      * @param eventMessage       -- Event Message Text
      * @param eventTagProperties -- Event Properties
      */
-    public YourEntityEventHistory(Long entityId, String eventTagName, String eventMessage, Map<String, String> eventTagProperties) {
+    public YourEntityEventHistory(YourEntity yourEntity, String eventTagName, String eventMessage, Map<String, String> eventTagProperties) {
         super();
         this.setCreatedByDate(Date.from(Instant.now()));
-        this.entityId = entityId;
+        this.yourEntity = yourEntity;
         this.eventTagName = eventTagName;
         this.eventMessage = eventMessage;
         this.eventTagProperties = eventTagProperties;
@@ -150,12 +151,12 @@ public class YourEntityEventHistory implements Serializable {
     public YourEntityEventHistory() {
     }
 
-    public Object getEntityId() {
-        return entityId;
+    public YourEntity getYourEntity() {
+        return yourEntity;
     }
 
-    public void setEntityId(Long entityId) {
-        this.entityId = entityId;
+    public void setYourEntity(YourEntity yourEntity) {
+        this.yourEntity = yourEntity;
     }
 
     public String getEventTagName() {

@@ -81,7 +81,7 @@ public class YourMicroserviceEnvironmentConfiguration {
      */
     @Bean
     @Primary
-    @ConfigurationProperties(prefix="datasource")
+    @ConfigurationProperties(prefix="datasource.idp")
     public DataSource dataSource() {
         EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
         return builder.setType(EmbeddedDatabaseType.H2).build();
