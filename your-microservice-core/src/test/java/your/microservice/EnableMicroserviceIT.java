@@ -9,6 +9,7 @@ import your.microservice.core.rest.exceptions.NotAuthenticatedException;
 import your.microservice.core.rest.exceptions.RestClientAccessorException;
 import your.microservice.core.system.messaging.model.YourMSBulletinBroadcastNotification;
 import your.microservice.idp.model.base.YourEntity;
+import your.microservice.idp.model.base.YourEntityOrganization;
 import your.microservice.idp.repository.IdentityProviderEntityManager;
 import your.microservice.testutil.IntegrationTestSetupBean;
 
@@ -90,7 +91,9 @@ public class EnableMicroserviceIT {
      */
     private static final String USER_EMAIL = "joe.user@mail.com";
     private static final String CREDENTIALS = "TestPassword";
+    private static final String ENTITY_ORG_NAME = "Test Organization";
     private static final String SERVICE_NAME = "testmicroservice";
+
     private static final String APIINFO_ENDPOINT = "/api/"+SERVICE_NAME+"/v1";
     private static final String BULLETIN_ENPOINT = "/api/"+SERVICE_NAME+"/v1/system/bulletin";
     private static final String PULSE_ENDPOINT = "/api/"+SERVICE_NAME+"/v1/system/pulse";
@@ -120,15 +123,34 @@ public class EnableMicroserviceIT {
                environment.getProperty("test.environment.property"));
 
 
-        List<YourEntity> results = identityProviderEntityManager.findAll();
+        List<YourEntity> results = identityProviderEntityManager.findAllYourEntities();
         assertNotNull(results);
         assertEquals(2, results.size());
         LOGGER.info("Result[0]: --> {}", results.get(0).toString());
         LOGGER.info("Result[1]: --> {}", results.get(1).toString());
 
-        YourEntity yourEntity = identityProviderEntityManager.findByEmail(USER_EMAIL);
+        YourEntity yourEntity = identityProviderEntityManager.findYourEntityByEmail(USER_EMAIL);
         assertNotNull(yourEntity);
         assertEquals(USER_EMAIL, yourEntity.getEntityEmailAddress());
+
+
+
+        List<YourEntityOrganization> orgResults = identityProviderEntityManager.findAllYourEntityOrganizations();
+        assertNotNull(orgResults);
+        assertEquals(4, orgResults.size());
+        for(int i=0;i<orgResults.size();i++) {
+            LOGGER.info("Result[{}]: --> {}", i, orgResults.get(i).toString());
+        }
+
+
+        YourEntityOrganization yourEntityOrganization =
+                identityProviderEntityManager.findYourEntityOrganizationByName(ENTITY_ORG_NAME);
+        assertNotNull(yourEntityOrganization);
+        assertEquals(ENTITY_ORG_NAME, yourEntityOrganization.getName());
+
+
+
+
 
     }
 

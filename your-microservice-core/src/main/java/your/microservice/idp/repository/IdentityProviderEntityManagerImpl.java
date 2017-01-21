@@ -3,6 +3,7 @@ package your.microservice.idp.repository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import your.microservice.idp.model.base.YourEntity;
+import your.microservice.idp.model.base.YourEntityOrganization;
 import your.microservice.idp.model.base.YourEntityTokenHistory;
 import your.microservice.idp.model.types.YourEntityTokenStatus;
 
@@ -76,7 +77,7 @@ public class IdentityProviderEntityManagerImpl implements IdentityProviderEntity
     }
 
     @Override
-    public YourEntity findByEmail(String email) {
+    public YourEntity findYourEntityByEmail(String email) {
 
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         final CriteriaQuery<YourEntity> criteriaQuery = criteriaBuilder.createQuery(YourEntity.class);
@@ -90,7 +91,7 @@ public class IdentityProviderEntityManagerImpl implements IdentityProviderEntity
     }
 
     @Override
-    public List<YourEntity> findAll() {
+    public List<YourEntity> findAllYourEntities() {
 
 
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
@@ -103,4 +104,26 @@ public class IdentityProviderEntityManagerImpl implements IdentityProviderEntity
 
     }
 
+    @Override
+    public YourEntityOrganization findYourEntityOrganizationByName(String name) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        final CriteriaQuery<YourEntityOrganization> criteriaQuery = criteriaBuilder.createQuery(YourEntityOrganization.class);
+        final Root<YourEntityOrganization> yourEntityRoot = criteriaQuery.from(YourEntityOrganization.class);
+
+        criteriaQuery.select(yourEntityRoot);
+        criteriaQuery.where(criteriaBuilder.equal(yourEntityRoot.get("name"),name));
+
+        return  entityManager.createQuery(criteriaQuery).getSingleResult();
+    }
+
+    @Override
+    public List<YourEntityOrganization> findAllYourEntityOrganizations() {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        final CriteriaQuery<YourEntityOrganization> criteriaQuery = criteriaBuilder.createQuery(YourEntityOrganization.class);
+        final Root<YourEntityOrganization> yourEntityRoot = criteriaQuery.from(YourEntityOrganization.class);
+
+        criteriaQuery.select(yourEntityRoot);
+
+        return  entityManager.createQuery(criteriaQuery).getResultList();
+    }
 }

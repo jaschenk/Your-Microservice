@@ -1,6 +1,7 @@
 package your.microservice.idp.repository;
 
 import your.microservice.idp.model.base.YourEntity;
+import your.microservice.idp.model.base.YourEntityOrganization;
 import your.microservice.idp.model.base.YourEntityTokenHistory;
 import your.microservice.idp.model.types.YourEntityTokenStatus;
 
@@ -88,8 +89,12 @@ public interface IdentityProviderEntityManager {
     Integer deleteTokenHistoryBySubject(String subject);
 
 
-    YourEntity findByEmail(String email);
+    YourEntity findYourEntityByEmail(String email);
 
-    List<YourEntity> findAll();
+    List<YourEntity> findAllYourEntities();
+
+    YourEntityOrganization findYourEntityOrganizationByName(String name);
+
+    List<YourEntityOrganization> findAllYourEntityOrganizations();
 
 }

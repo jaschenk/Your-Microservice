@@ -14,8 +14,15 @@ INSERT INTO yourentity(givenname, surname, email, credentials, createdbydate, cr
 INSERT INTO yourentity(givenname, surname, email, credentials, createdbydate, createdbyid, updatedbydate, updatedbyid)
   VALUES('Another', 'Entity', 'another.entity@mail.com', 'TestPassword', '2017-01-01 12:00:00', 'SYSTEM', '2017-01-01 12:00:00', 'SYSTEM');
 
+
 INSERT INTO yourentityorganization(name, createdbydate, createdbyid, updatedbydate, updatedbyid)
   VALUES('Test Organization', '2017-01-01 12:00:00', 'SYSTEM', '2017-01-01 12:00:00', 'SYSTEM');
 
 INSERT INTO yourentityorganization(name, createdbydate, createdbyid, updatedbydate, updatedbyid)
-  VALUES('Another Test Organization', '2017-01-01 12:00:00', 'SYSTEM', '2017-01-01 12:00:00', 'SYSTEM');
+  VALUES('Test Organization Two', '2017-01-01 12:00:00', 'SYSTEM', '2017-01-01 12:00:00', 'SYSTEM');
+
+INSERT INTO yourentityorganization(name, createdbydate, createdbyid, updatedbydate, updatedbyid)
+  VALUES('Test Organization Three', '2017-01-01 12:00:00', 'SYSTEM', '2017-01-01 12:00:00', 'SYSTEM');
+
+INSERT INTO yourentityorganization(name, createdbydate, createdbyid, updatedbydate, updatedbyid)
+  VALUES('Test Organization Four', '2017-01-01 12:00:00', 'SYSTEM', '2017-01-01 12:00:00', 'SYSTEM');

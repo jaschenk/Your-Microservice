@@ -60,7 +60,7 @@ public class YourEntityOrganization implements Serializable {
     /**
      * Entities defined with Access to this Organization.
      */
-    @ManyToMany(mappedBy = "yourEntityOrganizations")
+    @ManyToMany(mappedBy = "yourEntityOrganizations", fetch = FetchType.EAGER)
     private Set<YourEntity> yourOrganizationEntities;
 
     /**
