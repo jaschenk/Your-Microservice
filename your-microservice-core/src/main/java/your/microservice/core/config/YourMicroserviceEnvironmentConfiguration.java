@@ -30,7 +30,7 @@ import java.sql.SQLException;
  *
  * @author jeff.a.schenk@gmail.com on 2/27/16.
  */
-@ComponentScan(basePackages = {"your.microservice",
+@ComponentScan(basePackages = {"your.microservice.core",
         "your.microservice.idp"})
 @Configuration
 @EnableTransactionManagement
@@ -111,9 +111,9 @@ public class YourMicroserviceEnvironmentConfiguration {
     }
 
     @Bean
-    public PlatformTransactionManager transactionManager() {
+    public PlatformTransactionManager transactionManager() throws SQLException {
         JpaTransactionManager txManager = new JpaTransactionManager();
-        txManager.setEntityManagerFactory(entityManagerFactory().getNativeEntityManagerFactory());
+        txManager.setEntityManagerFactory(entityManagerFactory().getObject());
         return txManager;
     }
 

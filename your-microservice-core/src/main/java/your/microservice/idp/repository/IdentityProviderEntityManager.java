@@ -2,6 +2,7 @@ package your.microservice.idp.repository;
 
 import your.microservice.idp.model.base.YourEntity;
 import your.microservice.idp.model.base.YourEntityOrganization;
+import your.microservice.idp.model.base.YourEntityRole;
 import your.microservice.idp.model.base.YourEntityTokenHistory;
 import your.microservice.idp.model.types.YourEntityTokenStatus;
 
@@ -89,12 +90,32 @@ public interface IdentityProviderEntityManager {
     Integer deleteTokenHistoryBySubject(String subject);
 
 
+    YourEntity findYourEntityById(Long entityId);
+
     YourEntity findYourEntityByEmail(String email);
 
+    void saveYourEntity(YourEntity yourEntity);
+
     List<YourEntity> findAllYourEntities();
+
+
+
+    YourEntityOrganization findYourEntityOrganizationById(Long entityOrgId);
 
     YourEntityOrganization findYourEntityOrganizationByName(String name);
 
     List<YourEntityOrganization> findAllYourEntityOrganizations();
+
+    void saveYourEntityOrganization(YourEntityOrganization yourEntityOrganization);
+
+
+
+    List<YourEntityRole> findAllYourEntityRoles();
+
+    YourEntityRole findYourEntityRoleById(Long entityRoleId);
+
+    YourEntityRole findYourEntityRoleByName(String name);
+
+    void saveYourEntityRole(YourEntityRole yourEntityRole);
 
 }
