@@ -314,9 +314,8 @@ public class IdentityProviderEntityManagerIT {
         assertNotNull(history);
         assertEquals(100, history.size());
 
-        for(String jti:jtis) {
-            assertTrue(identityProviderEntityManager.deleteTokenHistory(jti)==1);
-        }
+        assertTrue(identityProviderEntityManager.deleteTokenHistoryBySubject(USER_EMAIL)==100);
+
 
         history = identityProviderEntityManager.readCurrentExpiredTokenHistory();
         assertNotNull(history);
