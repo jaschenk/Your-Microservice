@@ -152,9 +152,9 @@ public class IdentityProviderEntityManagerIT {
 
 
         for(int i=2; i<10;i++) {
-            Boolean updated = identityProviderEntityManager.incrementTokenHistoryUsage(jti);
+            Integer updated = identityProviderEntityManager.incrementTokenHistoryUsage(jti);
             assertNotNull(updated);
-            assertTrue(updated);
+            assertTrue(updated==1);
 
             yourEntityTokenHistory =
                 identityProviderEntityManager.readTokenHistory(jti);
@@ -167,7 +167,6 @@ public class IdentityProviderEntityManagerIT {
         List<YourEntityTokenHistory> history = identityProviderEntityManager.readCurrentExpiredTokenHistory();
         assertNotNull(history);
         assertEquals(0, history.size());
-
 
     }
 
@@ -209,6 +208,11 @@ public class IdentityProviderEntityManagerIT {
         assertNotNull(history);
         assertEquals(100, history.size());
 
+        assertTrue(identityProviderEntityManager.deleteTokenHistory()==100);
+
+        history = identityProviderEntityManager.readCurrentExpiredTokenHistory();
+        assertNotNull(history);
+        assertEquals(0, history.size());
 
     }
 

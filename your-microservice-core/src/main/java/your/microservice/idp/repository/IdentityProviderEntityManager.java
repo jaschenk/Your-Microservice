@@ -48,9 +48,9 @@ public interface IdentityProviderEntityManager {
      *
      * @param jti Entity Object whose status is to be updated.
      * @param status Status to be set on JTI.
-     * @return Boolean Indicates if JTI was Updated or not.
+     * @return Integer Count of Objects Updated or Zero.
      */
-    Boolean updateTokenHistoryStatus(String jti, YourEntityTokenStatus status);
+    Integer updateTokenHistoryStatus(String jti, YourEntityTokenStatus status);
 
     /**
      * incrementTokenHistoryUsage
@@ -58,9 +58,16 @@ public interface IdentityProviderEntityManager {
      * removed from the Store or in another state other than Actove.
      *
      * @param jti Distinct Token Identifier Token to Increment Usage.
-     * @return Boolean Indicates if JTI Count was Updated or not, if not, kill the token.
+     * @return Integer Count of Objects Updated, should be only 1, if not, kill the token.
      */
-    Boolean incrementTokenHistoryUsage(String jti);
+    Integer incrementTokenHistoryUsage(String jti);
+
+    /**
+     * deleteTokenHistory
+     *
+     * @return Integer Count of Objects Deleted or Zero.
+     */
+    Integer deleteTokenHistory();
 
     /**
      * deleteToken

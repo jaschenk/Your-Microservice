@@ -94,9 +94,9 @@ public class AuthenticationTokenFilter extends UsernamePasswordAuthenticationFil
                         /**
                          * Perform Statistical Metric of a Token being Used.
                          */
-                         Boolean countUpdated =
+                         Integer countUpdated =
                                  identityProviderEntityManager.incrementTokenHistoryUsage(jwtClaimsSet.getJWTID());
-                         if (countUpdated == null || !countUpdated ) {
+                         if (countUpdated == null || countUpdated != 1) {
                              /**
                               * We did not update the Usage Counter, this indicates that either the
                               * Token has Expired, Revoked or in some other state other than Active,
