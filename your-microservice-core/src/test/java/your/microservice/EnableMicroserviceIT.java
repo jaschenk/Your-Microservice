@@ -206,6 +206,14 @@ public class EnableMicroserviceIT {
             assertNotNull(yourEntityTokenHistory);
             assertEquals(i, yourEntityTokenHistory.getUsageCount().longValue());
         }
+
+
+
+        List<YourEntityTokenHistory> history = identityProviderEntityManager.readCurrentExpiredTokenHistory();
+        assertNotNull(history);
+        assertEquals(0, history.size());
+
+
     }
 
     @Test

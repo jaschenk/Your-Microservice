@@ -8,11 +8,10 @@ import your.microservice.idp.model.types.YourEntityTokenStatus;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -71,13 +70,30 @@ public class IdentityProviderEntityManagerImpl implements IdentityProviderEntity
     @Override
     @Transactional(readOnly = true)
     public List<YourEntityTokenHistory> readTokenHistoryBySubject(String subject) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        final CriteriaQuery<YourEntityTokenHistory> criteriaQuery = criteriaBuilder.createQuery(YourEntityTokenHistory.class);
+        final Root<YourEntityTokenHistory> yourEntityRoot = criteriaQuery.from(YourEntityTokenHistory.class);
+
+        criteriaQuery.select(yourEntityRoot);
+        criteriaQuery.where(criteriaBuilder.equal(yourEntityRoot.get("subject"),subject));
+
+        return  entityManager.createQuery(criteriaQuery).getResultList();
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<YourEntityTokenHistory> readCurrentExpiredTokenHistory() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        final CriteriaQuery<YourEntityTokenHistory> criteriaQuery = criteriaBuilder.createQuery(YourEntityTokenHistory.class);
+        final Root<YourEntityTokenHistory> yourEntityRoot = criteriaQuery.from(YourEntityTokenHistory.class);
+
+        // Create Date path and parameter expressions:
+        Expression<Date> expiration = yourEntityRoot.get("expiration");
+
+        criteriaQuery.select(yourEntityRoot);
+        criteriaQuery.where(criteriaBuilder.lessThanOrEqualTo(expiration, criteriaBuilder.currentTimestamp()));
+
+        return  entityManager.createQuery(criteriaQuery).getResultList();
     }
 
     @Override
