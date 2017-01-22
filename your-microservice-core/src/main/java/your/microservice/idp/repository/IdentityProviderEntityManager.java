@@ -44,6 +44,13 @@ public interface IdentityProviderEntityManager {
     List<YourEntityTokenHistory> readCurrentExpiredTokenHistory();
 
     /**
+     * readCurrentNonExpiredTokenHistory
+     *
+     * @return List of Token History Entities which have Expired.
+     */
+    List<YourEntityTokenHistory> readCurrentNonExpiredTokenHistory();
+
+    /**
      * updateTokenHistoryStatus
      *
      * @param jti Entity Object whose status is to be updated.

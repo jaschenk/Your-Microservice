@@ -97,6 +97,23 @@ public class IdentityProviderEntityManagerImpl implements IdentityProviderEntity
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public List<YourEntityTokenHistory> readCurrentNonExpiredTokenHistory() {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        final CriteriaQuery<YourEntityTokenHistory> criteriaQuery = criteriaBuilder.createQuery(YourEntityTokenHistory.class);
+        final Root<YourEntityTokenHistory> yourEntityRoot = criteriaQuery.from(YourEntityTokenHistory.class);
+
+        // Create Date path and parameter expressions:
+        Expression<Date> expiration = yourEntityRoot.get("expiration");
+
+        criteriaQuery.select(yourEntityRoot);
+        criteriaQuery.where(criteriaBuilder.greaterThan(expiration, criteriaBuilder.currentTimestamp()));
+
+        return entityManager.createQuery(criteriaQuery).getResultList();
+    }
+
+
+    @Override
     @Transactional
     public Integer updateTokenHistoryStatus(String jti, YourEntityTokenStatus status) {
         try {
