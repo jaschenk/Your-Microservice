@@ -1,6 +1,8 @@
 package your.microservice.idp.model.base;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import your.microservice.idp.model.types.YourEntityStatus;
+import your.microservice.idp.model.types.YourEntityStatusConverter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -62,6 +64,15 @@ public class YourEntityRole implements Serializable {
      */
     @ManyToMany(mappedBy = "yourEntityRoles")
     private Set<YourEntity> yourRoleEntities;
+
+    /**
+     * Your Entity Organization Status
+     */
+    @NotNull
+    @Column(name = "status", nullable = false, length = 32)
+    @Convert(converter = YourEntityStatusConverter.class)
+    private YourEntityStatus status;
+
 
     /**
      * Default Constructor
@@ -131,6 +142,14 @@ public class YourEntityRole implements Serializable {
 
     public void setYourRoleEntities(Set<YourEntity> yourRoleEntities) {
         this.yourRoleEntities = yourRoleEntities;
+    }
+
+    public YourEntityStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(YourEntityStatus status) {
+        this.status = status;
     }
 
     @Override

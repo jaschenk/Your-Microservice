@@ -18,6 +18,7 @@ import your.microservice.idp.model.base.YourEntity;
 import your.microservice.idp.model.base.YourEntityOrganization;
 import your.microservice.idp.model.base.YourEntityRole;
 import your.microservice.idp.model.base.YourEntityTokenHistory;
+import your.microservice.idp.model.types.YourEntityStatus;
 import your.microservice.idp.model.types.YourEntityTokenStatus;
 import your.microservice.testutil.IntegrationTestSetupBean;
 
@@ -69,15 +70,8 @@ public class IdentityProviderEntityManagerIT {
 
 
     @Test
-    public void test01_EnvironmentSetup() {
-        LOGGER.info("Running: test01_EnvironmentSetup");
-        assertNotNull(environment);
-
-        assertNotNull(identityProviderEntityManager);
-
-        assertEquals("true",
-               environment.getProperty("test.environment.property"));
-
+    public void test01_TokenHistoryLifecycle() {
+        LOGGER.info("Running: test01_TokenHistoryLifecycle");
 
         List<YourEntity> results = identityProviderEntityManager.findAllYourEntities();
         assertNotNull(results);
@@ -120,6 +114,7 @@ public class IdentityProviderEntityManagerIT {
 
         YourEntityRole yourEntityRole2 = new YourEntityRole();
         yourEntityRole2.setName("NEW_ROLE_NAME");
+        yourEntityRole2.setStatus(YourEntityStatus.ACTIVE);
         identityProviderEntityManager.saveYourEntityRole(yourEntityRole2);
 
         yourEntityRole =
@@ -161,6 +156,19 @@ public class IdentityProviderEntityManagerIT {
             assertNotNull(yourEntityTokenHistory);
             assertEquals(i, yourEntityTokenHistory.getUsageCount().longValue());
         }
+
+        Integer updatedStatus = identityProviderEntityManager.updateTokenHistoryStatus(jti, YourEntityTokenStatus.REVOKED);
+        assertNotNull(updatedStatus);
+        assertTrue(updatedStatus == 1);
+
+        updatedStatus = identityProviderEntityManager.updateTokenHistoryStatus(jti, YourEntityTokenStatus.PENDING);
+        assertNotNull(updatedStatus);
+        assertTrue(updatedStatus == 1);
+
+        yourEntityTokenHistory =
+                identityProviderEntityManager.readTokenHistory(jti);
+        assertNotNull(yourEntityTokenHistory);
+        assertEquals(YourEntityTokenStatus.PENDING, yourEntityTokenHistory.getStatus());
 
         assertTrue( identityProviderEntityManager.deleteTokenHistory(jti) == 1);
 
@@ -302,7 +310,7 @@ public class IdentityProviderEntityManagerIT {
             assertNotNull(yourEntityTokenHistory);
         }
 
-        List<YourEntityTokenHistory> history = identityProviderEntityManager.readCurrentNonExpiredTokenHistory();
+        List<YourEntityTokenHistory> history = identityProviderEntityManager.readTokenHistoryBySubject(USER_EMAIL);
         assertNotNull(history);
         assertEquals(100, history.size());
 
@@ -325,6 +333,13 @@ public class IdentityProviderEntityManagerIT {
     @Test
     public void test00_first() {
         LOGGER.info("Running: test00_first --> Should be First Test Run in Integration Test Suite");
+        assertNotNull(environment);
+
+        assertNotNull(identityProviderEntityManager);
+
+        assertEquals("true",
+                environment.getProperty("test.environment.property"));
+
     }
 
     @Test

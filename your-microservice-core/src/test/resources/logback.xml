@@ -13,8 +13,8 @@
     <!-- Spring Debugging -->
     <logger name="org.springframework.security" level="INFO"/>
     <logger name="org.springframework.web" level="INFO"/>
-    <logger name="org.springframework.dao" level="DEBUG"/>
+    <logger name="org.springframework.dao" level="INFO"/>
     <!-- Hibernate Debugging -->
-    <logger name="org.hibernate" level="DEBUG"/>
+    <logger name="org.hibernate" level="INFO"/>
 
 </configuration>

@@ -6,6 +6,7 @@ import org.hibernate.annotations.NamedNativeQueries;
 import org.hibernate.annotations.NamedNativeQuery;
 import your.microservice.core.dm.serialization.JsonDateSerializer;
 import your.microservice.idp.model.types.YourEntityTokenStatus;
+import your.microservice.idp.model.types.YourEntityTokenStatusConverter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -37,6 +38,7 @@ public class YourEntityTokenHistory implements Serializable {
      */
     @NotNull
     @Column(name = "status", nullable = false, length = 32)
+    @Convert(converter = YourEntityTokenStatusConverter.class)
     private YourEntityTokenStatus status;
     /**
      * Your Microservice Token Issued At Date Time.

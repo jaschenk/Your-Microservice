@@ -1,6 +1,10 @@
 package your.microservice.idp.model.base;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import your.microservice.idp.model.types.YourEntityStatus;
+import your.microservice.idp.model.types.YourEntityStatusConverter;
+import your.microservice.idp.model.types.YourEntityTokenStatus;
+import your.microservice.idp.model.types.YourEntityTokenStatusConverter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -46,6 +50,14 @@ public class YourEntityOrganization implements Serializable {
     @NotNull
     @Column(name = "updatedbyid", nullable = false, length = 128)
     private String updatedByIdentifier;
+
+    /**
+     * Your Entity Organization Status
+     */
+    @NotNull
+    @Column(name = "status", nullable = false, length = 32)
+    @Convert(converter = YourEntityStatusConverter.class)
+    private YourEntityStatus status;
 
     /**
      * Entity Properties.
@@ -131,6 +143,14 @@ public class YourEntityOrganization implements Serializable {
 
     public void setYourOrganizationEntities(Set<YourEntity> yourOrganizationEntities) {
         this.yourOrganizationEntities = yourOrganizationEntities;
+    }
+
+    public YourEntityStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(YourEntityStatus status) {
+        this.status = status;
     }
 
     @Override
