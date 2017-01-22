@@ -24,7 +24,7 @@ public class YourEntityOrganization implements Serializable {
      */
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name = "entityOrgId", nullable = false)
+    @Column(name = "entityOrgId", unique = true, nullable = false)
     private Long entityOrgId;
 
     @NotNull

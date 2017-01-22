@@ -3,10 +3,7 @@ package your.microservice.idp.repository;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import your.microservice.idp.model.base.YourEntity;
-import your.microservice.idp.model.base.YourEntityOrganization;
-import your.microservice.idp.model.base.YourEntityRole;
-import your.microservice.idp.model.base.YourEntityTokenHistory;
+import your.microservice.idp.model.base.*;
 import your.microservice.idp.model.types.YourEntityTokenStatus;
 
 import javax.persistence.EntityManager;
@@ -47,13 +44,28 @@ public class IdentityProviderEntityManagerImpl implements IdentityProviderEntity
     @Override
     @Transactional
     public YourEntityTokenHistory createTokenHistory(YourEntityTokenHistory yourEntityTokenHistory) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        try {
+            entityManager.persist(yourEntityTokenHistory);
+            entityManager.flush();
+        } catch(Exception e) {
+            LOGGER.error("Exception Saving YourEntity: {} {}",e.getMessage(), yourEntityTokenHistory, e);
+            return null;
+        }
+        return readTokenHistory(yourEntityTokenHistory.getJti());
     }
+
 
     @Override
     @Transactional(readOnly = true)
     public YourEntityTokenHistory readTokenHistory(String jti) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        final CriteriaQuery<YourEntityTokenHistory> criteriaQuery = criteriaBuilder.createQuery(YourEntityTokenHistory.class);
+        final Root<YourEntityTokenHistory> yourEntityRoot = criteriaQuery.from(YourEntityTokenHistory.class);
+
+        criteriaQuery.select(yourEntityRoot);
+        criteriaQuery.where(criteriaBuilder.equal(yourEntityRoot.get("jti"),jti));
+
+        return  entityManager.createQuery(criteriaQuery).getSingleResult();
     }
 
     @Override
@@ -69,21 +81,41 @@ public class IdentityProviderEntityManagerImpl implements IdentityProviderEntity
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public List<YourEntityTokenHistory> readTokenHistory(Map<String, Object> queryParameters) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    @Transactional
+    public Boolean updateTokenHistoryStatus(String jti, YourEntityTokenStatus status) {
+        try
+        {
+            entityManager.createNativeQuery("UPDATE YourEntityTokenHistory SET status = ? WHERE jti = ?", YourEntityTokenHistory.class)
+                    .setParameter(1, status.name())
+                    .setParameter(2, jti)
+                    .executeUpdate();
+
+            return true;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
     }
 
     @Override
     @Transactional
-    public Integer updateTokenHistoryStatus(String jti, YourEntityTokenStatus status) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
+    public Boolean incrementTokenHistoryUsage(String jti) {
 
-    @Override
-    @Transactional
-    public Integer incrementTokenHistoryUsage(String jti) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        try
+        {
+            entityManager.createNativeQuery("UPDATE YourEntityTokenHistory SET usageCount = usageCount + 1 WHERE jti = ?", YourEntityTokenHistory.class)
+                    .setParameter(1, jti)
+                    //.setParameter(2, Date.from(Instant.now()))
+                    .executeUpdate();
+            entityManager.flush();
+
+            return true;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
     }
 
     @Override
@@ -96,6 +128,17 @@ public class IdentityProviderEntityManagerImpl implements IdentityProviderEntity
     @Transactional
     public Integer deleteTokenHistoryBySubject(String subject) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    @Transactional
+    public void createEventHistory(YourEntityEventHistory yourEntityEventHistory) {
+        try {
+            entityManager.persist(yourEntityEventHistory);
+            entityManager.flush();
+        } catch(Exception e) {
+            LOGGER.error("Exception Saving YourEntity: {} {}",e.getMessage(), yourEntityEventHistory, e);
+        }
     }
 
     @Override
@@ -227,14 +270,16 @@ public class IdentityProviderEntityManagerImpl implements IdentityProviderEntity
     @Transactional
     public void saveYourEntityRole(YourEntityRole yourEntityRole) {
         try {
-        yourEntityRole.setCreatedByDate(Date.from(Instant.now()));
-        yourEntityRole.setCreatedByIdentifier("SYSTEM");
-        yourEntityRole.setUpdatedByDate(Date.from(Instant.now()));
-        yourEntityRole.setUpdatedByIdentifier("SYSTEM");
-        entityManager.persist(yourEntityRole);
-        entityManager.flush();
+            if (yourEntityRole.getEntityRoleId() == null) {
+                yourEntityRole.setCreatedByDate(Date.from(Instant.now()));
+                yourEntityRole.setCreatedByIdentifier("SYSTEM");
+            }
+            yourEntityRole.setUpdatedByDate(Date.from(Instant.now()));
+            yourEntityRole.setUpdatedByIdentifier("SYSTEM");
+            entityManager.persist(yourEntityRole);
+            entityManager.flush();
         } catch(Exception e) {
-           LOGGER.error("Exception Saving YourEntityRole: {}",e.getMessage(), e);
+           LOGGER.error("Exception Saving YourEntityRole: {} {}",e.getMessage(), yourEntityRole, e);
         }
     }
 
@@ -242,18 +287,35 @@ public class IdentityProviderEntityManagerImpl implements IdentityProviderEntity
     @Override
     @Transactional
     public void saveYourEntity(YourEntity yourEntity) {
-        yourEntity.setUpdatedByDate(Date.from(Instant.now()));
-        yourEntity.setUpdatedByIdentifier("SYSTEM");
-        entityManager.persist(yourEntity);
-        entityManager.flush();
+        try {
+            if (yourEntity.getEntityId() == null) {
+                yourEntity.setCreatedByDate(Date.from(Instant.now()));
+                yourEntity.setCreatedByIdentifier("SYSTEM");
+            }
+            yourEntity.setUpdatedByDate(Date.from(Instant.now()));
+            yourEntity.setUpdatedByIdentifier("SYSTEM");
+            entityManager.persist(yourEntity);
+            entityManager.flush();
+        } catch(Exception e) {
+            LOGGER.error("Exception Saving YourEntity: {} {}",e.getMessage(), yourEntity, e);
+        }
+
     }
 
     @Override
     @Transactional
     public void saveYourEntityOrganization(YourEntityOrganization yourEntityOrganization) {
-        yourEntityOrganization.setUpdatedByDate(Date.from(Instant.now()));
-        yourEntityOrganization.setUpdatedByIdentifier("SYSTEM");
-        entityManager.persist(yourEntityOrganization);
-        entityManager.flush();
+        try {
+            if (yourEntityOrganization.getEntityOrgId() == null) {
+                yourEntityOrganization.setCreatedByDate(Date.from(Instant.now()));
+                yourEntityOrganization.setCreatedByIdentifier("SYSTEM");
+            }
+            yourEntityOrganization.setUpdatedByDate(Date.from(Instant.now()));
+            yourEntityOrganization.setUpdatedByIdentifier("SYSTEM");
+            entityManager.persist(yourEntityOrganization);
+            entityManager.flush();
+        } catch(Exception e) {
+            LOGGER.error("Exception Saving YourEntityOrganization: {} {}",e.getMessage(), yourEntityOrganization, e);
+        }
     }
 }

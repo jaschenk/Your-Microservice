@@ -24,7 +24,7 @@ public class YourEntityRole implements Serializable {
      */
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name = "entityRoleId", nullable = false)
+    @Column(name = "entityRoleId", unique = true, nullable = false)
     private Long entityRoleId;
 
     @NotNull

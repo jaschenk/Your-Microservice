@@ -2,11 +2,12 @@ package your.microservice.idp.model.base;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import org.hibernate.annotations.NamedNativeQueries;
+import org.hibernate.annotations.NamedNativeQuery;
 import your.microservice.core.dm.serialization.JsonDateSerializer;
 import your.microservice.idp.model.types.YourEntityTokenStatus;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
@@ -23,41 +24,49 @@ public class YourEntityTokenHistory implements Serializable {
      * Your Microservice Token Identifier
      */
     @Id
+    @Column(name = "jti", unique = true, nullable = false, length = 64)
     private String jti;
     /**
      * Your Microservice Token Subject
      */
     @NotNull
+    @Column(name = "subject", nullable = false, length = 256)
     private String subject;
     /**
      * Your Microservice Token Status
      */
     @NotNull
+    @Column(name = "status", nullable = false, length = 32)
     private YourEntityTokenStatus status;
     /**
      * Your Microservice Token Issued At Date Time.
      */
+    @Column(name = "issuedat", nullable = false)
     @JsonSerialize(using=JsonDateSerializer.class)
     private Date issuedAt;
     /**
      * Your Microservice Token Expiration Date Time.
      */
+    @Column(name = "expiration", nullable = false)
     @JsonSerialize(using=JsonDateSerializer.class)
     private Date expiration;
     /**
      * Your Microservice Token Not Used Before Date Time.
      */
+    @Column(name = "notusedbefore", nullable = false)
     @JsonSerialize(using=JsonDateSerializer.class)
     private Date notUsedBefore;
     /**
      * Your Microservice Token Last Used Date Time.
      */
     @JsonSerialize(using=JsonDateSerializer.class)
+    @Column(name = "lastused", nullable = false)
     private Date lastUsed;
 
     /**
      * Your Microservice Token Usage Count.
      */
+    @Column(name = "usagecount", nullable = false)
     private Long usageCount;
 
 

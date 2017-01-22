@@ -22,7 +22,7 @@ public class YourEntity implements Serializable {
      */
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name = "entityId", nullable = false)
+    @Column(name = "entityId", unique = true, nullable = false)
     private Long entityId;
 
     @NotNull

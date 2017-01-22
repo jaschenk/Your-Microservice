@@ -1,9 +1,6 @@
 package your.microservice.idp.repository;
 
-import your.microservice.idp.model.base.YourEntity;
-import your.microservice.idp.model.base.YourEntityOrganization;
-import your.microservice.idp.model.base.YourEntityRole;
-import your.microservice.idp.model.base.YourEntityTokenHistory;
+import your.microservice.idp.model.base.*;
 import your.microservice.idp.model.types.YourEntityTokenStatus;
 
 import java.util.List;
@@ -47,21 +44,13 @@ public interface IdentityProviderEntityManager {
     List<YourEntityTokenHistory> readCurrentExpiredTokenHistory();
 
     /**
-     * readTokenHistory
-     *
-     * @param queryParameters Named Value Parameters for Query.
-     * @return List of YourEntityTokenHistory Entities.
-     */
-    List<YourEntityTokenHistory> readTokenHistory(Map<String, Object> queryParameters);
-
-    /**
      * updateTokenHistoryStatus
      *
      * @param jti Entity Object whose status is to be updated.
      * @param status Status to be set on JTI.
-     * @return Integer Number of Entities Updated, normally one.
+     * @return Boolean Indicates if JTI was Updated or not.
      */
-    Integer updateTokenHistoryStatus(String jti, YourEntityTokenStatus status);
+    Boolean updateTokenHistoryStatus(String jti, YourEntityTokenStatus status);
 
     /**
      * incrementTokenHistoryUsage
@@ -69,9 +58,9 @@ public interface IdentityProviderEntityManager {
      * removed from the Store or in another state other than Actove.
      *
      * @param jti Distinct Token Identifier Token to Increment Usage.
-     * @return Integer Number of Entities Updated, normally one, if zero, kill the token.
+     * @return Boolean Indicates if JTI Count was Updated or not, if not, kill the token.
      */
-    Integer incrementTokenHistoryUsage(String jti);
+    Boolean incrementTokenHistoryUsage(String jti);
 
     /**
      * deleteToken
@@ -88,6 +77,13 @@ public interface IdentityProviderEntityManager {
      * @return Integer number of Tokens Deleted.
      */
     Integer deleteTokenHistoryBySubject(String subject);
+
+    /**
+     * createEventHistory
+     *
+     * @param yourEntityEventHistory
+     */
+    void createEventHistory(YourEntityEventHistory yourEntityEventHistory);
 
 
     YourEntity findYourEntityById(Long entityId);

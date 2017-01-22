@@ -11,6 +11,8 @@ import your.microservice.core.system.messaging.model.YourMSBulletinBroadcastNoti
 import your.microservice.idp.model.base.YourEntity;
 import your.microservice.idp.model.base.YourEntityOrganization;
 import your.microservice.idp.model.base.YourEntityRole;
+import your.microservice.idp.model.base.YourEntityTokenHistory;
+import your.microservice.idp.model.types.YourEntityTokenStatus;
 import your.microservice.idp.repository.IdentityProviderEntityManager;
 import your.microservice.testutil.IntegrationTestSetupBean;
 
@@ -31,15 +33,12 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.Instant;
+import java.util.*;
 
 import static com.jayway.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.containsString;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 /**
  * EnableMicroserviceIT
@@ -174,6 +173,35 @@ public class EnableMicroserviceIT {
         assertEquals("NEW_ROLE_NAME", yourEntityRole.getName());
 
 
+        /**
+         * Test creating a JTI
+         */
+        String jti = UUID.randomUUID().toString();
+        YourEntityTokenHistory yourEntityTokenHistory = new YourEntityTokenHistory();
+        yourEntityTokenHistory.setJti(jti);
+        yourEntityTokenHistory.setSubject(USER_EMAIL);
+        yourEntityTokenHistory.setUsageCount(1L);
+        yourEntityTokenHistory.setExpiration(Date.from(Instant.now()));
+        yourEntityTokenHistory.setIssuedAt(Date.from(Instant.now()));
+        yourEntityTokenHistory.setLastUsed(Date.from(Instant.now()));
+        yourEntityTokenHistory.setNotUsedBefore(Date.from(Instant.now()));
+        yourEntityTokenHistory.setStatus(YourEntityTokenStatus.ACTIVE);
+
+        yourEntityTokenHistory =
+                identityProviderEntityManager.createTokenHistory(yourEntityTokenHistory);
+        assertNotNull(yourEntityTokenHistory);
+
+
+        for(int i=2; i<10;i++) {
+            Boolean updated = identityProviderEntityManager.incrementTokenHistoryUsage(jti);
+            assertNotNull(updated);
+            assertTrue(updated);
+
+            yourEntityTokenHistory =
+                identityProviderEntityManager.readTokenHistory(jti);
+            assertNotNull(yourEntityTokenHistory);
+            assertEquals(i, yourEntityTokenHistory.getUsageCount().longValue());
+        }
     }
 
     @Test
