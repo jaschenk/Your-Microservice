@@ -181,7 +181,11 @@ public class EnableMicroserviceIT {
         yourEntityTokenHistory.setJti(jti);
         yourEntityTokenHistory.setSubject(USER_EMAIL);
         yourEntityTokenHistory.setUsageCount(1L);
-        yourEntityTokenHistory.setExpiration(Date.from(Instant.now()));
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MINUTE, 4);
+        yourEntityTokenHistory.setExpiration(calendar.getTime());
+
         yourEntityTokenHistory.setIssuedAt(Date.from(Instant.now()));
         yourEntityTokenHistory.setLastUsed(Date.from(Instant.now()));
         yourEntityTokenHistory.setNotUsedBefore(Date.from(Instant.now()));

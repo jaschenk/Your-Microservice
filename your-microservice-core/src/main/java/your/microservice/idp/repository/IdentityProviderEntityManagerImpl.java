@@ -104,9 +104,9 @@ public class IdentityProviderEntityManagerImpl implements IdentityProviderEntity
 
         try
         {
-            entityManager.createNativeQuery("UPDATE YourEntityTokenHistory SET usageCount = usageCount + 1 WHERE jti = ?", YourEntityTokenHistory.class)
+            entityManager.createNativeQuery("UPDATE YourEntityTokenHistory SET usageCount = usageCount + 1 WHERE jti = ? AND expiration > ?", YourEntityTokenHistory.class)
                     .setParameter(1, jti)
-                    //.setParameter(2, Date.from(Instant.now()))
+                    .setParameter(2, Date.from(Instant.now()))
                     .executeUpdate();
             entityManager.flush();
 
