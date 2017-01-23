@@ -82,7 +82,7 @@ public interface YourMicroserviceToken {
     /**
      * Private Claim Names
      */
-    String CLAIM_NAME_YOUR_MICROSERVICE = "your.microservice";
+    String CLAIM_NAME_YOUR_MICROSERVICE = "yms";
 
     /**
      * getUsernameFromToken

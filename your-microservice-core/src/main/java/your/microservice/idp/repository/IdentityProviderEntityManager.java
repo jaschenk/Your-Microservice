@@ -12,6 +12,7 @@ import java.util.Map;
  * @author jeff.a.schenk@gmail.com on 4/6/16.
  */
 public interface IdentityProviderEntityManager {
+
     /**
      * createTokenHistory
      *
@@ -98,6 +99,11 @@ public interface IdentityProviderEntityManager {
      * @param yourEntityEventHistory
      */
     void createEventHistory(YourEntityEventHistory yourEntityEventHistory);
+
+    List<YourEntityEventHistory> findAllYourEntityEventHistory(Long yourEntityId);
+
+    List<YourEntityEventHistory> findAllYourEntityEventHistory();
+
 
 
     YourEntity findYourEntityById(Long entityId);

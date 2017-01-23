@@ -217,12 +217,37 @@ public class IdentityProviderEntityManagerImpl implements IdentityProviderEntity
     @Override
     @Transactional
     public void createEventHistory(YourEntityEventHistory yourEntityEventHistory) {
+        if (yourEntityEventHistory == null) {
+            return;
+        }
         try {
+            yourEntityEventHistory.setCreatedByDate(Date.from(Instant.now()));
             entityManager.persist(yourEntityEventHistory);
             entityManager.flush();
         } catch (Exception e) {
             LOGGER.error("Exception Saving YourEntity: {} {}", e.getMessage(), yourEntityEventHistory, e);
         }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<YourEntityEventHistory> findAllYourEntityEventHistory(Long entityId) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        final CriteriaQuery<YourEntityEventHistory> criteriaQuery = criteriaBuilder.createQuery(YourEntityEventHistory.class);
+        final Root<YourEntityEventHistory> yourEntityRoot = criteriaQuery.from(YourEntityEventHistory.class);
+        criteriaQuery.select(yourEntityRoot);
+        criteriaQuery.where(criteriaBuilder.equal(yourEntityRoot.get("yourEntity"), entityId));
+        return entityManager.createQuery(criteriaQuery).getResultList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<YourEntityEventHistory> findAllYourEntityEventHistory() {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        final CriteriaQuery<YourEntityEventHistory> criteriaQuery = criteriaBuilder.createQuery(YourEntityEventHistory.class);
+        final Root<YourEntityEventHistory> yourEntityRoot = criteriaQuery.from(YourEntityEventHistory.class);
+        criteriaQuery.select(yourEntityRoot);
+        return entityManager.createQuery(criteriaQuery).getResultList();
     }
 
     @Override
@@ -352,6 +377,9 @@ public class IdentityProviderEntityManagerImpl implements IdentityProviderEntity
     @Override
     @Transactional
     public void saveYourEntityRole(YourEntityRole yourEntityRole) {
+        if (yourEntityRole == null) {
+            return;
+        }
         try {
             if (yourEntityRole.getEntityRoleId() == null) {
                 yourEntityRole.setCreatedByDate(Date.from(Instant.now()));
@@ -370,6 +398,9 @@ public class IdentityProviderEntityManagerImpl implements IdentityProviderEntity
     @Override
     @Transactional
     public void saveYourEntity(YourEntity yourEntity) {
+        if (yourEntity == null) {
+            return;
+        }
         try {
             if (yourEntity.getEntityId() == null) {
                 yourEntity.setCreatedByDate(Date.from(Instant.now()));
@@ -388,6 +419,9 @@ public class IdentityProviderEntityManagerImpl implements IdentityProviderEntity
     @Override
     @Transactional
     public void saveYourEntityOrganization(YourEntityOrganization yourEntityOrganization) {
+        if (yourEntityOrganization == null) {
+            return;
+        }
         try {
             if (yourEntityOrganization.getEntityOrgId() == null) {
                 yourEntityOrganization.setCreatedByDate(Date.from(Instant.now()));

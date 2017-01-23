@@ -25,7 +25,7 @@ public class YourEntity implements Serializable {
      * Identifier
      */
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "entityId", unique = true, nullable = false)
     private Long entityId;
 
@@ -81,7 +81,7 @@ public class YourEntity implements Serializable {
     private Set<YourEntityOrganization> yourEntityOrganizations;
 
     /**
-     * Entity Organizations
+     * Entity Roles
      */
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "yourentity_roles",

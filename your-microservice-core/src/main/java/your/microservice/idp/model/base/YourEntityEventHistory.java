@@ -75,16 +75,16 @@ public class YourEntityEventHistory implements Serializable {
      * Identifier
      */
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name = "id",unique = true, nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", unique = true, nullable = false)
     private Long id;
 
     /**
      * Defined Scope of this Event to Entity.
      */
     @JsonBackReference
-    @OneToOne(optional=false, fetch = FetchType.EAGER)
-    @JoinColumn(name = "entityId")
+    @ManyToOne(optional=false, fetch = FetchType.EAGER)
+    @JoinColumn(name = "entityId", nullable = false, updatable = false)
     private YourEntity yourEntity;
 
     /**
@@ -107,7 +107,7 @@ public class YourEntityEventHistory implements Serializable {
      * Event Message
      */
     @NotNull
-    @Column(name = "eventmessage", nullable = true, length = 1024)
+    @Column(name = "eventmessage", nullable = false, length = 256)
     private String eventMessage;
 
     @NotNull

@@ -1,7 +1,5 @@
 package your.microservice.idp.repository;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,7 +18,6 @@ import your.microservice.idp.model.base.YourEntityRole;
 import your.microservice.idp.model.base.YourEntityTokenHistory;
 import your.microservice.idp.model.types.YourEntityStatus;
 import your.microservice.idp.model.types.YourEntityTokenStatus;
-import your.microservice.testutil.IntegrationTestSetupBean;
 
 import java.time.Instant;
 import java.util.*;
@@ -28,7 +25,7 @@ import java.util.*;
 import static org.junit.Assert.*;
 
 /**
- * IdentityProviderEntityManagerIT
+ * IdPEntityManagerTokenHistoryIT
  *
  * @author jeff.a.schenk@gmail.com on 2/21/16.
  */
@@ -36,24 +33,18 @@ import static org.junit.Assert.*;
 @SpringApplicationConfiguration(classes = {MicroserviceTestApplication.class})
 @WebIntegrationTest({"server.port:0","test.environment.property:true"})
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class IdentityProviderEntityManagerIT {
+public class IdPEntityManagerTokenHistoryIT {
     /**
      * Common Logger
      */
     protected final static org.slf4j.Logger LOGGER =
-            LoggerFactory.getLogger(IdentityProviderEntityManagerIT.class);
+            LoggerFactory.getLogger(IdPEntityManagerTokenHistoryIT.class);
 
     /**
      * Environment
      */
     @Autowired
     private Environment environment;
-
-    /**
-     * Test Integration Helper Setup Bean
-     */
-    @Autowired
-    private IntegrationTestSetupBean integrationTestSetupBean;
 
     /**
      * Identity Provider Entity Manager
@@ -195,26 +186,9 @@ public class IdentityProviderEntityManagerIT {
         /**
          * Test creating several Expired JWTs
          */
-        for(int i = 0; i<100;i++) {
-            String jti = UUID.randomUUID().toString();
-            YourEntityTokenHistory yourEntityTokenHistory = new YourEntityTokenHistory();
-            yourEntityTokenHistory.setJti(jti);
-            yourEntityTokenHistory.setSubject(USER_EMAIL);
-            yourEntityTokenHistory.setUsageCount(1L);
-
-            Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.MINUTE, -4);  // Expired 4 Minutes Ago.
-            yourEntityTokenHistory.setExpiration(calendar.getTime());
-
-            yourEntityTokenHistory.setIssuedAt(Date.from(Instant.now()));
-            yourEntityTokenHistory.setLastUsed(Date.from(Instant.now()));
-            yourEntityTokenHistory.setNotUsedBefore(Date.from(Instant.now()));
-            yourEntityTokenHistory.setStatus(YourEntityTokenStatus.ACTIVE);
-
-            yourEntityTokenHistory =
-                identityProviderEntityManager.createTokenHistory(yourEntityTokenHistory);
-            assertNotNull(yourEntityTokenHistory);
-        }
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MINUTE, -4);  // Expired 4 Minutes Ago.
+        generateTokens(100, calendar.getTime());
 
         List<YourEntityTokenHistory> history = identityProviderEntityManager.readCurrentExpiredTokenHistory();
         assertNotNull(history);
@@ -239,28 +213,9 @@ public class IdentityProviderEntityManagerIT {
         /**
          * Test creating several Expired JWTs
          */
-        List<String> jtis = new ArrayList<>();
-        for(int i = 0; i<100;i++) {
-            String jti = UUID.randomUUID().toString();
-            jtis.add(jti);
-            YourEntityTokenHistory yourEntityTokenHistory = new YourEntityTokenHistory();
-            yourEntityTokenHistory.setJti(jti);
-            yourEntityTokenHistory.setSubject(USER_EMAIL);
-            yourEntityTokenHistory.setUsageCount(1L);
-
-            Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.MINUTE, 1);  // Expired 1 Minute from Now.
-            yourEntityTokenHistory.setExpiration(calendar.getTime());
-
-            yourEntityTokenHistory.setIssuedAt(Date.from(Instant.now()));
-            yourEntityTokenHistory.setLastUsed(Date.from(Instant.now()));
-            yourEntityTokenHistory.setNotUsedBefore(Date.from(Instant.now()));
-            yourEntityTokenHistory.setStatus(YourEntityTokenStatus.ACTIVE);
-
-            yourEntityTokenHistory =
-                    identityProviderEntityManager.createTokenHistory(yourEntityTokenHistory);
-            assertNotNull(yourEntityTokenHistory);
-        }
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MINUTE, 1);  // Expired 1 Minute from Now.
+        List<String> jtis =  generateTokens(100, calendar.getTime());
 
         List<YourEntityTokenHistory> history = identityProviderEntityManager.readCurrentNonExpiredTokenHistory();
         assertNotNull(history);
@@ -287,28 +242,9 @@ public class IdentityProviderEntityManagerIT {
         /**
          * Test creating several Expired JWTs
          */
-        List<String> jtis = new ArrayList<>();
-        for(int i = 0; i<100;i++) {
-            String jti = UUID.randomUUID().toString();
-            jtis.add(jti);
-            YourEntityTokenHistory yourEntityTokenHistory = new YourEntityTokenHistory();
-            yourEntityTokenHistory.setJti(jti);
-            yourEntityTokenHistory.setSubject(USER_EMAIL);
-            yourEntityTokenHistory.setUsageCount(1L);
-
-            Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.MINUTE, 1);  // Expired 1 Minute from Now.
-            yourEntityTokenHistory.setExpiration(calendar.getTime());
-
-            yourEntityTokenHistory.setIssuedAt(Date.from(Instant.now()));
-            yourEntityTokenHistory.setLastUsed(Date.from(Instant.now()));
-            yourEntityTokenHistory.setNotUsedBefore(Date.from(Instant.now()));
-            yourEntityTokenHistory.setStatus(YourEntityTokenStatus.ACTIVE);
-
-            yourEntityTokenHistory =
-                    identityProviderEntityManager.createTokenHistory(yourEntityTokenHistory);
-            assertNotNull(yourEntityTokenHistory);
-        }
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MINUTE, 1);  // Expired 1 Minute from Now.
+        List<String> jtis =  generateTokens(100, calendar.getTime());
 
         List<YourEntityTokenHistory> history = identityProviderEntityManager.readTokenHistoryBySubject(USER_EMAIL);
         assertNotNull(history);
@@ -344,6 +280,37 @@ public class IdentityProviderEntityManagerIT {
     @Test
     public void test99_last() {
         LOGGER.info("Running: test99_last --> Should be Last Test Run in Integration Test Suite");
+    }
+
+    /**
+     * Generate a Number of Tokens
+     *
+     * @param expiration Date these Tokens Expire
+     *
+     * @return
+     */
+    private List<String> generateTokens(Integer numberToGenerate, Date expiration) {
+        List<String> jtis = new ArrayList<>();
+        for(int i = 0; i<numberToGenerate;i++) {
+            String jti = UUID.randomUUID().toString();
+            jtis.add(jti);
+            YourEntityTokenHistory yourEntityTokenHistory = new YourEntityTokenHistory();
+            yourEntityTokenHistory.setJti(jti);
+            yourEntityTokenHistory.setSubject(USER_EMAIL);
+            yourEntityTokenHistory.setUsageCount(1L);
+
+            yourEntityTokenHistory.setExpiration(expiration);
+
+            yourEntityTokenHistory.setIssuedAt(Date.from(Instant.now()));
+            yourEntityTokenHistory.setLastUsed(Date.from(Instant.now()));
+            yourEntityTokenHistory.setNotUsedBefore(Date.from(Instant.now()));
+            yourEntityTokenHistory.setStatus(YourEntityTokenStatus.ACTIVE);
+
+            yourEntityTokenHistory =
+                    identityProviderEntityManager.createTokenHistory(yourEntityTokenHistory);
+            assertNotNull(yourEntityTokenHistory);
+        }
+        return jtis;
     }
 
 }
