@@ -9,6 +9,6 @@ public class YourMicroservicePendingUserAuthority implements GrantedAuthority {
 
     @Override
     public String getAuthority() {
-        return "ROLE_PENDING_USER"; //To change body of generated methods, choose Tools | Templates.
+        return "ROLE_PENDING_USER";
     }
 }

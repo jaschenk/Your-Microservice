@@ -23,7 +23,7 @@ public class YourMSAuthenticationManager implements AuthenticationManager {
     private static final String ACCOUNT_IS_DISABLED_MESSAGE = "Account is disabled";
     private static final String ACCOUNT_IS_EXPIRED_MESSAGE = "Account is expired";
     private static final String ACCOUNT_IS_LOCKED_MESSAGE = "Account is locked";
-    private static final String USERNAME_OR_PASSWORD_IS_INVALID_MESSAGE = "Username or password is invalid";
+    private static final String USERNAME_OR_PASSWORD_IS_INVALID_MESSAGE = "Username or credential is invalid";
 
     private static final Logger logger = LoggerFactory.getLogger(YourMicroserviceUserDetailsService.class);
 
@@ -61,19 +61,10 @@ public class YourMSAuthenticationManager implements AuthenticationManager {
         TimeDuration pw_duration = new TimeDuration();
 
         overall_duration.start();
+        String remoteIp = null;
         if (a.getDetails() != null) {
-            try {
                 WebAuthenticationDetails details = (WebAuthenticationDetails) a.getDetails();
-                String remoteIp = details.getRemoteAddress();
-               // if (securityRepo.ipIsBlocked(remoteIp, rateLimiterBlock)) {
-               //     throw new RateExceededException(RATE_EXCEEDED_MESSAGE) {
-               //     };
-               // }
-            } catch (Exception ex) {
-                // TODO If we can't determine if an IP is blocked,
-                //      should we allow the attempt anyway?
-                throw new BadCredentialsException(ex.getMessage());
-            }
+                remoteIp = details.getRemoteAddress();
         }
         String userName = null;
         String rawPass;
@@ -90,7 +81,7 @@ public class YourMSAuthenticationManager implements AuthenticationManager {
 
             if (!encoder.matches(rawPass, storedHashedPass)) {
                 pw_duration.stop();
-                logger.info("[FRONT END] " + USERNAME_OR_PASSWORD_IS_INVALID_MESSAGE);
+                logger.info("{} IP:[{}]", USERNAME_OR_PASSWORD_IS_INVALID_MESSAGE, remoteIp);
                 throw new BadCredentialsException(USERNAME_OR_PASSWORD_IS_INVALID_MESSAGE);
             }
             pw_duration.stop();
@@ -122,7 +113,7 @@ public class YourMSAuthenticationManager implements AuthenticationManager {
             return new YourMSAuthenticationToken(userDetails);
 
         } catch (UsernameNotFoundException ex) {
-            logger.warn("Username:[" + userName + "] Not Found, Ignoring!");
+            logger.warn("Entity:[" + userName + "] Not Found, Ignoring!");
             throw new BadCredentialsException(USERNAME_OR_PASSWORD_IS_INVALID_MESSAGE);
         } finally {
             /**

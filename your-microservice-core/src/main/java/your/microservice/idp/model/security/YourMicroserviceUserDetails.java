@@ -1,5 +1,7 @@
 package your.microservice.idp.model.security;
 
+import your.microservice.idp.model.base.YourEntity;
+import your.microservice.idp.model.types.YourEntityStatus;
 import your.microservice.idp.service.authority.YourMicroservicePendingUserAuthority;
 import your.microservice.idp.service.authority.YourMicroserviceUserAuthority;
 import org.springframework.security.core.GrantedAuthority;
@@ -23,13 +25,13 @@ public class YourMicroserviceUserDetails implements UserDetails {
 
     /**
      * username
-     * This will contain the 'Primary Email Address' of the Person Entity within the
+     * This will contain the 'Primary Email Address' of the Entity within the
      * Your Microservice Eco-System.
      */
     private final String username;
     /**
      * password
-     * This will contain the 'Credentials' of the person Entity,
+     * This will contain the 'Credentials' of the Entity,
      * can go null if after Authentication.  The contents of this property is the
      * Encoded Password from the Store.
      * <p>
@@ -39,70 +41,65 @@ public class YourMicroserviceUserDetails implements UserDetails {
      */
     private String password;
     /**
-     * Orient DB @RID Identifier for the Person Entity.
-     */
-    private final Object rid;
-    /**
      * Principal's Identifier.
      */
-    private final String principalUUID;
+    private final Long principalID;
 
-    public YourMicroserviceUserDetails(Object person) {
+    /**
+     * Default Constructor
+     *
+     * @param yourEntity Entity found based upon Lookup.
+     */
+    public YourMicroserviceUserDetails(YourEntity yourEntity) {
         /**
-         * If by chance we received a Null Person ODocument Object,
-         * simply instantiate a Nullified User Details Object.
+         * Check for a Null Entity.
          */
-        if (person == null) {
+        if (yourEntity == null) {
             this.authorities = new ArrayList<>();
+            this.username = null;
+            this.password = null;
+            this.principalID = null;
+            /**
+             * Initialize All Indicators
+             */
             this.accountNonExpired = false;
             this.accountNonLocked = false;
             this.credentialsNonExpired = false;
             this.enabled = false;
             this.accountNonPending = false;
-            this.username = null;
-            this.password = null;
-            this.rid = null;
-            this.principalUUID = null;
         } else {
             /**
              * Instantiate a User Details Object from the Persisted Person
              * object that was previously obtained.
              */
-            this.rid = null; // person.getIdentity();
-            this.username = null; //((String) person.field("primaryemail")).toLowerCase();
-            this.password = null; // person.field("password");
-            this.principalUUID = null; //person.field("uuid");
+            this.username = yourEntity.getEntityEmailAddress().toLowerCase();
+            this.password = yourEntity.getCredentials();
+            this.principalID = yourEntity.getEntityId();
 
-            //String objStateString = person.field("objState");
-            //ObjectState objState = (objStateString == null)
-            //        ? ObjectState.PENDING
-            //        : ObjectState.valueOf(objStateString);
-
-            this.accountNonLocked = true;
-            this.accountNonPending = true;
-            this.credentialsNonExpired = true;
-            this.accountNonExpired = true;
-
-            // TODO :: Determine if the Account is Expired or Not...
+            if (yourEntity.getStatus().equals(YourEntityStatus.ACTIVE)) {
+                this.accountNonLocked = true;
+                this.accountNonPending = true;
+                this.credentialsNonExpired = true;
+                this.accountNonExpired = true;
+            } else {
+                this.accountNonLocked = false;
+                this.accountNonPending = false;
+                this.credentialsNonExpired = false;
+                this.accountNonExpired = true;
+            }
 
             this.enabled = this.accountNonExpired && this.accountNonLocked;
 
             /**
              * Establish the Granted Authorities...
+             * TODO Lookup Roles for the Entity ...
              */
             ArrayList<GrantedAuthority> grantedAuthorites = new ArrayList<>();
-
             grantedAuthorites.add(
                     accountNonPending
                             ? new YourMicroserviceUserAuthority()
                             : new YourMicroservicePendingUserAuthority()
             );
-
-            // TODO: this could still probably be a better check
-            //String superadminEmail = System.getProperty("superadmin_email");
-            //if (superadminEmail != null && superadminEmail.equalsIgnoreCase(this.username)) {
-            //    grantedAuthorites.add(new YourMicroserviceSuperAdminAuthority());
-            //}
 
             this.authorities = grantedAuthorites;
         }
@@ -143,12 +140,8 @@ public class YourMicroserviceUserDetails implements UserDetails {
         return this.enabled;
     }
 
-    public Object getRid() {
-        return this.rid;
-    }
-
-    public String getPrincipalUUID() {
-        return this.principalUUID;
+    public Long getPrincipalID() {
+        return this.principalID;
     }
 
     public void shredCredentials() {

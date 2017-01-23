@@ -11,8 +11,6 @@ import java.util.List;
 public interface CurrentUserService {
     boolean isAuthenticated();
 
-    Object getRID();
-
     YourMicroserviceUserDetails getDetails();
 
     boolean hasAuthority(GrantedAuthority authority, String orgUuid);

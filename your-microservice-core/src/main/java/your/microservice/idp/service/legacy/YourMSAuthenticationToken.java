@@ -4,21 +4,21 @@ import your.microservice.idp.model.security.YourMicroserviceUserDetails;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 
 /**
- *
+ * YourMSAuthenticationToken
  */
 class YourMSAuthenticationToken extends AbstractAuthenticationToken {
 
     private final String credentials;
-    private final Object principal;
-    private final String principalUUID;
+    private final String principal;
+    private final Long principalID;
 
     public YourMSAuthenticationToken(YourMicroserviceUserDetails userDetails) {
         super(userDetails.getAuthorities());
         super.setDetails(userDetails);
         super.setAuthenticated(true);
-        this.principal = userDetails.getRid();
+        this.principalID = userDetails.getPrincipalID();
         this.credentials = userDetails.getPassword();
-        this.principalUUID = userDetails.getPrincipalUUID();
+        this.principal = userDetails.getUsername();
     }
 
     @Override
@@ -27,11 +27,11 @@ class YourMSAuthenticationToken extends AbstractAuthenticationToken {
     }
 
     @Override
-    public Object getPrincipal() {
+    public String getPrincipal() {
         return principal;
     }
 
-    public String getPrincipalUUID() {
-        return principalUUID;
+    public Long getPrincipalID() {
+        return principalID;
     }
 }
