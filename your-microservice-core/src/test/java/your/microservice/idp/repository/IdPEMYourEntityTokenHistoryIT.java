@@ -25,7 +25,7 @@ import java.util.*;
 import static org.junit.Assert.*;
 
 /**
- * IdPEntityManagerTokenHistoryIT
+ * IdPEMYourEntityTokenHistoryIT
  *
  * @author jeff.a.schenk@gmail.com on 2/21/16.
  */
@@ -33,12 +33,12 @@ import static org.junit.Assert.*;
 @SpringApplicationConfiguration(classes = {MicroserviceTestApplication.class})
 @WebIntegrationTest({"server.port:0","test.environment.property:true"})
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class IdPEntityManagerTokenHistoryIT {
+public class IdPEMYourEntityTokenHistoryIT {
     /**
      * Common Logger
      */
     protected final static org.slf4j.Logger LOGGER =
-            LoggerFactory.getLogger(IdPEntityManagerTokenHistoryIT.class);
+            LoggerFactory.getLogger(IdPEMYourEntityTokenHistoryIT.class);
 
     /**
      * Environment
@@ -56,63 +56,11 @@ public class IdPEntityManagerTokenHistoryIT {
      * Test Constants
      */
     private static final String USER_EMAIL = "joe.user@mail.com";
-    private static final String ENTITY_ORG_NAME = "Test Organization";
-    private static final String ENTITY_ROLE_NAME = "USER";
 
 
     @Test
     public void test01_TokenHistoryLifecycle() {
         LOGGER.info("Running: test01_TokenHistoryLifecycle");
-
-        List<YourEntity> results = identityProviderEntityManager.findAllYourEntities();
-        assertNotNull(results);
-        assertEquals(2, results.size());
-        LOGGER.info("Result[0]: --> {}", results.get(0).toString());
-        LOGGER.info("Result[1]: --> {}", results.get(1).toString());
-
-        YourEntity yourEntity = identityProviderEntityManager.findYourEntityByEmail(USER_EMAIL);
-        assertNotNull(yourEntity);
-        assertEquals(USER_EMAIL, yourEntity.getEntityEmailAddress());
-
-
-
-        List<YourEntityOrganization> orgResults = identityProviderEntityManager.findAllYourEntityOrganizations();
-        assertNotNull(orgResults);
-        assertEquals(4, orgResults.size());
-        for(int i=0;i<orgResults.size();i++) {
-            LOGGER.info("Result[{}]: --> {}", i, orgResults.get(i).toString());
-        }
-
-
-        YourEntityOrganization yourEntityOrganization =
-                identityProviderEntityManager.findYourEntityOrganizationByName(ENTITY_ORG_NAME);
-        assertNotNull(yourEntityOrganization);
-        assertEquals(ENTITY_ORG_NAME, yourEntityOrganization.getName());
-
-
-        List<YourEntityRole> roleResults = identityProviderEntityManager.findAllYourEntityRoles();
-        assertNotNull(roleResults);
-        assertEquals(3, roleResults.size());
-        for(int i=0;i<roleResults.size();i++) {
-            LOGGER.info("Result[{}]: --> {}", i, orgResults.get(i).toString());
-        }
-
-
-        YourEntityRole yourEntityRole =
-                identityProviderEntityManager.findYourEntityRoleByName(ENTITY_ROLE_NAME);
-        assertNotNull(yourEntityRole);
-        assertEquals(ENTITY_ROLE_NAME, yourEntityRole.getName());
-
-        YourEntityRole yourEntityRole2 = new YourEntityRole();
-        yourEntityRole2.setName("NEW_ROLE_NAME");
-        yourEntityRole2.setStatus(YourEntityStatus.ACTIVE);
-        identityProviderEntityManager.saveYourEntityRole(yourEntityRole2);
-
-        yourEntityRole =
-                identityProviderEntityManager.findYourEntityRoleByName("NEW_ROLE_NAME");
-        assertNotNull(yourEntityRole);
-        assertEquals("NEW_ROLE_NAME", yourEntityRole.getName());
-
 
         /**
          * Test creating a JTI

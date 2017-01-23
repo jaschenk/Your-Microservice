@@ -62,7 +62,7 @@ public class YourEntityRole implements Serializable {
     /**
      * Entities defined with Access to this Organization.
      */
-    @ManyToMany(mappedBy = "yourEntityRoles")
+    @ManyToMany(mappedBy = "yourEntityRoles", fetch = FetchType.EAGER)
     private Set<YourEntity> yourRoleEntities;
 
     /**

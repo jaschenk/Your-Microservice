@@ -12,16 +12,13 @@ import org.springframework.core.env.Environment;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import your.microservice.MicroserviceTestApplication;
 import your.microservice.idp.model.base.*;
-import your.microservice.idp.model.types.YourEntityStatus;
-import your.microservice.idp.model.types.YourEntityTokenStatus;
 
-import java.time.Instant;
 import java.util.*;
 
 import static org.junit.Assert.*;
 
 /**
- * IdPEntityManagerEventHistoryIT
+ * IdPEMYourEntityEventHistoryIT
  *
  * @author jeff.a.schenk@gmail.com
  */
@@ -29,12 +26,12 @@ import static org.junit.Assert.*;
 @SpringApplicationConfiguration(classes = {MicroserviceTestApplication.class})
 @WebIntegrationTest({"server.port:0","test.environment.property:true"})
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class IdPEntityManagerEventHistoryIT {
+public class IdPEMYourEntityEventHistoryIT {
     /**
      * Common Logger
      */
     protected final static org.slf4j.Logger LOGGER =
-            LoggerFactory.getLogger(IdPEntityManagerEventHistoryIT.class);
+            LoggerFactory.getLogger(IdPEMYourEntityEventHistoryIT.class);
 
     /**
      * Environment
