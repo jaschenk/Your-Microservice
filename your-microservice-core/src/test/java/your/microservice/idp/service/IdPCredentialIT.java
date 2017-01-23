@@ -78,8 +78,6 @@ public class IdPCredentialIT {
         BCryptPasswordEncoder encoder =
                 new BCryptPasswordEncoder(YourMicroserviceSecurityConstants.BCRYPT_STRENGTH_SETTING);
         assertTrue(encoder.matches(CLEAR_TEXT_CREDENTIALS, yourEntity.getCredentials()));
-
-        LOGGER.info("RAW:[{}], ENCRYPTED:[{}]", CLEAR_TEXT_CREDENTIALS, yourEntity.getCredentials());
     }
 
 
