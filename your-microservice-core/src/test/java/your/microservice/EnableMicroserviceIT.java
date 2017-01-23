@@ -91,8 +91,6 @@ public class EnableMicroserviceIT {
      */
     private static final String USER_EMAIL = "joe.user@mail.com";
     private static final String CREDENTIALS = "TestPassword";
-    private static final String ENTITY_ORG_NAME = "Test Organization";
-    private static final String ENTITY_ROLE_NAME = "USER";
     private static final String SERVICE_NAME = "testmicroservice";
 
     private static final String APIINFO_ENDPOINT = "/api/"+SERVICE_NAME+"/v1";

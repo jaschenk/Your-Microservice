@@ -71,7 +71,8 @@ public class YourMSAuthenticationManager implements AuthenticationManager {
         try {
             db_duration.start();
             userName = a.getPrincipal().toString();
-            YourMicroserviceUserDetails userDetails = (YourMicroserviceUserDetails) detailsService.loadUserByUsername(userName);
+            YourMicroserviceUserDetails userDetails =
+                    (YourMicroserviceUserDetails) detailsService.loadUserByUsername(userName);
             db_duration.stop();
 
             pw_duration.start();

@@ -42,7 +42,7 @@ public class YourEntity implements Serializable {
     private String entityEmailAddress;
 
     @NotNull
-    @Column(name = "credentials", nullable = false, length = 256)
+    @Column(name = "credentials", nullable = false, length = 64)
     private String credentials;
 
     @NotNull

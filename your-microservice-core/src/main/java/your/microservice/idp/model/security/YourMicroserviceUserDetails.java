@@ -59,9 +59,6 @@ public class YourMicroserviceUserDetails implements UserDetails {
             this.username = null;
             this.password = null;
             this.principalID = null;
-            /**
-             * Initialize All Indicators
-             */
             this.accountNonExpired = false;
             this.accountNonLocked = false;
             this.credentialsNonExpired = false;
