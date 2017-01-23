@@ -3,7 +3,7 @@ package your.microservice.idp.service.legacy;
 import your.microservice.core.system.messaging.jms.MessagePublisherService;
 import your.microservice.core.util.TimeDuration;
 import your.microservice.idp.model.security.YourMicroserviceUserDetails;
-import your.microservice.idp.security.SecurityRepository;
+import your.microservice.idp.repository.IdentityProviderEntityManager;
 import your.microservice.idp.security.YourMicroserviceSecurityConstants;
 
 import org.slf4j.Logger;
@@ -20,9 +20,6 @@ import org.springframework.security.web.authentication.WebAuthenticationDetails;
  */
 public class YourMSAuthenticationManager implements AuthenticationManager {
 
-    public static String rateLimiterBlock = "RateLimiterBlock";
-
-    private static final String RATE_EXCEEDED_MESSAGE = "Rate exceeded.";
     private static final String ACCOUNT_IS_DISABLED_MESSAGE = "Account is disabled";
     private static final String ACCOUNT_IS_EXPIRED_MESSAGE = "Account is expired";
     private static final String ACCOUNT_IS_LOCKED_MESSAGE = "Account is locked";
@@ -31,7 +28,9 @@ public class YourMSAuthenticationManager implements AuthenticationManager {
     private static final Logger logger = LoggerFactory.getLogger(YourMicroserviceUserDetailsService.class);
 
     private final YourMicroserviceUserDetailsService detailsService;
-    private final SecurityRepository securityRepo;
+
+    private final IdentityProviderEntityManager identityProviderEntityManager;
+
     /**
      * Message Publication Service.
      */
@@ -41,13 +40,14 @@ public class YourMSAuthenticationManager implements AuthenticationManager {
      * Default Constructor for Authentication Manager.
      *
      * @param detailsService          YourMSUserDetailsService
-     * @param securityRepo            Reference
+     * @param identityProviderEntityManager            Reference
      * @param messagePublisherService Reference
      */
-    public YourMSAuthenticationManager(YourMicroserviceUserDetailsService detailsService, SecurityRepository securityRepo,
+    public YourMSAuthenticationManager(YourMicroserviceUserDetailsService detailsService,
+                                       IdentityProviderEntityManager identityProviderEntityManager,
                                        MessagePublisherService messagePublisherService) {
         this.detailsService = detailsService;
-        this.securityRepo = securityRepo;
+        this.identityProviderEntityManager = identityProviderEntityManager;
         this.messagePublisherService = messagePublisherService;
     }
 

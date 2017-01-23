@@ -4,4 +4,6 @@ public interface SecurityService {
 
     Boolean hasProtectedAccess();
 
+    Boolean hasUserAccess();
+
 }

@@ -14,4 +14,10 @@ public class SecurityServiceImpl implements SecurityService {
                 getAuthorities().contains(new SimpleGrantedAuthority("ADMIN"));
     }
 
+    @Override
+    public Boolean hasUserAccess() {
+        return SecurityContextHolder.getContext().getAuthentication().
+                getAuthorities().contains(new SimpleGrantedAuthority("USER"));
+    }
+
 }
