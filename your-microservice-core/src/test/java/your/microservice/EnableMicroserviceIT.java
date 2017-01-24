@@ -3,17 +3,11 @@ package your.microservice;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.restassured.module.mockmvc.RestAssuredMockMvc;
 import your.microservice.core.dm.dto.system.YourPulse;
-import your.microservice.core.rest.RestClientAccessObject;
-import your.microservice.core.rest.RestClientAccessor;
+import your.microservice.core.rest.RestIdPClientAccessObject;
+import your.microservice.core.rest.RestIdPClientAccessor;
 import your.microservice.core.rest.exceptions.NotAuthenticatedException;
 import your.microservice.core.rest.exceptions.RestClientAccessorException;
 import your.microservice.core.system.messaging.model.YourMSBulletinBroadcastNotification;
-import your.microservice.idp.model.base.YourEntity;
-import your.microservice.idp.model.base.YourEntityOrganization;
-import your.microservice.idp.model.base.YourEntityRole;
-import your.microservice.idp.model.base.YourEntityTokenHistory;
-import your.microservice.idp.model.types.YourEntityTokenStatus;
-import your.microservice.idp.repository.IdentityProviderEntityManager;
 import your.microservice.testutil.IntegrationTestSetupBean;
 
 import org.apache.http.HttpStatus;
@@ -33,7 +27,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.io.IOException;
-import java.time.Instant;
 import java.util.*;
 
 import static com.jayway.restassured.RestAssured.given;
@@ -81,10 +74,7 @@ public class EnableMicroserviceIT {
      * RESTful Client Accessor Service.
      */
     @Autowired
-    private RestClientAccessor restClientAccessor;
-
-    @Autowired
-    private IdentityProviderEntityManager identityProviderEntityManager;
+    private RestIdPClientAccessor restIdPClientAccessor;
 
     /**
      * Test Constants
@@ -116,13 +106,8 @@ public class EnableMicroserviceIT {
         LOGGER.info("Running: test01_EnvironmentSetup");
         assertNotNull(environment);
 
-        assertNotNull(identityProviderEntityManager);
-
         assertEquals("true",
                environment.getProperty("test.environment.property"));
-
-
-
     }
 
     @Test
@@ -148,19 +133,18 @@ public class EnableMicroserviceIT {
     @Test
     public void test03_getAccessToken() {
         LOGGER.info("Running: test03_getAccessToken...");
-        assertNotNull(restClientAccessor);
-        RestClientAccessObject restClientAccessObject =
-                restClientAccessor.getAccessToken(integrationTestSetupBean.getHostPath(), USER_EMAIL, CREDENTIALS);
-        assertNotNull(restClientAccessObject);
+        assertNotNull(restIdPClientAccessor);
+        RestIdPClientAccessObject restIdPClientAccessObject =
+                restIdPClientAccessor.getAccessToken(integrationTestSetupBean.getHostPath(), USER_EMAIL, CREDENTIALS);
+        assertNotNull(restIdPClientAccessObject);
 
-        LOGGER.debug(" Access Token: [{}]", restClientAccessObject.getAccessToken());
-        LOGGER.debug("Refresh Token: [{}]", restClientAccessObject.getRefreshToken());
-        LOGGER.debug("   Token Type: [{}]", restClientAccessObject.getTokenType());
-        LOGGER.debug("Token Expires: [{}]", restClientAccessObject.getExpires());
+        LOGGER.debug(" Access Token: [{}]", restIdPClientAccessObject.getAccessToken());
+        LOGGER.debug("   Token Type: [{}]", restIdPClientAccessObject.getTokenType());
+        LOGGER.debug("Token Expires: [{}]", restIdPClientAccessObject.getExpires());
 
         int rc =
-            restClientAccessor.logout(integrationTestSetupBean.getHostPath()+LOGOUT_PREFIX_PATH,
-                    restClientAccessObject);
+            restIdPClientAccessor.logout(integrationTestSetupBean.getHostPath()+LOGOUT_PREFIX_PATH,
+                    restIdPClientAccessObject);
         assertEquals(204, rc);
 
     }
@@ -168,29 +152,27 @@ public class EnableMicroserviceIT {
     @Test
     public void test04_getAccessTokenViaRefreshToken() {
         LOGGER.info("Running: test04_getAccessToken...");
-        assertNotNull(restClientAccessor);
-        RestClientAccessObject restClientAccessObject =
-                restClientAccessor.getAccessToken(integrationTestSetupBean.getHostPath(), USER_EMAIL, CREDENTIALS);
-        assertNotNull(restClientAccessObject);
+        assertNotNull(restIdPClientAccessor);
+        RestIdPClientAccessObject restIdPClientAccessObject =
+                restIdPClientAccessor.getAccessToken(integrationTestSetupBean.getHostPath(), USER_EMAIL, CREDENTIALS);
+        assertNotNull(restIdPClientAccessObject);
 
-        LOGGER.debug(" Access Token: [{}]", restClientAccessObject.getAccessToken());
-        LOGGER.debug("Refresh Token: [{}]", restClientAccessObject.getRefreshToken());
-        LOGGER.debug("   Token Type: [{}]", restClientAccessObject.getTokenType());
-        LOGGER.debug("Token Expires: [{}]", restClientAccessObject.getExpires());
+        LOGGER.debug(" Access Token: [{}]", restIdPClientAccessObject.getAccessToken());
+        LOGGER.debug("   Token Type: [{}]", restIdPClientAccessObject.getTokenType());
+        LOGGER.debug("Token Expires: [{}]", restIdPClientAccessObject.getExpires());
 
 
-        restClientAccessObject =
-                restClientAccessor.getAccessToken(integrationTestSetupBean.getHostPath(), restClientAccessObject);
-        assertNotNull(restClientAccessObject);
+        restIdPClientAccessObject =
+                restIdPClientAccessor.getAccessToken(integrationTestSetupBean.getHostPath(), restIdPClientAccessObject);
+        assertNotNull(restIdPClientAccessObject);
 
-        LOGGER.debug(" New Access Token: [{}]", restClientAccessObject.getAccessToken());
-        LOGGER.debug("New Refresh Token: [{}]", restClientAccessObject.getRefreshToken());
-        LOGGER.debug("   New Token Type: [{}]", restClientAccessObject.getTokenType());
-        LOGGER.debug("New Token Expires: [{}]", restClientAccessObject.getExpires());
+        LOGGER.debug(" New Access Token: [{}]", restIdPClientAccessObject.getAccessToken());
+        LOGGER.debug("   New Token Type: [{}]", restIdPClientAccessObject.getTokenType());
+        LOGGER.debug("New Token Expires: [{}]", restIdPClientAccessObject.getExpires());
 
         int rc =
-                restClientAccessor.logout(integrationTestSetupBean.getHostPath()+LOGOUT_PREFIX_PATH,
-                        restClientAccessObject);
+                restIdPClientAccessor.logout(integrationTestSetupBean.getHostPath()+LOGOUT_PREFIX_PATH,
+                        restIdPClientAccessObject);
         assertEquals(204, rc);
 
     }
@@ -198,8 +180,8 @@ public class EnableMicroserviceIT {
     @Test(expected = NotAuthenticatedException.class)
     public void test05_getAccessToken() {
         LOGGER.info("Running: test05_getAccessToken...");
-        assertNotNull(restClientAccessor);
-        restClientAccessor.getAccessToken(integrationTestSetupBean.getHostPath(),
+        assertNotNull(restIdPClientAccessor);
+        restIdPClientAccessor.getAccessToken(integrationTestSetupBean.getHostPath(),
                 USER_EMAIL, "FOOBAR");
 
         fail("Should have failed with a 'Not Authenticated Exception', " +
@@ -210,20 +192,20 @@ public class EnableMicroserviceIT {
     @Test
     public void test06_accessBulletin() {
         LOGGER.info("Running: test06_accessBulletin...");
-        assertNotNull(restClientAccessor);
+        assertNotNull(restIdPClientAccessor);
         /**
          * Authentication and Obtain Access Token.
          */
-        RestClientAccessObject restClientAccessObject =
-                restClientAccessor.getAccessToken(integrationTestSetupBean.getHostPath(), USER_EMAIL, CREDENTIALS);
-        assertNotNull(restClientAccessObject);
+        RestIdPClientAccessObject RestIdPClientAccessObject =
+                restIdPClientAccessor.getAccessToken(integrationTestSetupBean.getHostPath(), USER_EMAIL, CREDENTIALS);
+        assertNotNull(RestIdPClientAccessObject);
         /**
          * Get Resource.
          */
         try {
-            byte[] results = (byte[]) restClientAccessor.get(
+            byte[] results = (byte[]) restIdPClientAccessor.get(
                     integrationTestSetupBean.getHostPath()
-                            + BULLETIN_ENPOINT, restClientAccessObject);
+                            + BULLETIN_ENPOINT, RestIdPClientAccessObject);
             YourMSBulletinBroadcastNotification yourMSBulletinBroadcastNotification
                     = objectMapper.readValue(results, YourMSBulletinBroadcastNotification.class);
             assertNotNull(yourMSBulletinBroadcastNotification);
@@ -237,7 +219,7 @@ public class EnableMicroserviceIT {
         /**
          * Logout
          */
-        int rc = restClientAccessor.logout(integrationTestSetupBean.getHostPath()+LOGOUT_PREFIX_PATH, restClientAccessObject);
+        int rc = restIdPClientAccessor.logout(integrationTestSetupBean.getHostPath()+LOGOUT_PREFIX_PATH, RestIdPClientAccessObject);
         assertEquals(204, rc);
 
     }
@@ -245,7 +227,7 @@ public class EnableMicroserviceIT {
     @Test(expected = RestClientAccessorException.class)
     public void test07_attemptAccessBulletin() {
         LOGGER.info("Running: test07_attemptAccessBulletin...");
-        assertNotNull(restClientAccessor);
+        assertNotNull(restIdPClientAccessor);
         //NotAuthenticatedException
         /**
          * Set up a FooBar Access Object.
@@ -255,14 +237,14 @@ public class EnableMicroserviceIT {
         accessProperties.put("refresh_token","BADREFRESHTOKEN");
         accessProperties.put("token_type","Bearer");
         accessProperties.put("expires_in","3600");
-        RestClientAccessObject restClientAccessObject = new RestClientAccessObject(accessProperties);
-        assertNotNull(restClientAccessObject);
+        RestIdPClientAccessObject RestIdPClientAccessObject = new RestIdPClientAccessObject(accessProperties);
+        assertNotNull(RestIdPClientAccessObject);
         /**
          * Attempt and Bad Request to obtain a protected Resource.
          */
-            byte[] results = (byte[]) restClientAccessor.get(
+            byte[] results = (byte[]) restIdPClientAccessor.get(
                     integrationTestSetupBean.getHostPath()
-                            + BULLETIN_ENPOINT, restClientAccessObject);
+                            + BULLETIN_ENPOINT, RestIdPClientAccessObject);
             fail("Should have failed with a 'Bad Request', " +
                     "as we present an Invalid Access Token, which should have been rejected," +
                     " to access a Protected Resource, Very Bad!");
@@ -271,20 +253,20 @@ public class EnableMicroserviceIT {
     @Test
     public void test08_accessPulse() {
         LOGGER.info("Running: test08_accessPulse...");
-        assertNotNull(restClientAccessor);
+        assertNotNull(restIdPClientAccessor);
         /**
          * Authentication and Obtain Access Token.
          */
-        RestClientAccessObject restClientAccessObject =
-                restClientAccessor.getAccessToken(integrationTestSetupBean.getHostPath(), USER_EMAIL, CREDENTIALS);
-        assertNotNull(restClientAccessObject);
+        RestIdPClientAccessObject RestIdPClientAccessObject =
+                restIdPClientAccessor.getAccessToken(integrationTestSetupBean.getHostPath(), USER_EMAIL, CREDENTIALS);
+        assertNotNull(RestIdPClientAccessObject);
         /**
          * Get Resource.
          */
         try {
-            byte[] results = (byte[]) restClientAccessor.get(
+            byte[] results = (byte[]) restIdPClientAccessor.get(
                     integrationTestSetupBean.getHostPath()
-                            + PULSE_ENDPOINT, restClientAccessObject);
+                            + PULSE_ENDPOINT, RestIdPClientAccessObject);
             YourPulse yourPulse
                     = objectMapper.readValue(results, YourPulse.class);
             assertNotNull(yourPulse);
@@ -298,7 +280,7 @@ public class EnableMicroserviceIT {
         /**
          * Logout
          */
-        int rc = restClientAccessor.logout(integrationTestSetupBean.getHostPath()+LOGOUT_PREFIX_PATH, restClientAccessObject);
+        int rc = restIdPClientAccessor.logout(integrationTestSetupBean.getHostPath()+LOGOUT_PREFIX_PATH, RestIdPClientAccessObject);
         assertEquals(204, rc);
 
     }
@@ -306,20 +288,20 @@ public class EnableMicroserviceIT {
     @Test
     public void test09_RestClientGetTest() {
         LOGGER.info("Running: test09_RestClientGetTest...");
-        assertNotNull(restClientAccessor);
+        assertNotNull(restIdPClientAccessor);
         /**
          * Authentication and Obtain Access Token.
          */
-        RestClientAccessObject restClientAccessObject =
-                restClientAccessor.getAccessToken(integrationTestSetupBean.getHostPath(), USER_EMAIL, CREDENTIALS);
-        assertNotNull(restClientAccessObject);
+        RestIdPClientAccessObject RestIdPClientAccessObject =
+                restIdPClientAccessor.getAccessToken(integrationTestSetupBean.getHostPath(), USER_EMAIL, CREDENTIALS);
+        assertNotNull(RestIdPClientAccessObject);
         /**
          * Get Resource.
          */
         try {
-            byte[] results = (byte[]) restClientAccessor.get(
+            byte[] results = (byte[]) restIdPClientAccessor.get(
                     integrationTestSetupBean.getHostPath()
-                            +TEST_ENDPOINT, restClientAccessObject);
+                            +TEST_ENDPOINT, RestIdPClientAccessObject);
             Map<String,String> response
                     = objectMapper.readValue(results, Map.class);
             assertNotNull(response);
@@ -331,27 +313,27 @@ public class EnableMicroserviceIT {
         /**
          * Logout
          */
-        int rc = restClientAccessor.logout(integrationTestSetupBean.getHostPath()+LOGOUT_PREFIX_PATH, restClientAccessObject);
+        int rc = restIdPClientAccessor.logout(integrationTestSetupBean.getHostPath()+LOGOUT_PREFIX_PATH, RestIdPClientAccessObject);
         assertEquals(204, rc);
     }
 
     @Test
     public void test10_RestClientPostTest() {
         LOGGER.info("Running: test10_RestClientPostTest...");
-        assertNotNull(restClientAccessor);
+        assertNotNull(restIdPClientAccessor);
         /**
          * Authentication and Obtain Access Token.
          */
-        RestClientAccessObject restClientAccessObject =
-                restClientAccessor.getAccessToken(integrationTestSetupBean.getHostPath(), USER_EMAIL, CREDENTIALS);
-        assertNotNull(restClientAccessObject);
+        RestIdPClientAccessObject RestIdPClientAccessObject =
+                restIdPClientAccessor.getAccessToken(integrationTestSetupBean.getHostPath(), USER_EMAIL, CREDENTIALS);
+        assertNotNull(RestIdPClientAccessObject);
         /**
          * Get Resource.
          */
         try {
-            byte[] results = (byte[]) restClientAccessor.post(
+            byte[] results = (byte[]) restIdPClientAccessor.post(
                     integrationTestSetupBean.getHostPath()
-                            +TEST_ENDPOINT, restClientAccessObject);
+                            +TEST_ENDPOINT, RestIdPClientAccessObject);
             Map<String,Object> response
                     = objectMapper.readValue(results, Map.class);
             assertNotNull(response);
@@ -363,27 +345,27 @@ public class EnableMicroserviceIT {
         /**
          * Logout
          */
-        int rc = restClientAccessor.logout(integrationTestSetupBean.getHostPath()+LOGOUT_PREFIX_PATH, restClientAccessObject);
+        int rc = restIdPClientAccessor.logout(integrationTestSetupBean.getHostPath()+LOGOUT_PREFIX_PATH, RestIdPClientAccessObject);
         assertEquals(204, rc);
     }
 
     @Test
     public void test11_RestClientPutTest() {
         LOGGER.info("Running: test11_RestClientPutTest...");
-        assertNotNull(restClientAccessor);
+        assertNotNull(restIdPClientAccessor);
         /**
          * Authentication and Obtain Access Token.
          */
-        RestClientAccessObject restClientAccessObject =
-                restClientAccessor.getAccessToken(integrationTestSetupBean.getHostPath(), USER_EMAIL, CREDENTIALS);
-        assertNotNull(restClientAccessObject);
+        RestIdPClientAccessObject RestIdPClientAccessObject =
+                restIdPClientAccessor.getAccessToken(integrationTestSetupBean.getHostPath(), USER_EMAIL, CREDENTIALS);
+        assertNotNull(RestIdPClientAccessObject);
         /**
          * Get Resource.
          */
         try {
-            byte[] results = (byte[]) restClientAccessor.put(
+            byte[] results = (byte[]) restIdPClientAccessor.put(
                     integrationTestSetupBean.getHostPath()
-                            + TEST_ENDPOINT, restClientAccessObject);
+                            + TEST_ENDPOINT, RestIdPClientAccessObject);
             Map<String,Object> response
                     = objectMapper.readValue(results, Map.class);
             assertNotNull(response);
@@ -395,27 +377,27 @@ public class EnableMicroserviceIT {
         /**
          * Logout
          */
-        int rc = restClientAccessor.logout(integrationTestSetupBean.getHostPath()+LOGOUT_PREFIX_PATH, restClientAccessObject);
+        int rc = restIdPClientAccessor.logout(integrationTestSetupBean.getHostPath()+LOGOUT_PREFIX_PATH, RestIdPClientAccessObject);
         assertEquals(204, rc);
     }
 
     @Test
     public void test12_RestClientDeleteTest() {
         LOGGER.info("Running: test12_RestClientDeleteTest...");
-        assertNotNull(restClientAccessor);
+        assertNotNull(restIdPClientAccessor);
         /**
          * Authentication and Obtain Access Token.
          */
-        RestClientAccessObject restClientAccessObject =
-                restClientAccessor.getAccessToken(integrationTestSetupBean.getHostPath(), USER_EMAIL, CREDENTIALS);
-        assertNotNull(restClientAccessObject);
+        RestIdPClientAccessObject RestIdPClientAccessObject =
+                restIdPClientAccessor.getAccessToken(integrationTestSetupBean.getHostPath(), USER_EMAIL, CREDENTIALS);
+        assertNotNull(RestIdPClientAccessObject);
         /**
          * Get Resource.
          */
         try {
-            byte[] results = (byte[]) restClientAccessor.delete(
+            byte[] results = (byte[]) restIdPClientAccessor.delete(
                     integrationTestSetupBean.getHostPath()
-                            +TEST_ENDPOINT, restClientAccessObject);
+                            +TEST_ENDPOINT, RestIdPClientAccessObject);
             Map<String,Object> response
                     = objectMapper.readValue(results, Map.class);
             assertNotNull(response);
@@ -427,7 +409,7 @@ public class EnableMicroserviceIT {
         /**
          * Logout
          */
-        int rc = restClientAccessor.logout(integrationTestSetupBean.getHostPath()+LOGOUT_PREFIX_PATH, restClientAccessObject);
+        int rc = restIdPClientAccessor.logout(integrationTestSetupBean.getHostPath()+LOGOUT_PREFIX_PATH, RestIdPClientAccessObject);
         assertEquals(204, rc);
     }
 

@@ -2,8 +2,7 @@ package your.microservice.example.controllers.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.restassured.module.mockmvc.RestAssuredMockMvc;
-import your.microservice.core.rest.RestClientAccessObject;
-import your.microservice.core.rest.RestClientAccessor;
+import your.microservice.core.rest.RestIdPClientAccessor;
 import your.microservice.example.Application;
 import your.microservice.example.IntegrationTestSetupBean;
 
@@ -80,7 +79,7 @@ public class ExampleClientIntegrationIT {
      * RESTful Client Accessor Service.
      */
     @Autowired
-    private RestClientAccessor restClientAccessor;
+    private RestIdPClientAccessor restIdPClientAccessor;
 
     /**
      * Helper to obtain Established RESTful Resource Path for an Instance.
@@ -107,19 +106,19 @@ public class ExampleClientIntegrationIT {
     @Test
     public void test02_service_available() {
         LOGGER.info("Running: test02_service_available");
-        assertNotNull(restClientAccessor);
+        assertNotNull(restIdPClientAccessor);
     }
 
     @Test
     public void test04_getAppInfo() {
         LOGGER.info("Running: test04_getAppInfo");
-        assertNotNull(restClientAccessor);
+        assertNotNull(restIdPClientAccessor);
 
         /**
          * Get Resource.
          */
         try {
-            byte[] results = (byte[]) restClientAccessor.get(
+            byte[] results = (byte[]) restIdPClientAccessor.get(
                     integrationTestSetupBean.getHostPath() + getLWCFAppInfo(), null);
             Object data  = objectMapper.readValue(results, Object.class);
             assertNotNull(data);

@@ -805,8 +805,8 @@ public class YourMicroserviceToken_nimbus_Impl implements YourMicroserviceToken 
          * it's POJO form.
          */
         try {
-            String sky = ((JSONObject) claimsSet.getClaim("sky")).toJSONString();
-            YourMicroserviceManifest yourMicroserviceManifest = MAPPER.readValue(sky, YourMicroserviceManifest.class);
+            String yms = ((JSONObject) claimsSet.getClaim("yms")).toJSONString();
+            YourMicroserviceManifest yourMicroserviceManifest = MAPPER.readValue(yms, YourMicroserviceManifest.class);
             /**
              * Iterate over All Keys.
              */
@@ -928,7 +928,7 @@ public class YourMicroserviceToken_nimbus_Impl implements YourMicroserviceToken 
                 /**
                  * Ensure Your Microservice was Specified.
                  */
-                String yms = (String) claimsSet.getClaim(CLAIM_NAME_YOUR_MICROSERVICE);
+                JSONObject yms = (JSONObject) claimsSet.getClaim(CLAIM_NAME_YOUR_MICROSERVICE);
                 if (yms == null || yms.isEmpty()) {
                     throw new BadJWTException("Invalid Your Microservice Claim");
                 }

@@ -34,7 +34,7 @@ public class RestClientTest {
 	 * Constants
 	 */
 	private String principal = "joe.user@mail.com";
-	private String credentials = "password";
+	private String credentials = "TestPassword";
 	private String idPURL = "http://localhost:8080/api/auth";
 	
 	private String protectedResourceURL = "http://localhost:8080/api/info/now";
@@ -48,60 +48,60 @@ public class RestClientTest {
      * Rest IdP Client Service
      */
 	@Autowired
-	private RestClientAccessor restClientAccessor;
+	private RestIdPClientAccessor restIdPClientAccessor;
 	
 	@Test
     public void test00_Autowired() {
-		assertNotNull(restClientAccessor);
+		assertNotNull(restIdPClientAccessor);
     }
 
     @Ignore
 	@Test
     public void test01_IdPAccess() {
-		assertNotNull(restClientAccessor);
-		RestClientAccessObject restClientAccessObject =
-				restClientAccessor.getAccessToken(idPURL, principal, credentials);
-		assertNotNull(restClientAccessObject);
-		assertNotNull(restClientAccessObject.getAccessToken());
-		assertTrue(restClientAccessObject.getExpires()==3600);
+		assertNotNull(restIdPClientAccessor);
+		RestIdPClientAccessObject RestIdPClientAccessObject =
+				restIdPClientAccessor.getAccessToken(idPURL, principal, credentials);
+		assertNotNull(RestIdPClientAccessObject);
+		assertNotNull(RestIdPClientAccessObject.getAccessToken());
+		assertTrue(RestIdPClientAccessObject.getExpires()==3600);
     }
 	
 	@Ignore
 	@Test(expected=NotAuthenticatedException.class)
     public void test02_IdPAccessFailure() {
-		assertNotNull(restClientAccessor);
-				restClientAccessor.getAccessToken(idPURL, principal, "BAD_CREDENTIALS");
+		assertNotNull(restIdPClientAccessor);
+				restIdPClientAccessor.getAccessToken(idPURL, principal, "BAD_CREDENTIALS");
 		fail("Should have thrown a NotAuthenticated Exception, but did not, very bad!");
     }
 	
 	@Ignore
 	@Test(expected=RestClientAccessorException.class)
     public void test03_IdPAccessAttempt() {
-		assertNotNull(restClientAccessor);
+		assertNotNull(restIdPClientAccessor);
 		/**
 		 * Hack an Access Object
 		 */
 		Map<String, Object> accessProperties = new HashMap<>();
 		accessProperties.put("token", UUID.randomUUID().toString()); // Bogus Token...
-		RestClientAccessObject restClientAccessObject = new RestClientAccessObject(accessProperties);
-				restClientAccessor.get(protectedResourceURL, restClientAccessObject);
+		RestIdPClientAccessObject RestIdPClientAccessObject = new RestIdPClientAccessObject(accessProperties);
+				restIdPClientAccessor.get(protectedResourceURL, RestIdPClientAccessObject);
 		fail("Should have thrown a RestClientAccessor Exception, but did not, very bad!");
     }
 	
 	@Ignore
 	@Test
     public void test04_IdPAccessProtectedResource() {
-		assertNotNull(restClientAccessor);
-		RestClientAccessObject restClientAccessObject =
-				restClientAccessor.getAccessToken(idPURL, principal, credentials);
-		assertNotNull(restClientAccessObject);
-		assertNotNull(restClientAccessObject.getAccessToken());
-		assertTrue(restClientAccessObject.getExpires()==3600);
+		assertNotNull(restIdPClientAccessor);
+		RestIdPClientAccessObject RestIdPClientAccessObject =
+				restIdPClientAccessor.getAccessToken(idPURL, principal, credentials);
+		assertNotNull(RestIdPClientAccessObject);
+		assertNotNull(RestIdPClientAccessObject.getAccessToken());
+		assertTrue(RestIdPClientAccessObject.getExpires()==3600);
 		/**
          * Get Resource.
          */
         try {
-            byte[] results = (byte[]) restClientAccessor.get(protectedResourceURL, restClientAccessObject);
+            byte[] results = (byte[]) restIdPClientAccessor.get(protectedResourceURL, RestIdPClientAccessObject);
             @SuppressWarnings("unchecked")
 			Map<String,Object> data = objectMapper.readValue(results, Map.class);
             assertNotNull(data);

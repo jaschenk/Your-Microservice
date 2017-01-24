@@ -3,18 +3,17 @@ package your.microservice.core.rest;
 import java.util.Map;
 
 /**
- * RestClientAccessObject
+ * RestIdPClientAccessObject
  *
- * @author jeff.a.schenk@gmail.com on 2/12/16.
+ * @author jeff.a.schenk@gmail.com
  */
-public class RestClientAccessObject {
+public class RestIdPClientAccessObject {
     /**
      * Constants
      */
     private static final String ACCESS_TOKEN_PROPERTY_NAME = "access_token";
-    private static final String REFRESH_TOKEN_PROPERTY_NAME = "refresh_token";
-    private static final String TOKEN_TYPE_PROPERTY_NAME = "token_type";
     private static final String TOKEN_EXPIRES_PROPERTY_NAME = "expires_in";
+    private static final String TOKEN_TYPE_PROPERTY_NAME = "token_type";
 
     /**
      * Access Properties.
@@ -25,7 +24,7 @@ public class RestClientAccessObject {
      * Default Constructor
      * @param accessProperties Access Properties
      */
-    public RestClientAccessObject(Map<String, Object> accessProperties) {
+    public RestIdPClientAccessObject(Map<String, Object> accessProperties) {
         this.accessProperties = accessProperties;
     }
 
@@ -33,16 +32,12 @@ public class RestClientAccessObject {
        return (String) this.accessProperties.get(ACCESS_TOKEN_PROPERTY_NAME);
     }
 
-    public String getRefreshToken() {
-        return (String) this.accessProperties.get(REFRESH_TOKEN_PROPERTY_NAME);
-    }
-
-    public String getTokenType() {
-        return (String) this.accessProperties.get(TOKEN_TYPE_PROPERTY_NAME);
-    }
-
     public Integer getExpires() {
         return (Integer) this.accessProperties.get(TOKEN_EXPIRES_PROPERTY_NAME);
     }
+    
+    public String getTokenType() {
+        return (String) this.accessProperties.get(TOKEN_TYPE_PROPERTY_NAME);
+     }
 
 }
