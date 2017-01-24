@@ -2,9 +2,12 @@ package your.microservice.idp.integration.controller.rest;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import org.junit.runners.MethodSorters;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
@@ -18,27 +21,39 @@ import org.springframework.web.client.HttpClientErrorException;
 import your.microservice.MicroserviceTestApplication;
 import your.microservice.idp.model.json.request.AuthenticationRequest;
 import your.microservice.idp.model.json.response.AuthenticationResponse;
+import your.microservice.testutil.IntegrationTestSetupBean;
 import your.microservice.testutil.RequestEntityBuilder;
-import your.microservice.testutil.TestApiConfig;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = MicroserviceTestApplication.class)
-@WebIntegrationTest
+@SpringApplicationConfiguration(classes = {MicroserviceTestApplication.class})
+@WebIntegrationTest({"server.port:0","test.environment.property:true"})
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ProtectedControllerIT {
 
   private RestTemplate client;
   private AuthenticationRequest authenticationRequest;
   private String authenticationToken;
 
-  @Value("${cerberus.route.authentication}")
-  private String authenticationRoute;
+  @Value("${your.microservice.security.test.user.resource}")
+  private String userRoute;
 
-  @Value("${cerberus.route.protected}")
+  @Value("${your.microservice.security.test.protected.resource}")
   private String protectedRoute;
+
+  public static final AuthenticationRequest USER_AUTHENTICATION_REQUEST =
+          new AuthenticationRequest("joe.user@mail.com", "TestPassword");
+  public static final AuthenticationRequest ADMIN_AUTHENTICATION_REQUEST =
+          new AuthenticationRequest("admin.entity@mail.com", "TestPassword");
+
+  /**
+   * Test Integration Helper Setup Bean
+   */
+  @Autowired
+  private IntegrationTestSetupBean integrationTestSetupBean;
 
   @Before
   public void setUp() throws Exception {
@@ -56,7 +71,7 @@ public class ProtectedControllerIT {
 
     try {
       client.exchange(
-        TestApiConfig.getAbsolutePath(protectedRoute),
+              integrationTestSetupBean.getAbsolutePath(protectedRoute),
         HttpMethod.GET,
         buildProtectedRequestEntityWithoutAuthorizationToken(),
         Void.class
@@ -75,7 +90,7 @@ public class ProtectedControllerIT {
 
     try {
       client.exchange(
-        TestApiConfig.getAbsolutePath(protectedRoute),
+              integrationTestSetupBean.getAbsolutePath(protectedRoute),
         HttpMethod.GET,
         buildProtectedRequestEntity(),
         Void.class
@@ -93,7 +108,7 @@ public class ProtectedControllerIT {
     this.initializeStateForMakingValidProtectedRequest();
 
     ResponseEntity<String> responseEntity = client.exchange(
-      TestApiConfig.getAbsolutePath(protectedRoute),
+            integrationTestSetupBean.getAbsolutePath(protectedRoute),
       HttpMethod.GET,
       buildProtectedRequestEntity(),
       String.class
@@ -115,10 +130,10 @@ public class ProtectedControllerIT {
   }
 
   private void initializeStateForMakingValidProtectedRequest() {
-    authenticationRequest = TestApiConfig.ADMIN_AUTHENTICATION_REQUEST;
+    authenticationRequest = ADMIN_AUTHENTICATION_REQUEST;
 
     ResponseEntity<AuthenticationResponse> authenticationResponse = client.postForEntity(
-      TestApiConfig.getAbsolutePath(authenticationRoute),
+            integrationTestSetupBean.getAbsolutePath(protectedRoute),
       authenticationRequest,
       AuthenticationResponse.class
     );
@@ -127,10 +142,10 @@ public class ProtectedControllerIT {
   }
 
   private void initializeStateForMakingInvalidProtectedRequest() {
-    authenticationRequest = TestApiConfig.USER_AUTHENTICATION_REQUEST;
+    authenticationRequest = USER_AUTHENTICATION_REQUEST;
 
     ResponseEntity<AuthenticationResponse> authenticationResponse = client.postForEntity(
-      TestApiConfig.getAbsolutePath(authenticationRoute),
+            integrationTestSetupBean.getAbsolutePath(userRoute),
       authenticationRequest,
       AuthenticationResponse.class
     );

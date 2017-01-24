@@ -43,6 +43,11 @@ your.microservice:
           authentication: /api/auth
           authentication.refresh: refresh
           authentication.logout: logout
+         #
+         # Test Routes
+         test:
+          user.resource: /api/testservice/v1/test/useraccess
+          protected.resource: /api/testservice/v1/test/protected
 
 #
 # Spring Fox Swagger Generation

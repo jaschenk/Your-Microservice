@@ -60,7 +60,7 @@ public class EnableMicroserviceIT {
     @Autowired
     private WebApplicationContext webApplicationContext;
     /**
-     * CMS Integration Helper Setup Bean
+     * Test Integration Helper Setup Bean
      */
     @Autowired
     private IntegrationTestSetupBean integrationTestSetupBean;

@@ -84,4 +84,28 @@ public class IntegrationTestSetupBean {
         return "http://localhost:" + getHostPortUsed();
     }
 
+    /**
+     * Get absolute Path for Request Context and Relative Path
+     *
+     * @param serverContext Reference
+     * @param relativePath Reference
+     * @return String construct URL Endpoint.
+     */
+    public String getAbsolutePath(final String serverContext, final String relativePath) {
+        if (serverContext == null || serverContext.isEmpty()) {
+            return String.format("http://%s:%d/%s/%s", "localhost", getHostPortUsed(), "testservice", relativePath);
+        }
+        return String.format("http://%s:%d/%s/%s", "localhost", getHostPortUsed(), serverContext, relativePath);
+    }
+
+    /**
+     * Get absolute Path for Request Context and Relative Path
+     *
+     * @param relativePath Reference
+     * @return String construct URL Endpoint.
+     */
+    public String getAbsolutePath(final String relativePath) {
+        return String.format("http://%s:%d/%s", "localhost", getHostPortUsed(), relativePath);
+    }
+
 }

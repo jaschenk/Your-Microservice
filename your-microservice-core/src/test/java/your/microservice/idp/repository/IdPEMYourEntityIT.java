@@ -60,9 +60,10 @@ public class IdPEMYourEntityIT {
 
         List<YourEntity> results = identityProviderEntityManager.findAllYourEntities();
         assertNotNull(results);
-        assertEquals(2, results.size());   // Previously Loaded ...
+        assertEquals(3, results.size());   // Previously Loaded ...
         LOGGER.info("Result[0]: --> {}", results.get(0).toString());
         LOGGER.info("Result[1]: --> {}", results.get(1).toString());
+        LOGGER.info("Result[2]: --> {}", results.get(2).toString());
 
         YourEntity yourEntity = identityProviderEntityManager.findYourEntityByEmail(USER_EMAIL);
         assertNotNull(yourEntity);
