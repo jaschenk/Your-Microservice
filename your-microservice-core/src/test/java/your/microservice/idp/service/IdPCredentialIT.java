@@ -16,6 +16,7 @@ import your.microservice.MicroserviceTestApplication;
 import your.microservice.idp.model.base.YourEntity;
 import your.microservice.idp.repository.IdentityProviderEntityManager;
 import your.microservice.idp.security.YourMicroserviceSecurityConstants;
+import your.microservice.testutil.IntegrationTestSetupBean;
 
 import java.util.List;
 
@@ -24,9 +25,9 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 /**
- * IdPEMYourEntityTokenHistoryIT
+ * IdPCredentialIT
  *
- * @author jeff.a.schenk@gmail.com on 2/21/16.
+ * @author jeff.a.schenk@gmail.com
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = {MicroserviceTestApplication.class})
@@ -51,33 +52,26 @@ public class IdPCredentialIT {
     @Autowired
     private IdentityProviderEntityManager identityProviderEntityManager;
 
-    /**
-     * Test Constants
-     */
-    private static final String USER_EMAIL = "joe.user@mail.com";
-    private static final String CLEAR_TEXT_CREDENTIALS = "TestPassword";
-
-
     @Test
     public void test01_EncodeCredentials() {
         LOGGER.info("Running: test01_EncodeCredentials");
         BCryptPasswordEncoder encoder =
                 new BCryptPasswordEncoder(YourMicroserviceSecurityConstants.BCRYPT_STRENGTH_SETTING);
-        String encryptedCredentials = encoder.encode(CLEAR_TEXT_CREDENTIALS);
-        assertTrue(encoder.matches(CLEAR_TEXT_CREDENTIALS, encryptedCredentials));
+        String encryptedCredentials = encoder.encode(IntegrationTestSetupBean.CLEAR_TEXT_CREDENTIALS);
+        assertTrue(encoder.matches(IntegrationTestSetupBean.CLEAR_TEXT_CREDENTIALS, encryptedCredentials));
 
-        LOGGER.info("RAW:[{}], ENCRYPTED:[{}]", CLEAR_TEXT_CREDENTIALS, encryptedCredentials);
+        LOGGER.info("RAW:[{}], ENCRYPTED:[{}]", IntegrationTestSetupBean.CLEAR_TEXT_CREDENTIALS, encryptedCredentials);
     }
 
     @Test
     public void test02_CheckCredentials() {
         LOGGER.info("Running: test02_CheckCredentials");
-        YourEntity yourEntity = identityProviderEntityManager.findYourEntityByEmail(USER_EMAIL);
+        YourEntity yourEntity = identityProviderEntityManager.findYourEntityByEmail(IntegrationTestSetupBean.USER_EMAIL);
         assertNotNull(yourEntity);
 
         BCryptPasswordEncoder encoder =
                 new BCryptPasswordEncoder(YourMicroserviceSecurityConstants.BCRYPT_STRENGTH_SETTING);
-        assertTrue(encoder.matches(CLEAR_TEXT_CREDENTIALS, yourEntity.getCredentials()));
+        assertTrue(encoder.matches(IntegrationTestSetupBean.CLEAR_TEXT_CREDENTIALS, yourEntity.getCredentials()));
     }
 
 

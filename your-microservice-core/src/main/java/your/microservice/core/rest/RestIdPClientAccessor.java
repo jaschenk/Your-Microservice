@@ -12,7 +12,6 @@ public interface RestIdPClientAccessor {
      * Your Microservice IdP Default Token Authentication Resource Path
      */
     String YOUR_MICROSERVICE_IDP_TOKEN_REQUEST_RESOURCE_PATH = "/api/auth";
-    String YOUR_MICROSERVICE_IDP_TOKEN_REFRESH_RESOURCE_PATH = "/api/auth/refresh";
     String YOUR_MICROSERVICE_IDP_TOKEN_LOGOUT_RESOURCE_PATH = "/api/auth/logout";
 
     /**

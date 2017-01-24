@@ -27,6 +27,15 @@ public class IntegrationTestSetupBean {
     public static final String APPLICATION_JSON_WITH_UTF8_ENCODING_VALUE = "application/json;charset=UTF-8";
 
     /**
+     * Test Data Constants
+     */
+    /**
+     * Test Constants
+     */
+    public static final String USER_EMAIL = "joe.user@mail.com";
+    public static final String CLEAR_TEXT_CREDENTIALS = "TestPassword";
+
+    /**
      * System Instance Setup Bean, to obtain the Port we were booted on.
      */
     @Autowired
