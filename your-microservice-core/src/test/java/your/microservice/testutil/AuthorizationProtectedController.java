@@ -20,8 +20,7 @@ public class AuthorizationProtectedController {
      * demonstrated below with 'securityService'.
      **/
     @RequestMapping(value = "/protected", method = RequestMethod.GET)
-    //@PreAuthorize("hasRole('ADMIN')")
-    @PreAuthorize("@securityService.hasProtectedAccess()")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> getDaHoney() {
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("result", 42);

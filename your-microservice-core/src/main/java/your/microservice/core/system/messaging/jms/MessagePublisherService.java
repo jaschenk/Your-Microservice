@@ -1,13 +1,16 @@
 package your.microservice.core.system.messaging.jms;
 
 import org.springframework.jms.core.JmsTemplate;
+import your.microservice.idp.model.base.YourEntityEventHistory;
 
 /**
  * JmsTemplateService
  *
- * @author jeff.a.schenk@gmail.com on 11/11/15.
+ * @author jeff.a.schenk@gmail.com.
  */
 public interface MessagePublisherService {
 
     JmsTemplate getJmsTemplate();
+
+    void publishEntityEventHistory(Long entityId, YourEntityEventHistory yourEntityEventHistory);
 }

@@ -14,6 +14,6 @@ public class SystemJMSLocalInstanceDestinations {
     /**
      * LOCAL JMS Queues.
      */
-    public static final String YOUR_MS_PERSON_EVENT_HISTORY_QUEUE = "your.microservice.person.event.history";
+    public static final String YOUR_MS_ENTITY_EVENT_HISTORY_QUEUE = "your.microservice.entity.event.history";
 
 }

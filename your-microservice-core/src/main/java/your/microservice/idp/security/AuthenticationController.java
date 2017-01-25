@@ -138,7 +138,7 @@ public class AuthenticationController {
             publishAuthenticationEvents(request, (YourMicroserviceUserDetails)userDetails,
                     YourEntityEventHistory.EntityEventTagNames.LAST_LOGIN);
         } catch (Exception e) {
-            LOGGER.warn("Unable to perform Publishing of Personal Event History for Last Login: {}",
+            LOGGER.warn("Unable to perform Publishing of Entity Event History for Last Login: {}",
                     e.getMessage());
         }
         /**
@@ -388,8 +388,8 @@ public class AuthenticationController {
         YourEntityEventHistory yourEntityEventHistory = new YourEntityEventHistory(
                 eventTag.name(),
                 eventMessage.toString(), eventTagProperties);
-        //messagePublisherService.publishPersonEventHistory(userDetails.getRid(),
-       //         yourEntityEventHistory);
+        messagePublisherService.publishEntityEventHistory(userDetails.getPrincipalID(),
+               yourEntityEventHistory);
     }
 
     /**

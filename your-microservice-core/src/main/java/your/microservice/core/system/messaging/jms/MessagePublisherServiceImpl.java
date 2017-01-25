@@ -4,6 +4,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
+import your.microservice.idp.model.base.YourEntity;
+import your.microservice.idp.model.base.YourEntityEventHistory;
+import your.microservice.idp.repository.IdentityProviderEntityManager;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -30,6 +33,12 @@ public class MessagePublisherServiceImpl implements MessagePublisherService {
     private JmsTemplate jmsTemplate;
 
     /**
+     * Identity Provider Entity Manager
+     */
+    @Autowired
+    private IdentityProviderEntityManager identityProviderEntityManager;
+
+    /**
      * Initialization of Service
      */
     @PostConstruct
@@ -54,4 +63,28 @@ public class MessagePublisherServiceImpl implements MessagePublisherService {
         return jmsTemplate;
     }
 
+    /**
+     * publishPersonEventHistory
+     * @param principalID ID of Authenticated User Principal.
+     * @param yourEntityEventHistory to be Published.
+     */
+    @Override
+    public void publishEntityEventHistory(Long principalID, YourEntityEventHistory yourEntityEventHistory) {
+        if (principalID == null || yourEntityEventHistory == null) {
+            return;
+        }
+        /**
+         * Lookup the Entity to Associate.
+         */
+        YourEntity yourEntity = identityProviderEntityManager.findYourEntityById(principalID);
+        if (yourEntity != null) {
+            yourEntityEventHistory.setYourEntity(yourEntity);
+            /**
+             * Publish the Entity History Event.
+             */
+            getJmsTemplate().convertAndSend(SystemJMSLocalInstanceDestinations.YOUR_MS_ENTITY_EVENT_HISTORY_QUEUE,
+                    yourEntityEventHistory);
+            LOGGER.info("Entity Event History Tag:[{}] Published.", yourEntityEventHistory.getEventTagName());
+        }
+    }
 }

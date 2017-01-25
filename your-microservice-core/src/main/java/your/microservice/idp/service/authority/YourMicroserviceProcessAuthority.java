@@ -5,10 +5,10 @@ import org.springframework.security.core.GrantedAuthority;
 /**
  *
  */
-public class YourMicroserviceSuperAdminAuthority implements GrantedAuthority {
+public class YourMicroserviceProcessAuthority implements GrantedAuthority {
 
     @Override
     public String getAuthority() {
-        return "ROLE_SUPER_ADMIN";
+        return "ROLE_PROCESS";
     }
 }

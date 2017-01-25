@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
@@ -474,10 +473,6 @@ public class IdPAccessIT {
         assertEquals(200, rc);
     }
 
-    /**
-     * TODO -- Need to Fix to Add Roles upon valid Login ...
-     */
-    @Ignore
     @Test
     public void test17_AccessProtectedMethodResource() {
         LOGGER.info("Running: test17_AccessAProtectedMethodResource...");
@@ -508,8 +503,6 @@ public class IdPAccessIT {
                         restIdPClientAccessObject);
         assertEquals(200, rc);
     }
-
-
 
     @Test
     public void test00_first() {

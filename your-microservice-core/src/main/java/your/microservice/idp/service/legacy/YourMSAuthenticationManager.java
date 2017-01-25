@@ -1,5 +1,6 @@
 package your.microservice.idp.service.legacy;
 
+import org.springframework.security.core.GrantedAuthority;
 import your.microservice.core.system.messaging.jms.MessagePublisherService;
 import your.microservice.core.util.TimeDuration;
 import your.microservice.idp.model.security.YourMicroserviceUserDetails;
@@ -109,7 +110,6 @@ public class YourMSAuthenticationManager implements AuthenticationManager {
 
             /**
              * Return Authentication Token...
-             * This all will be deprecated once we integrate fully our IDaaS.
              */
             return new YourMSAuthenticationToken(userDetails);
 

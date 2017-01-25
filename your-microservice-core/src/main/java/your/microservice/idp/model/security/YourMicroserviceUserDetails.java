@@ -1,8 +1,11 @@
 package your.microservice.idp.model.security;
 
 import your.microservice.idp.model.base.YourEntity;
+import your.microservice.idp.model.base.YourEntityRole;
 import your.microservice.idp.model.types.YourEntityStatus;
+import your.microservice.idp.service.authority.YourMicroserviceAdminAuthority;
 import your.microservice.idp.service.authority.YourMicroservicePendingUserAuthority;
+import your.microservice.idp.service.authority.YourMicroserviceProcessAuthority;
 import your.microservice.idp.service.authority.YourMicroserviceUserAuthority;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,12 +13,16 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import static com.ryantenney.metrics.spring.reporter.Slf4jReporterFactoryBean.LOGGER;
+
 /**
  * YourMicroserviceUserDetails
  */
 public class YourMicroserviceUserDetails implements UserDetails {
 
-    /*Spring Security fields*/
+    /**
+     * Spring Security Property Fields
+     */
     private final Collection<GrantedAuthority> authorities;
     private final boolean accountNonExpired;
     private final boolean accountNonLocked;
@@ -89,16 +96,35 @@ public class YourMicroserviceUserDetails implements UserDetails {
 
             /**
              * Establish the Granted Authorities...
-             * TODO Lookup Roles for the Entity ...
              */
-            ArrayList<GrantedAuthority> grantedAuthorites = new ArrayList<>();
-            grantedAuthorites.add(
-                    accountNonPending
-                            ? new YourMicroserviceUserAuthority()
-                            : new YourMicroservicePendingUserAuthority()
-            );
-
-            this.authorities = grantedAuthorites;
+            ArrayList<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+            if (yourEntity.getYourEntityRoles() != null &&
+                    !yourEntity.getYourEntityRoles().isEmpty() && accountNonPending) {
+                /**
+                 * Establish Roles.
+                 */
+                for(YourEntityRole role : yourEntity.getYourEntityRoles()) {
+                       switch(role.getName().toUpperCase()) {
+                           case "ADMIN":
+                               grantedAuthorities.add(new YourMicroserviceAdminAuthority());
+                               break;
+                           case "PROCESS":
+                               grantedAuthorities.add(new YourMicroserviceProcessAuthority());
+                               break;
+                           case "USER":
+                               grantedAuthorities.add(new YourMicroserviceUserAuthority());
+                               break;
+                           default:
+                               break;
+                       }
+                }
+            } else {
+                grantedAuthorities.add(new YourMicroservicePendingUserAuthority());
+            }
+            /**
+             * Return the Granted Authorities
+             */
+            this.authorities = grantedAuthorities;
         }
     }
 
