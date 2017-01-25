@@ -1,4 +1,4 @@
-package your.microservice.idp.repository;
+package your.microservice.idp.integration.repository;
 
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -11,11 +11,16 @@ import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.core.env.Environment;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import your.microservice.MicroserviceTestApplication;
-import your.microservice.idp.model.base.*;
+import your.microservice.idp.model.base.YourEntity;
+import your.microservice.idp.model.base.YourEntityEventHistory;
+import your.microservice.idp.repository.IdentityProviderEntityManager;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * IdPEMYourEntityEventHistoryIT
@@ -24,7 +29,7 @@ import static org.junit.Assert.*;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = {MicroserviceTestApplication.class})
-@WebIntegrationTest({"server.port:0","test.environment.property:true"})
+@WebIntegrationTest({"server.port:0", "test.environment.property:true"})
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class IdPEMYourEntityEventHistoryIT {
     /**
@@ -69,7 +74,7 @@ public class IdPEMYourEntityEventHistoryIT {
         assertNotNull(yourEntity);
         assertEquals(USER_EMAIL, yourEntity.getEntityEmailAddress());
 
-        Map<String,String> eventProperties = new HashMap<>();
+        Map<String, String> eventProperties = new HashMap<>();
         eventProperties.put("ONE_KEY", "ONE_VALUE");
 
         YourEntityEventHistory eventHistory =
@@ -108,10 +113,10 @@ public class IdPEMYourEntityEventHistoryIT {
         assertNotNull(yourEntity);
         assertEquals(USER_EMAIL, yourEntity.getEntityEmailAddress());
 
-        Map<String,String> eventProperties = new HashMap<>();
+        Map<String, String> eventProperties = new HashMap<>();
         eventProperties.put("TWO_KEY", "TWO_VALUE");
 
-        for(int i=0;i<100;i++) {
+        for (int i = 0; i < 100; i++) {
 
             YourEntityEventHistory eventHistory =
                     new YourEntityEventHistory(yourEntity, EVENT_TAG_NAME, EVENT_MESSAGE, eventProperties);
@@ -128,7 +133,6 @@ public class IdPEMYourEntityEventHistoryIT {
         assertEquals(101, results.size());
 
     }
-
 
 
     @Test

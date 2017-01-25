@@ -1,9 +1,9 @@
 package your.microservice.testutil;
 
-import your.microservice.core.system.SystemInstanceSetupBean;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import your.microservice.core.system.SystemInstanceSetupBean;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -88,7 +88,7 @@ public class IntegrationTestSetupBean {
      * Get absolute Path for Request Context and Relative Path
      *
      * @param serverContext Reference
-     * @param relativePath Reference
+     * @param relativePath  Reference
      * @return String construct URL Endpoint.
      */
     public String getAbsolutePath(final String serverContext, final String relativePath) {

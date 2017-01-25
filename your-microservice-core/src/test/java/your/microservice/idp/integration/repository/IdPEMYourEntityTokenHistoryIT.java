@@ -1,4 +1,4 @@
-package your.microservice.idp.repository;
+package your.microservice.idp.integration.repository;
 
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -11,13 +11,9 @@ import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.core.env.Environment;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import your.microservice.MicroserviceTestApplication;
-
-import your.microservice.idp.model.base.YourEntity;
-import your.microservice.idp.model.base.YourEntityOrganization;
-import your.microservice.idp.model.base.YourEntityRole;
 import your.microservice.idp.model.base.YourEntityTokenHistory;
-import your.microservice.idp.model.types.YourEntityStatus;
 import your.microservice.idp.model.types.YourEntityTokenStatus;
+import your.microservice.idp.repository.IdentityProviderEntityManager;
 
 import java.time.Instant;
 import java.util.*;
@@ -31,7 +27,7 @@ import static org.junit.Assert.*;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = {MicroserviceTestApplication.class})
-@WebIntegrationTest({"server.port:0","test.environment.property:true"})
+@WebIntegrationTest({"server.port:0", "test.environment.property:true"})
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class IdPEMYourEntityTokenHistoryIT {
     /**
@@ -85,13 +81,13 @@ public class IdPEMYourEntityTokenHistoryIT {
         assertNotNull(yourEntityTokenHistory);
 
 
-        for(int i=2; i<10;i++) {
+        for (int i = 2; i < 10; i++) {
             Integer updated = identityProviderEntityManager.incrementTokenHistoryUsage(jti);
             assertNotNull(updated);
-            assertTrue(updated==1);
+            assertTrue(updated == 1);
 
             yourEntityTokenHistory =
-                identityProviderEntityManager.readTokenHistory(jti);
+                    identityProviderEntityManager.readTokenHistory(jti);
             assertNotNull(yourEntityTokenHistory);
             assertEquals(i, yourEntityTokenHistory.getUsageCount().longValue());
         }
@@ -109,7 +105,7 @@ public class IdPEMYourEntityTokenHistoryIT {
         assertNotNull(yourEntityTokenHistory);
         assertEquals(YourEntityTokenStatus.PENDING, yourEntityTokenHistory.getStatus());
 
-        assertTrue( identityProviderEntityManager.deleteTokenHistory(jti) == 1);
+        assertTrue(identityProviderEntityManager.deleteTokenHistory(jti) == 1);
 
         List<YourEntityTokenHistory> history = identityProviderEntityManager.readCurrentExpiredTokenHistory();
         assertNotNull(history);
@@ -142,7 +138,7 @@ public class IdPEMYourEntityTokenHistoryIT {
         assertNotNull(history);
         assertEquals(100, history.size());
 
-        assertTrue(identityProviderEntityManager.deleteTokenHistory()==100);
+        assertTrue(identityProviderEntityManager.deleteTokenHistory() == 100);
 
         history = identityProviderEntityManager.readCurrentExpiredTokenHistory();
         assertNotNull(history);
@@ -163,14 +159,14 @@ public class IdPEMYourEntityTokenHistoryIT {
          */
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MINUTE, 1);  // Expired 1 Minute from Now.
-        List<String> jtis =  generateTokens(100, calendar.getTime());
+        List<String> jtis = generateTokens(100, calendar.getTime());
 
         List<YourEntityTokenHistory> history = identityProviderEntityManager.readCurrentNonExpiredTokenHistory();
         assertNotNull(history);
         assertEquals(100, history.size());
 
-        for(String jti:jtis) {
-            assertTrue(identityProviderEntityManager.deleteTokenHistory(jti)==1);
+        for (String jti : jtis) {
+            assertTrue(identityProviderEntityManager.deleteTokenHistory(jti) == 1);
         }
 
         history = identityProviderEntityManager.readCurrentExpiredTokenHistory();
@@ -192,13 +188,13 @@ public class IdPEMYourEntityTokenHistoryIT {
          */
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MINUTE, 1);  // Expired 1 Minute from Now.
-        List<String> jtis =  generateTokens(100, calendar.getTime());
+        List<String> jtis = generateTokens(100, calendar.getTime());
 
         List<YourEntityTokenHistory> history = identityProviderEntityManager.readTokenHistoryBySubject(USER_EMAIL);
         assertNotNull(history);
         assertEquals(100, history.size());
 
-        assertTrue(identityProviderEntityManager.deleteTokenHistoryBySubject(USER_EMAIL)==100);
+        assertTrue(identityProviderEntityManager.deleteTokenHistoryBySubject(USER_EMAIL) == 100);
 
 
         history = identityProviderEntityManager.readCurrentExpiredTokenHistory();
@@ -210,7 +206,6 @@ public class IdPEMYourEntityTokenHistoryIT {
         assertEquals(0, history.size());
 
     }
-
 
 
     @Test
@@ -234,12 +229,11 @@ public class IdPEMYourEntityTokenHistoryIT {
      * Generate a Number of Tokens
      *
      * @param expiration Date these Tokens Expire
-     *
      * @return
      */
     private List<String> generateTokens(Integer numberToGenerate, Date expiration) {
         List<String> jtis = new ArrayList<>();
-        for(int i = 0; i<numberToGenerate;i++) {
+        for (int i = 0; i < numberToGenerate; i++) {
             String jti = UUID.randomUUID().toString();
             jtis.add(jti);
             YourEntityTokenHistory yourEntityTokenHistory = new YourEntityTokenHistory();

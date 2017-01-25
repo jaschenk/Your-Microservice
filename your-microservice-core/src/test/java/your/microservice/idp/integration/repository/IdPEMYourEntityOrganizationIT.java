@@ -1,4 +1,4 @@
-package your.microservice.idp.repository;
+package your.microservice.idp.integration.repository;
 
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -11,15 +11,13 @@ import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.core.env.Environment;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import your.microservice.MicroserviceTestApplication;
-import your.microservice.idp.model.base.YourEntity;
 import your.microservice.idp.model.base.YourEntityOrganization;
-import your.microservice.idp.model.base.YourEntityTokenHistory;
-import your.microservice.idp.model.types.YourEntityTokenStatus;
+import your.microservice.idp.repository.IdentityProviderEntityManager;
 
-import java.time.Instant;
-import java.util.*;
+import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * IdPEMYourEntityOrganizationIT
@@ -28,7 +26,7 @@ import static org.junit.Assert.*;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = {MicroserviceTestApplication.class})
-@WebIntegrationTest({"server.port:0","test.environment.property:true"})
+@WebIntegrationTest({"server.port:0", "test.environment.property:true"})
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class IdPEMYourEntityOrganizationIT {
     /**
@@ -62,7 +60,7 @@ public class IdPEMYourEntityOrganizationIT {
         List<YourEntityOrganization> orgResults = identityProviderEntityManager.findAllYourEntityOrganizations();
         assertNotNull(orgResults);
         assertEquals(4, orgResults.size());
-        for(int i=0;i<orgResults.size();i++) {
+        for (int i = 0; i < orgResults.size(); i++) {
             LOGGER.info("Result[{}]: --> {}", i, orgResults.get(i).toString());
         }
 

@@ -1,4 +1,4 @@
-package your.microservice.idp.service;
+package your.microservice.idp.integration.security;
 
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.core.env.Environment;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import your.microservice.MicroserviceTestApplication;
@@ -18,11 +17,7 @@ import your.microservice.idp.repository.IdentityProviderEntityManager;
 import your.microservice.idp.security.YourMicroserviceSecurityConstants;
 import your.microservice.testutil.IntegrationTestSetupBean;
 
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * IdPCredentialIT
@@ -31,7 +26,7 @@ import static org.junit.Assert.assertTrue;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = {MicroserviceTestApplication.class})
-@WebIntegrationTest({"server.port:0","test.environment.property:true"})
+@WebIntegrationTest({"server.port:0", "test.environment.property:true"})
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class IdPCredentialIT {
     /**

@@ -1,11 +1,11 @@
 package your.microservice;
 
-import your.microservice.core.annotation.EnableYourMicroservice;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
+import your.microservice.core.annotation.EnableYourMicroservice;
 
 import javax.annotation.PostConstruct;
 
@@ -21,6 +21,7 @@ public class MicroserviceTestApplication {
 
     /**
      * MicroServices Application BootStrap
+     *
      * @param args Incoming Program Arguments Array.
      */
     public static void main(String[] args) {

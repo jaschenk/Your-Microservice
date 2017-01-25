@@ -1,15 +1,6 @@
 package your.microservice;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.restassured.module.mockmvc.RestAssuredMockMvc;
-import your.microservice.core.dm.dto.system.YourPulse;
-import your.microservice.core.rest.RestIdPClientAccessObject;
-import your.microservice.core.rest.RestIdPClientAccessor;
-import your.microservice.core.rest.exceptions.NotAuthenticatedException;
-import your.microservice.core.rest.exceptions.RestClientAccessorException;
-import your.microservice.core.system.messaging.model.YourMSBulletinBroadcastNotification;
-import your.microservice.testutil.IntegrationTestSetupBean;
-
 import org.apache.http.HttpStatus;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
@@ -25,13 +16,12 @@ import org.springframework.core.env.Environment;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-
-import java.io.IOException;
-import java.util.*;
+import your.microservice.testutil.IntegrationTestSetupBean;
 
 import static com.jayway.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.containsString;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * EnableMicroserviceIT
@@ -40,7 +30,7 @@ import static org.junit.Assert.*;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = {MicroserviceTestApplication.class})
-@WebIntegrationTest({"server.port:0","test.environment.property:true"})
+@WebIntegrationTest({"server.port:0", "test.environment.property:true"})
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class EnableMicroserviceIT {
     /**
@@ -66,27 +56,10 @@ public class EnableMicroserviceIT {
     private IntegrationTestSetupBean integrationTestSetupBean;
 
     /**
-     * ObjectMapper
-     */
-    private static final ObjectMapper objectMapper = new ObjectMapper();
-
-    /**
-     * RESTful Client Accessor Service.
-     */
-    @Autowired
-    private RestIdPClientAccessor restIdPClientAccessor;
-
-    /**
      * Test Constants
      */
-    private static final String USER_EMAIL = "joe.user@mail.com";
-    private static final String CREDENTIALS = "TestPassword";
     private static final String SERVICE_NAME = "testmicroservice";
-
-    private static final String APIINFO_ENDPOINT = "/api/"+SERVICE_NAME+"/v1";
-    private static final String BULLETIN_ENPOINT = "/api/"+SERVICE_NAME+"/v1/system/bulletin";
-    private static final String PULSE_ENDPOINT = "/api/"+SERVICE_NAME+"/v1/system/pulse";
-    private static final String TEST_ENDPOINT = "/api/"+SERVICE_NAME+"/v1/test";
+    private static final String APIINFO_ENDPOINT = "/api/" + SERVICE_NAME + "/v1";
 
     /**
      * Before each Test perform Mock Reset Assured Setup...
@@ -106,7 +79,7 @@ public class EnableMicroserviceIT {
         assertNotNull(environment);
 
         assertEquals("true",
-               environment.getProperty("test.environment.property"));
+                environment.getProperty("test.environment.property"));
     }
 
     @Test
@@ -115,275 +88,18 @@ public class EnableMicroserviceIT {
         /**
          * Access Open End Point to Obtain API Information.
          */
-       given().
-                        header("Accept-Encoding", "application/json").
-                        when().
-                        get(integrationTestSetupBean.getHostPath()
-                                + APIINFO_ENDPOINT).
-                        then().
-                        assertThat().statusCode(HttpStatus.SC_OK).
-                        assertThat().contentType(IntegrationTestSetupBean.APPLICATION_JSON_WITH_UTF8_ENCODING_VALUE).
-                        assertThat().body(containsString("\"description\":\"Your Commons MicroServices\"")).
-                        assertThat().body(containsString("\"version\":\"")).
-                        log().all().
-                        extract().asString();
-    }
-
-    @Test
-    public void test03_getAccessToken() {
-        LOGGER.info("Running: test03_getAccessToken...");
-        assertNotNull(restIdPClientAccessor);
-        RestIdPClientAccessObject restIdPClientAccessObject =
-                restIdPClientAccessor.getAccessToken(
-                        integrationTestSetupBean.getHostPath()+RestIdPClientAccessor.YOUR_MICROSERVICE_IDP_TOKEN_REQUEST_RESOURCE_PATH,
-                        USER_EMAIL, CREDENTIALS);
-        assertNotNull(restIdPClientAccessObject);
-
-        LOGGER.debug(" Access Token: [{}]", restIdPClientAccessObject.getAccessToken());
-        LOGGER.debug("   Token Type: [{}]", restIdPClientAccessObject.getTokenType());
-        LOGGER.debug("Token Expires: [{}]", restIdPClientAccessObject.getExpires());
-
-        int rc =
-            restIdPClientAccessor.logout(integrationTestSetupBean.getHostPath(),
-                    restIdPClientAccessObject);
-        assertEquals(200, rc);
-
-    }
-
-    @Test(expected = NotAuthenticatedException.class)
-    public void test05_getAccessToken() {
-        LOGGER.info("Running: test05_getAccessToken...");
-        assertNotNull(restIdPClientAccessor);
-        restIdPClientAccessor.getAccessToken(integrationTestSetupBean.getHostPath()+RestIdPClientAccessor.YOUR_MICROSERVICE_IDP_TOKEN_REQUEST_RESOURCE_PATH,
-                USER_EMAIL, "FOOBAR");
-
-        fail("Should have failed with a 'Not Authenticated Exception', " +
-                "as we present an Invalid Credentials, which should have been rejected," +
-                " to access a Protected Resource, Very Bad!");
-    }
-
-    @Test
-    public void test06_accessBulletin() {
-        LOGGER.info("Running: test06_accessBulletin...");
-        assertNotNull(restIdPClientAccessor);
-        /**
-         * Authentication and Obtain Access Token.
-         */
-        RestIdPClientAccessObject RestIdPClientAccessObject =
-                restIdPClientAccessor.getAccessToken(integrationTestSetupBean.getHostPath()+RestIdPClientAccessor.YOUR_MICROSERVICE_IDP_TOKEN_REQUEST_RESOURCE_PATH, USER_EMAIL, CREDENTIALS);
-        assertNotNull(RestIdPClientAccessObject);
-        /**
-         * Get Resource.
-         */
-        try {
-            byte[] results = (byte[]) restIdPClientAccessor.get(
-                    integrationTestSetupBean.getHostPath()
-                            + BULLETIN_ENPOINT, RestIdPClientAccessObject);
-            YourMSBulletinBroadcastNotification yourMSBulletinBroadcastNotification
-                    = objectMapper.readValue(results, YourMSBulletinBroadcastNotification.class);
-            assertNotNull(yourMSBulletinBroadcastNotification);
-            /**
-             * Iterate over Properties
-             */
-            LOGGER.info("{}", yourMSBulletinBroadcastNotification);
-        } catch (IOException ioe) {
-            LOGGER.error("IOException Encountered: {}", ioe.getMessage(), ioe);
-        }
-        /**
-         * Logout
-         */
-        int rc = restIdPClientAccessor.logout(integrationTestSetupBean.getHostPath(), RestIdPClientAccessObject);
-        assertEquals(200, rc);
-
-    }
-
-    @Test(expected = RestClientAccessorException.class)
-    public void test07_attemptAccessBulletin() {
-        LOGGER.info("Running: test07_attemptAccessBulletin...");
-        assertNotNull(restIdPClientAccessor);
-        //NotAuthenticatedException
-        /**
-         * Set up a FooBar Access Object.
-         */
-        Map<String, Object> accessProperties = new HashMap<>();
-        accessProperties.put("access_token","BADACCESSTOKEN");
-        accessProperties.put("refresh_token","BADREFRESHTOKEN");
-        accessProperties.put("token_type","Bearer");
-        accessProperties.put("expires_in","3600");
-        RestIdPClientAccessObject RestIdPClientAccessObject = new RestIdPClientAccessObject(accessProperties);
-        assertNotNull(RestIdPClientAccessObject);
-        /**
-         * Attempt and Bad Request to obtain a protected Resource.
-         */
-            byte[] results = (byte[]) restIdPClientAccessor.get(
-                    integrationTestSetupBean.getHostPath()
-                            + BULLETIN_ENPOINT, RestIdPClientAccessObject);
-            fail("Should have failed with a 'Bad Request', " +
-                    "as we present an Invalid Access Token, which should have been rejected," +
-                    " to access a Protected Resource, Very Bad!");
-    }
-
-    @Test
-    public void test08_accessPulse() {
-        LOGGER.info("Running: test08_accessPulse...");
-        assertNotNull(restIdPClientAccessor);
-        /**
-         * Authentication and Obtain Access Token.
-         */
-        RestIdPClientAccessObject RestIdPClientAccessObject =
-                restIdPClientAccessor.getAccessToken(integrationTestSetupBean.getHostPath()+RestIdPClientAccessor.YOUR_MICROSERVICE_IDP_TOKEN_REQUEST_RESOURCE_PATH, USER_EMAIL, CREDENTIALS);
-        assertNotNull(RestIdPClientAccessObject);
-        /**
-         * Get Resource.
-         */
-        try {
-            byte[] results = (byte[]) restIdPClientAccessor.get(
-                    integrationTestSetupBean.getHostPath()
-                            + PULSE_ENDPOINT, RestIdPClientAccessObject);
-            YourPulse yourPulse
-                    = objectMapper.readValue(results, YourPulse.class);
-            assertNotNull(yourPulse);
-            /**
-             * Iterate over Properties
-             */
-            LOGGER.info("{}", yourPulse);
-        } catch (IOException ioe) {
-            LOGGER.error("IOException Encountered: {}", ioe.getMessage(), ioe);
-        }
-        /**
-         * Logout
-         */
-        int rc = restIdPClientAccessor.logout(integrationTestSetupBean.getHostPath(), RestIdPClientAccessObject);
-        assertEquals(200, rc);
-
-    }
-
-    @Test
-    public void test09_RestClientGetTest() {
-        LOGGER.info("Running: test09_RestClientGetTest...");
-        assertNotNull(restIdPClientAccessor);
-        /**
-         * Authentication and Obtain Access Token.
-         */
-        RestIdPClientAccessObject RestIdPClientAccessObject =
-                restIdPClientAccessor.getAccessToken(integrationTestSetupBean.getHostPath()+RestIdPClientAccessor.YOUR_MICROSERVICE_IDP_TOKEN_REQUEST_RESOURCE_PATH, USER_EMAIL, CREDENTIALS);
-        assertNotNull(RestIdPClientAccessObject);
-        /**
-         * Get Resource.
-         */
-        try {
-            byte[] results = (byte[]) restIdPClientAccessor.get(
-                    integrationTestSetupBean.getHostPath()
-                            +TEST_ENDPOINT, RestIdPClientAccessObject);
-            Map<String,String> response
-                    = objectMapper.readValue(results, Map.class);
-            assertNotNull(response);
-            assertEquals("OK", response.get("GET"));
-            LOGGER.info("{}", response);
-        } catch (IOException ioe) {
-            LOGGER.error("IOException Encountered: {}", ioe.getMessage(), ioe);
-        }
-        /**
-         * Logout
-         */
-        int rc = restIdPClientAccessor.logout(integrationTestSetupBean.getHostPath(), RestIdPClientAccessObject);
-        assertEquals(200, rc);
-    }
-
-    @Test
-    public void test10_RestClientPostTest() {
-        LOGGER.info("Running: test10_RestClientPostTest...");
-        assertNotNull(restIdPClientAccessor);
-        /**
-         * Authentication and Obtain Access Token.
-         */
-        RestIdPClientAccessObject RestIdPClientAccessObject =
-                restIdPClientAccessor.getAccessToken(integrationTestSetupBean.getHostPath()+RestIdPClientAccessor.YOUR_MICROSERVICE_IDP_TOKEN_REQUEST_RESOURCE_PATH, USER_EMAIL, CREDENTIALS);
-        assertNotNull(RestIdPClientAccessObject);
-        /**
-         * Post Resource.
-         */
-        try {
-            byte[] results = (byte[]) restIdPClientAccessor.post(
-                    integrationTestSetupBean.getHostPath()
-                            +TEST_ENDPOINT, RestIdPClientAccessObject);
-            Map<String,Object> response
-                    = objectMapper.readValue(results, Map.class);
-            assertNotNull(response);
-            assertEquals("OK", response.get("POST"));
-            LOGGER.info("{}", response);
-        } catch (IOException ioe) {
-            LOGGER.error("IOException Encountered: {}", ioe.getMessage(), ioe);
-        }
-        /**
-         * Logout
-         */
-        int rc = restIdPClientAccessor.logout(integrationTestSetupBean.getHostPath(), RestIdPClientAccessObject);
-        assertEquals(200, rc);
-    }
-
-    @Test
-    public void test11_RestClientPutTest() {
-        LOGGER.info("Running: test11_RestClientPutTest...");
-        assertNotNull(restIdPClientAccessor);
-        /**
-         * Authentication and Obtain Access Token.
-         */
-        RestIdPClientAccessObject RestIdPClientAccessObject =
-                restIdPClientAccessor.getAccessToken(integrationTestSetupBean.getHostPath()+RestIdPClientAccessor.YOUR_MICROSERVICE_IDP_TOKEN_REQUEST_RESOURCE_PATH, USER_EMAIL, CREDENTIALS);
-        assertNotNull(RestIdPClientAccessObject);
-        /**
-         * Put Resource.
-         */
-        try {
-            byte[] results = (byte[]) restIdPClientAccessor.put(
-                    integrationTestSetupBean.getHostPath()
-                            + TEST_ENDPOINT, RestIdPClientAccessObject);
-            Map<String,Object> response
-                    = objectMapper.readValue(results, Map.class);
-            assertNotNull(response);
-            assertEquals("OK", response.get("PUT"));
-            LOGGER.info("{}", response);
-        } catch (IOException ioe) {
-            LOGGER.error("IOException Encountered: {}", ioe.getMessage(), ioe);
-        }
-        /**
-         * Logout
-         */
-        int rc = restIdPClientAccessor.logout(integrationTestSetupBean.getHostPath(), RestIdPClientAccessObject);
-        assertEquals(200, rc);
-    }
-
-    @Test
-    public void test12_RestClientDeleteTest() {
-        LOGGER.info("Running: test12_RestClientDeleteTest...");
-        assertNotNull(restIdPClientAccessor);
-        /**
-         * Authentication and Obtain Access Token.
-         */
-        RestIdPClientAccessObject RestIdPClientAccessObject =
-                restIdPClientAccessor.getAccessToken(integrationTestSetupBean.getHostPath()+RestIdPClientAccessor.YOUR_MICROSERVICE_IDP_TOKEN_REQUEST_RESOURCE_PATH, USER_EMAIL, CREDENTIALS);
-        assertNotNull(RestIdPClientAccessObject);
-        /**
-         * Delete Resource.
-         */
-        try {
-            byte[] results = (byte[]) restIdPClientAccessor.delete(
-                    integrationTestSetupBean.getHostPath()
-                            +TEST_ENDPOINT, RestIdPClientAccessObject);
-            Map<String,Object> response
-                    = objectMapper.readValue(results, Map.class);
-            assertNotNull(response);
-            assertEquals("OK", response.get("DELETE"));
-            LOGGER.info("{}", response);
-        } catch (IOException ioe) {
-            LOGGER.error("IOException Encountered: {}", ioe.getMessage(), ioe);
-        }
-        /**
-         * Logout
-         */
-        int rc = restIdPClientAccessor.logout(integrationTestSetupBean.getHostPath(), RestIdPClientAccessObject);
-        assertEquals(200, rc);
+        given().
+                header("Accept-Encoding", "application/json").
+                when().
+                get(integrationTestSetupBean.getHostPath()
+                        + APIINFO_ENDPOINT).
+                then().
+                assertThat().statusCode(HttpStatus.SC_OK).
+                assertThat().contentType(IntegrationTestSetupBean.APPLICATION_JSON_WITH_UTF8_ENCODING_VALUE).
+                assertThat().body(containsString("\"description\":\"Your Commons MicroServices\"")).
+                assertThat().body(containsString("\"version\":\"")).
+                log().all().
+                extract().asString();
     }
 
     @Test
