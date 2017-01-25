@@ -22,7 +22,7 @@ Microservices Architecture Services and Various Components.
 applied.  [Download Here.](http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html)
 
 ## Overview:
-Your-Microservice
+Your Microservice ...
 
 ## Acknowledgements
 * Initial IdP code forked from: https://github.com/brahalla/Cerberus

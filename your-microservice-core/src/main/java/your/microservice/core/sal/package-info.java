@@ -1,1 +1,0 @@
-package your.microservice.core.sal;
