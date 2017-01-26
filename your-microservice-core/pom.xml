@@ -6,8 +6,8 @@
     <artifactId>your-microservice-core</artifactId>
     <version>1.0.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
+    <description>Your Microservice Core Enabler</description>
 
-    
     <parent>
          <groupId>your-microservice</groupId>
     	<artifactId>your-microservice-parent</artifactId>
@@ -387,30 +387,6 @@
         <plugins>
 
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>templating-maven-plugin</artifactId>
-                <version>1.0-alpha-3</version>
-                <executions>
-                    <execution>
-                        <id>filter-src</id>
-                        <goals>
-                            <goal>filter-sources</goal>
-                        </goals>
-                        <configuration>
-                            <!--
-                              Note the two following parameters are the default one.
-                              These are specified here just as a reminder.
-                              But as the Maven philosophy is strongly about conventions,
-                              it's better to just not specify them.
-                            -->
-                            <sourceDirectory>${basedir}/src/main/java-templates</sourceDirectory>
-                            <outputDirectory>${project.build.directory}/generated-sources/java-templates</outputDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.3</version>
                 <configuration>
@@ -530,6 +506,7 @@
                 <excludes>
                     <exclude>apidoc/**</exclude>
                     <exclude>banner.txt</exclude>
+                    <exclude>core.build.properties</exclude>
                 </excludes>
             </resource>
             <resource>
@@ -537,6 +514,7 @@
                 <filtering>true</filtering>
                 <includes>
                     <include>banner.txt</include>
+                    <include>core.build.properties</include>
                 </includes>
             </resource>
         </resources>

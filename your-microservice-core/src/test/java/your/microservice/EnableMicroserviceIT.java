@@ -87,6 +87,11 @@ public class EnableMicroserviceIT {
         LOGGER.info("Running: test02_getAppInfo...");
         /**
          * Access Open End Point to Obtain API Information.
+         *
+         * AppInfo: {"buildVersion":"1.0.0.0-SNAPSHOT","buildTimestamp":"2017-01-26 17:40:24Z",
+         *           "buildName":"your-microservice-core","buildDescription":"Your Microservice Core Enable",
+         *           "buildArtifactId":"your-microservice-core","buildGroupId":"your-microservice"}
+
          */
         given().
                 header("Accept-Encoding", "application/json").
@@ -96,8 +101,11 @@ public class EnableMicroserviceIT {
                 then().
                 assertThat().statusCode(HttpStatus.SC_OK).
                 assertThat().contentType(IntegrationTestSetupBean.APPLICATION_JSON_WITH_UTF8_ENCODING_VALUE).
-                assertThat().body(containsString("\"description\":\"Your Commons MicroServices\"")).
-                assertThat().body(containsString("\"version\":\"")).
+                assertThat().body(containsString("\"buildVersion\":\"")).
+                assertThat().body(containsString("\"buildTimestamp\":\"")).
+                assertThat().body(containsString("\"buildDescription\":\"")).
+                assertThat().body(containsString("\"buildVersion\":\"")).
+                assertThat().body(containsString("\"buildName\":\"")).
                 log().all().
                 extract().asString();
     }

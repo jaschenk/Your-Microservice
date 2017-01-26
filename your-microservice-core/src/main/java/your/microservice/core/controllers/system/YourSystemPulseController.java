@@ -1,15 +1,13 @@
 package your.microservice.core.controllers.system;
 
 import org.springframework.security.core.Authentication;
-import your.microservice.AppInfo;
+import your.microservice.core.AppInfo;
 import your.microservice.core.dm.dto.system.YourPulse;
 import your.microservice.core.system.SystemInstanceStatusService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpSession;
 
 /**
  * YourSystemPulseController
@@ -27,9 +25,10 @@ public class YourSystemPulseController {
      */
     private final static Logger LOGGER = LoggerFactory.getLogger(YourSystemPulseController.class);
     /**
-     * Static Application Information Object for this Runtime Instance.
+     * Application Information Object for this Runtime Instance.
      */
-    private static final AppInfo appInfo = new AppInfo();
+    @Autowired
+    private AppInfo appInfo;
     /**
      * SystemInstanceStatusService Reference.
      */
@@ -65,7 +64,7 @@ public class YourSystemPulseController {
         /**
          * Set the Front End and Cloud Instance Versions.
          */
-        pulse.setCloudVersion(appInfo.getVersion());
+        pulse.setCloudVersion(appInfo.getBuildVersion());
         /**
          * Get Instance Address
          */

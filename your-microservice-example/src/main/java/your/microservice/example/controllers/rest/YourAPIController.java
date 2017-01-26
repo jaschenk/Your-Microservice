@@ -2,13 +2,12 @@ package your.microservice.example.controllers.rest;
 
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpSession;
+import your.microservice.example.AppInfo;
 
 /**
  * APIController
  *
- * @author jeff.a.schenk@gmail.com on 7/1/15.
+ * @author jeff.a.schenk@gmail.com
  */
 @RestController
 @RequestMapping("/api/example/{version}")
@@ -29,7 +28,6 @@ public class YourAPIController {
      * Obtain the current Service Application Information.
      *
      * @param version Optional Version of API
-     * @param httpSession Reference
      * @return Environments Containing Supported Environments.
      */
     @RequestMapping(
@@ -37,15 +35,8 @@ public class YourAPIController {
             produces = APPLICATION_JSON_WITH_UTF8_ENCODING_VALUE
     )
     @ResponseBody
-    public AppInfo getApiInfo(@PathVariable String version, HttpSession httpSession) {
+    public AppInfo getApiInfo(@PathVariable String version) {
         return new AppInfo();
     }
-
-
-
-
-
-
-
 
 }

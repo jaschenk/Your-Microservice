@@ -1,15 +1,17 @@
 package your.microservice.core.controllers.system;
 
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import your.microservice.AppInfo;
+import your.microservice.core.AppInfo;
 
 import javax.servlet.http.HttpSession;
 
 /**
  * AppInfoRESTController
  *
- * @author jeff.a.schenk@gmail.com 04/07/2016.
+ * @author jeff.a.schenk@gmail.com
  */
 @CrossOrigin(origins = "*")
 @RestController
@@ -22,6 +24,9 @@ public class AppInfoController {
     protected final static org.slf4j.Logger LOGGER =
             LoggerFactory.getLogger(AppInfoController.class);
 
+    @Autowired
+    private AppInfo appInfo;
+
     /**
      * Constants
      */
@@ -31,8 +36,8 @@ public class AppInfoController {
      * getApiInfo
      * Obtain the current Service Application Information.
      *
+     * @param authentication Reference
      * @param version Optional Version of API
-     * @param httpSession Reference
      * @return Environments Containing Supported Environments.
      */
     @RequestMapping(
@@ -40,8 +45,8 @@ public class AppInfoController {
             produces = APPLICATION_JSON_WITH_UTF8_ENCODING_VALUE
     )
     @ResponseBody
-    public AppInfo getApiInfo(@PathVariable String serviceName, @PathVariable String version, HttpSession httpSession) {
-        return new AppInfo();
+    public AppInfo getApiInfo(Authentication authentication, @PathVariable String serviceName, @PathVariable String version) {
+        return appInfo;
     }
 
 }

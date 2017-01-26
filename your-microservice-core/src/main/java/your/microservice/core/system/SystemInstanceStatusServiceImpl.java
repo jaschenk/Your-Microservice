@@ -1,6 +1,7 @@
 package your.microservice.core.system;
 
-import your.microservice.AppInfo;
+import org.springframework.beans.factory.annotation.Autowired;
+import your.microservice.core.AppInfo;
 import your.microservice.core.dm.dto.system.YourBulletin;
 import your.microservice.core.system.messaging.model.YourMSBulletinBroadcastNotification;
 import org.slf4j.Logger;
@@ -34,7 +35,8 @@ public class SystemInstanceStatusServiceImpl implements SystemInstanceStatusServ
     /**
      * Static Application Information Object for this Runtime Instance.
      */
-    private static final AppInfo appInfo = new AppInfo();
+    @Autowired
+    private AppInfo appInfo;
     /**
      * Constants
      */
@@ -135,7 +137,7 @@ public class SystemInstanceStatusServiceImpl implements SystemInstanceStatusServ
             /**
              * Set the Front End and Cloud Instance Versions.
              */
-            yourBulletin.setCloudVersion(appInfo.getVersion());
+            yourBulletin.setCloudVersion(appInfo.getBuildVersion());
             /**
              * Set new Current
              */
@@ -158,7 +160,7 @@ public class SystemInstanceStatusServiceImpl implements SystemInstanceStatusServ
             yourMSBulletinBroadcastNotification = new YourMSBulletinBroadcastNotification();
             YourBulletin yourBulletin = new YourBulletin();
             yourBulletin.setCloudInstance(instanceToken);
-            yourBulletin.setCloudVersion(appInfo.getVersion());
+            yourBulletin.setCloudVersion(appInfo.getBuildVersion());
             yourBulletin.setCloudStatus(YourBulletin.CloudStatusType.OK.toString());
             yourBulletin.setMessageLevel(YourBulletin.MessageLevel.INFO.toString());
             yourBulletin.setMessageType(YourBulletin.MessageType.CLOUD_BULLETIN.toString());
