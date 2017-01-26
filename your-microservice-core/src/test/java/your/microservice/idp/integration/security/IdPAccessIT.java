@@ -151,7 +151,7 @@ public class IdPAccessIT {
         Map<String, Object> accessProperties = new HashMap<>();
         accessProperties.put("token", UUID.randomUUID().toString()); // Bogus Token...
         RestIdPClientAccessObject RestIdPClientAccessObject = new RestIdPClientAccessObject(accessProperties);
-        restIdPClientAccessor.get(TEST_ENDPOINT, RestIdPClientAccessObject);
+        restIdPClientAccessor.get(integrationTestSetupBean.getHostPath()+TEST_ENDPOINT, RestIdPClientAccessObject);
         fail("Should have thrown a RestClientAccessor Exception, but did not, very bad!");
     }
 
@@ -169,18 +169,10 @@ public class IdPAccessIT {
         /**
          * Get Resource.
          */
-        try {
-            byte[] results = (byte[]) restIdPClientAccessor.get(TEST_ENDPOINT, restIdPClientAccessObject);
-            @SuppressWarnings("unchecked")
-            Map<String, Object> data = objectMapper.readValue(results, Map.class);
-            assertNotNull(data);
-            LOGGER.info("Data:");
-            for (String key : data.keySet()) {
-                LOGGER.info(" ++ '{}' = '{}'", key, data.get(key));
-            }
-        } catch (Exception ioe) {
-            LOGGER.error("IOException Encountered: {}", ioe.getMessage(), ioe);
-        }
+            byte[] results = (byte[]) restIdPClientAccessor.get(integrationTestSetupBean.getHostPath() + TEST_ENDPOINT, restIdPClientAccessObject);
+            assertNotNull(results);
+            assertEquals("OK", new String(results));
+            LOGGER.info("{}", new String(results));
     }
 
     @Test
@@ -279,7 +271,7 @@ public class IdPAccessIT {
 
     @Test
     public void test11_accessPulse() {
-        LOGGER.info("Running: test10_accessPulse...");
+        LOGGER.info("Running: test11_accessPulse...");
         assertNotNull(restIdPClientAccessor);
         /**
          * Authentication and Obtain Access Token.
@@ -314,7 +306,7 @@ public class IdPAccessIT {
 
     @Test
     public void test12_RestClientGetTest() {
-        LOGGER.info("Running: test11_RestClientGetTest...");
+        LOGGER.info("Running: test12_RestClientGetTest...");
         assertNotNull(restIdPClientAccessor);
         /**
          * Authentication and Obtain Access Token.
@@ -325,18 +317,13 @@ public class IdPAccessIT {
         /**
          * Get Resource.
          */
-        try {
             byte[] results = (byte[]) restIdPClientAccessor.get(
                     integrationTestSetupBean.getHostPath()
                             + TEST_ENDPOINT, RestIdPClientAccessObject);
-            Map<String, String> response
-                    = objectMapper.readValue(results, Map.class);
-            assertNotNull(response);
-            assertEquals("OK", response.get("GET"));
-            LOGGER.info("{}", response);
-        } catch (IOException ioe) {
-            LOGGER.error("IOException Encountered: {}", ioe.getMessage(), ioe);
-        }
+
+            assertNotNull(results);
+            assertEquals("OK", new String(results));
+            LOGGER.info("{}", new String(results));
         /**
          * Logout
          */
@@ -346,7 +333,7 @@ public class IdPAccessIT {
 
     @Test
     public void test13_RestClientPostTest() {
-        LOGGER.info("Running: test12_RestClientPostTest...");
+        LOGGER.info("Running: test13_RestClientPostTest...");
         assertNotNull(restIdPClientAccessor);
         /**
          * Authentication and Obtain Access Token.
@@ -357,18 +344,12 @@ public class IdPAccessIT {
         /**
          * Post Resource.
          */
-        try {
             byte[] results = (byte[]) restIdPClientAccessor.post(
                     integrationTestSetupBean.getHostPath()
                             + TEST_ENDPOINT, RestIdPClientAccessObject);
-            Map<String, Object> response
-                    = objectMapper.readValue(results, Map.class);
-            assertNotNull(response);
-            assertEquals("OK", response.get("POST"));
-            LOGGER.info("{}", response);
-        } catch (IOException ioe) {
-            LOGGER.error("IOException Encountered: {}", ioe.getMessage(), ioe);
-        }
+            assertNotNull(results);
+            assertEquals("OK", new String(results));
+            LOGGER.info("{}", new String(results));
         /**
          * Logout
          */
@@ -389,18 +370,12 @@ public class IdPAccessIT {
         /**
          * Put Resource.
          */
-        try {
             byte[] results = (byte[]) restIdPClientAccessor.put(
                     integrationTestSetupBean.getHostPath()
                             + TEST_ENDPOINT, RestIdPClientAccessObject);
-            Map<String, Object> response
-                    = objectMapper.readValue(results, Map.class);
-            assertNotNull(response);
-            assertEquals("OK", response.get("PUT"));
-            LOGGER.info("{}", response);
-        } catch (IOException ioe) {
-            LOGGER.error("IOException Encountered: {}", ioe.getMessage(), ioe);
-        }
+            assertNotNull(results);
+            assertEquals("OK", new String(results));
+            LOGGER.info("{}", new String(results));
         /**
          * Logout
          */
@@ -421,18 +396,12 @@ public class IdPAccessIT {
         /**
          * Delete Resource.
          */
-        try {
             byte[] results = (byte[]) restIdPClientAccessor.delete(
                     integrationTestSetupBean.getHostPath()
                             + TEST_ENDPOINT, RestIdPClientAccessObject);
-            Map<String, Object> response
-                    = objectMapper.readValue(results, Map.class);
-            assertNotNull(response);
-            assertEquals("OK", response.get("DELETE"));
-            LOGGER.info("{}", response);
-        } catch (IOException ioe) {
-            LOGGER.error("IOException Encountered: {}", ioe.getMessage(), ioe);
-        }
+            assertNotNull(results);
+            assertEquals("OK", new String(results));
+            LOGGER.info("{}", new String(results));
         /**
          * Logout
          */
