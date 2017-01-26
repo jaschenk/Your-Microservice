@@ -12,6 +12,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import your.microservice.MicroserviceTestApplication;
 import your.microservice.core.security.idp.model.base.YourEntityOrganization;
+import your.microservice.core.security.idp.model.types.YourEntityStatus;
 import your.microservice.core.security.idp.repository.IdentityProviderEntityManager;
 
 import java.util.List;
@@ -51,6 +52,7 @@ public class IdPEMYourEntityOrganizationIT {
      * Test Constants
      */
     private static final String ENTITY_ORG_NAME = "Test Organization";
+    private static final String TEST_NEW_ENTITY_ORG_NAME = "FooBar Entity Organization";
 
 
     @Test
@@ -63,6 +65,21 @@ public class IdPEMYourEntityOrganizationIT {
         for (int i = 0; i < orgResults.size(); i++) {
             LOGGER.info("Result[{}]: --> {}", i, orgResults.get(i).toString());
         }
+    }
+
+    @Test
+    public void test02_FindYourEntityOrganizationById() {
+        LOGGER.info("Running: test02_FindYourEntityOrganizationById");
+
+        YourEntityOrganization yourEntityOrganization =
+                identityProviderEntityManager.findYourEntityOrganizationById(1L);
+        assertNotNull(yourEntityOrganization);
+        assertEquals(ENTITY_ORG_NAME, yourEntityOrganization.getName());
+    }
+
+    @Test
+    public void test03_FindYourEntityOrganizationByName() {
+        LOGGER.info("Running: test03_FindYourEntityOrganizationByName");
 
         YourEntityOrganization yourEntityOrganization =
                 identityProviderEntityManager.findYourEntityOrganizationByName(ENTITY_ORG_NAME);
@@ -70,6 +87,31 @@ public class IdPEMYourEntityOrganizationIT {
         assertEquals(ENTITY_ORG_NAME, yourEntityOrganization.getName());
     }
 
+    @Test
+    public void test04_CreateNewYourEntityOrganization() {
+        LOGGER.info("Running: test04_CreateNewYourEntityOrganization");
+        YourEntityOrganization yourEntityOrganization = new YourEntityOrganization();
+        yourEntityOrganization.setName(TEST_NEW_ENTITY_ORG_NAME);
+        yourEntityOrganization.setStatus(YourEntityStatus.ACTIVE);
+        identityProviderEntityManager.saveYourEntityOrganization(yourEntityOrganization);
+
+        yourEntityOrganization =
+                identityProviderEntityManager.findYourEntityOrganizationByName(TEST_NEW_ENTITY_ORG_NAME);
+        assertNotNull(yourEntityOrganization);
+        assertEquals(TEST_NEW_ENTITY_ORG_NAME, yourEntityOrganization.getName());
+    }
+
+    @Test
+    public void test05_YourEntityOrganization() {
+        LOGGER.info("Running: test05_YourEntityOrganization");
+
+        List<YourEntityOrganization> orgResults = identityProviderEntityManager.findAllYourEntityOrganizations();
+        assertNotNull(orgResults);
+        assertEquals(5, orgResults.size());
+        for (int i = 0; i < orgResults.size(); i++) {
+            LOGGER.info("Result[{}]: --> {}", i, orgResults.get(i).toString());
+        }
+    }
 
     @Test
     public void test00_first() {

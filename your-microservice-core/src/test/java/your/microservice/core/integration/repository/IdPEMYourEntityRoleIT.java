@@ -51,7 +51,9 @@ public class IdPEMYourEntityRoleIT {
     /**
      * Test Constants
      */
+    private static final String ADMIN_ENTITY_ROLE_NAME = "ADMIN";
     private static final String ENTITY_ROLE_NAME = "USER";
+    private static final String NEW_ENTITY_ROLE_NAME = "NEW_ROLE_NAME";
 
 
     @Test
@@ -77,20 +79,30 @@ public class IdPEMYourEntityRoleIT {
         assertEquals(ENTITY_ROLE_NAME, yourEntityRole.getName());
 
         YourEntityRole yourEntityRole2 = new YourEntityRole();
-        yourEntityRole2.setName("NEW_ROLE_NAME");
+        yourEntityRole2.setName(NEW_ENTITY_ROLE_NAME);
         yourEntityRole2.setStatus(YourEntityStatus.ACTIVE);
         identityProviderEntityManager.saveYourEntityRole(yourEntityRole2);
 
         yourEntityRole =
-                identityProviderEntityManager.findYourEntityRoleByName("NEW_ROLE_NAME");
+                identityProviderEntityManager.findYourEntityRoleByName(NEW_ENTITY_ROLE_NAME);
         assertNotNull(yourEntityRole);
-        assertEquals("NEW_ROLE_NAME", yourEntityRole.getName());
-
+        assertEquals(NEW_ENTITY_ROLE_NAME, yourEntityRole.getName());
     }
 
     @Test
-    public void test03_GetAllExistingYourEntityRoles() {
-        LOGGER.info("Running: test03_GetAllExistingYourEntityRoles");
+    public void test03_YourEntityRoleById() {
+        LOGGER.info("Running: test03_YourEntityRoleById");
+
+        YourEntityRole yourEntityRole =
+                identityProviderEntityManager.findYourEntityRoleById(1L);
+        assertNotNull(yourEntityRole);
+        assertEquals(ADMIN_ENTITY_ROLE_NAME, yourEntityRole.getName());
+    }
+
+
+    @Test
+    public void test04_GetAllExistingYourEntityRoles() {
+        LOGGER.info("Running: test04_GetAllExistingYourEntityRoles");
 
         List<YourEntityRole> roleResults = identityProviderEntityManager.findAllYourEntityRoles();
         assertNotNull(roleResults);
@@ -98,7 +110,6 @@ public class IdPEMYourEntityRoleIT {
         for (int i = 0; i < roleResults.size(); i++) {
             LOGGER.info("Result[{}]: --> {}", i, roleResults.get(i).toString());
         }
-
     }
 
     @Test
