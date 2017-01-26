@@ -60,8 +60,11 @@ public class YourMicroserviceEnvironmentConfiguration {
      */
     @PostConstruct
     public void initialization() {
-        LOGGER.info("Your Microservice Environment Configuration Initialization...");
-
+        LOGGER.info("Your Microservice Environment Configuration Initialization, Active Profiles:[{}]",
+                environment.getActiveProfiles().length);
+        for(String profileName : environment.getActiveProfiles()) {
+            LOGGER.info(" ++ active Profile: {}", profileName);
+        }
     }
 
     /**
@@ -74,7 +77,7 @@ public class YourMicroserviceEnvironmentConfiguration {
      *    jdbc:h2:mem:testdb
      *
      * @return org.h2.tools.Server
-     * @throws SQLException
+     * @throws SQLException Thrown If Failure Upon Boot Fails...
      */
     @Bean(initMethod="start",destroyMethod="stop")
     public org.h2.tools.Server h2WebConsoleServer () throws SQLException {
@@ -111,7 +114,7 @@ public class YourMicroserviceEnvironmentConfiguration {
     @DependsOn("entityManagerFactory")
     public ResourceDatabasePopulator initDatabase(DataSource dataSource) throws Exception {
         ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
-        populator.addScript((new ClassPathResource("db/h2/insert-data.sql")));
+        populator.addScript(new ClassPathResource("db/h2/insert-data.sql"));
         populator.populate(dataSource.getConnection());
         return populator;
     }

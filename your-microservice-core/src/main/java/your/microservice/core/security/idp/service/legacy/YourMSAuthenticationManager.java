@@ -3,7 +3,6 @@ package your.microservice.core.security.idp.service.legacy;
 import your.microservice.core.system.messaging.jms.MessagePublisherService;
 import your.microservice.core.util.TimeDuration;
 import your.microservice.core.security.idp.model.security.YourMicroserviceUserDetails;
-import your.microservice.core.security.idp.repository.IdentityProviderEntityManager;
 import your.microservice.core.security.idp.security.YourMicroserviceSecurityConstants;
 
 import org.slf4j.Logger;
@@ -29,8 +28,6 @@ public class YourMSAuthenticationManager implements AuthenticationManager {
 
     private final YourMicroserviceUserDetailsService detailsService;
 
-    private final IdentityProviderEntityManager identityProviderEntityManager;
-
     /**
      * Message Publication Service.
      */
@@ -40,14 +37,11 @@ public class YourMSAuthenticationManager implements AuthenticationManager {
      * Default Constructor for Authentication Manager.
      *
      * @param detailsService          YourMSUserDetailsService
-     * @param identityProviderEntityManager            Reference
      * @param messagePublisherService Reference
      */
     public YourMSAuthenticationManager(YourMicroserviceUserDetailsService detailsService,
-                                       IdentityProviderEntityManager identityProviderEntityManager,
                                        MessagePublisherService messagePublisherService) {
         this.detailsService = detailsService;
-        this.identityProviderEntityManager = identityProviderEntityManager;
         this.messagePublisherService = messagePublisherService;
     }
 
@@ -106,7 +100,6 @@ public class YourMSAuthenticationManager implements AuthenticationManager {
             rawPass = null;
             storedHashedPass = null;
             userDetails.shredCredentials();
-
             /**
              * Return Authentication Token...
              */

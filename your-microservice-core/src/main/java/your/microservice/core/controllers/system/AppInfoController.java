@@ -2,11 +2,10 @@ package your.microservice.core.controllers.system;
 
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import your.microservice.core.AppInfo;
-
-import javax.servlet.http.HttpSession;
 
 /**
  * AppInfoRESTController
@@ -24,6 +23,10 @@ public class AppInfoController {
     protected final static org.slf4j.Logger LOGGER =
             LoggerFactory.getLogger(AppInfoController.class);
 
+    /**
+     * Application Info
+     */
+    @Qualifier("coreAppInfo")
     @Autowired
     private AppInfo appInfo;
 
@@ -37,6 +40,7 @@ public class AppInfoController {
      * Obtain the current Service Application Information.
      *
      * @param authentication Reference
+     * @param serviceName Service Name Called
      * @param version Optional Version of API
      * @return Environments Containing Supported Environments.
      */

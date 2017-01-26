@@ -1,7 +1,6 @@
 package your.microservice.core.configuration;
 
 import your.microservice.core.system.messaging.jms.MessagePublisherService;
-import your.microservice.core.security.idp.repository.IdentityProviderEntityManager;
 import your.microservice.core.security.idp.security.AuthenticationTokenFilter;
 import your.microservice.core.security.idp.security.EntryPointUnauthorizedHandler;
 import your.microservice.core.security.idp.security.YourMicroserviceSecurityConstants;
@@ -47,9 +46,6 @@ public class IdPSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private YourMicroserviceUserDetailsService detailsService;
 
-    @Autowired
-    private IdentityProviderEntityManager identityProviderEntityManager;
-
     /**
      * MessagePublisherService
      */
@@ -83,7 +79,7 @@ public class IdPSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         //return super.authenticationManagerBean();
-        return new YourMSAuthenticationManager(detailsService, identityProviderEntityManager, messagePublisherService);
+        return new YourMSAuthenticationManager(detailsService, messagePublisherService);
     }
 
     @Bean

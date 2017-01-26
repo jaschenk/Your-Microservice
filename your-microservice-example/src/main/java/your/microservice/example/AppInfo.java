@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 /**
  * MicroServices Base Application Information
  */
-@Component
+@Component("exampleAppInfo")
 @PropertySource({"classpath:example.build.properties"})
 public class AppInfo {
 
