@@ -20,6 +20,14 @@ Microservices Architecture Services and Various Components.
 1. Java [JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 2. Java Cryptography Extension (JCE) Unlimited Strength Jurisdiction Policy Files for Java 8 should be
 applied.  [Download Here.](http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html)
+3. Maven 
+
+### Building
+To Build this project, simple ensure your have the above Pre-requisites and
+ issue the following Maven command to build:
+   ```
+        mvn clean verify package
+   ```  
 
 ## Overview:
 Your Microservice ...

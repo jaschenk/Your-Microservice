@@ -7,3 +7,6 @@ hs_err_pid*
 
 # Ignore Build Areas
 target
+
+# Test KeyStore
+.yourMicroservice-IdP.keystore

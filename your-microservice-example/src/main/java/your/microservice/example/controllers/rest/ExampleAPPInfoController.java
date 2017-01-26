@@ -47,7 +47,7 @@ public class ExampleAPPInfoController {
     )
     @ResponseBody
     public AppInfo getApiInfo(@PathVariable String version) {
-        return new AppInfo();
+        return appInfo;
     }
 
 }
