@@ -2,7 +2,6 @@ package your.microservice.example.controllers.rest;
 
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
-import your.microservice.AppInfo;
 
 import javax.servlet.http.HttpSession;
 

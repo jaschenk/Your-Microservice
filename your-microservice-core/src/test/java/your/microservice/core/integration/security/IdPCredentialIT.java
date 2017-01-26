@@ -1,4 +1,4 @@
-package your.microservice.idp.integration.security;
+package your.microservice.core.integration.security;
 
 import org.junit.FixMethodOrder;
 import org.junit.Test;

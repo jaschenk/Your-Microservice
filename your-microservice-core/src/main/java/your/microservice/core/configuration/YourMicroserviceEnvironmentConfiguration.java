@@ -1,4 +1,4 @@
-package your.microservice.core.config;
+package your.microservice.core.configuration;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.*;
@@ -30,11 +30,10 @@ import java.sql.SQLException;
  *
  * @author jeff.a.schenk@gmail.com on 2/27/16.
  */
-@ComponentScan(basePackages = {"your.microservice.core",
-        "your.microservice.idp"})
+@ComponentScan(basePackages = {"your.microservice.core"})
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories("your.microservice.idp.model.base")
+@EnableJpaRepositories("your.microservice.core.security.idp.model.base")
 public class YourMicroserviceEnvironmentConfiguration {
     /**
      * Logging
@@ -67,6 +66,13 @@ public class YourMicroserviceEnvironmentConfiguration {
 
     /**
      * H2 Server Backend
+     *
+     * You access the H2 Console via htp://localhost:8082
+     * Change the port as applicable.
+     *
+     * Then to connect to the In-Memory DB use as JDB URL Connection String:
+     *    jdbc:h2:mem:testdb
+     *
      * @return org.h2.tools.Server
      * @throws SQLException
      */
@@ -95,7 +101,7 @@ public class YourMicroserviceEnvironmentConfiguration {
 
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setJpaVendorAdapter(vendorAdapter);
-        factory.setPackagesToScan("your.microservice.idp.model.base");
+        factory.setPackagesToScan("your.microservice.core.security.idp.model.base");
         factory.setDataSource(dataSource());
 
         return factory;

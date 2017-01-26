@@ -1,4 +1,4 @@
-package your.microservice.core.config;
+package your.microservice.core.configuration;
 
 import com.codahale.metrics.JmxReporter;
 import com.codahale.metrics.MetricRegistry;

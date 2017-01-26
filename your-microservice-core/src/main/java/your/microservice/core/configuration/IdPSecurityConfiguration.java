@@ -1,4 +1,4 @@
-package your.microservice.core.config;
+package your.microservice.core.configuration;
 
 import your.microservice.core.system.messaging.jms.MessagePublisherService;
 import your.microservice.core.security.idp.repository.IdentityProviderEntityManager;

@@ -1,4 +1,4 @@
-package your.microservice.idp.integration.security;
+package your.microservice.core.integration.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.restassured.module.mockmvc.RestAssuredMockMvc;

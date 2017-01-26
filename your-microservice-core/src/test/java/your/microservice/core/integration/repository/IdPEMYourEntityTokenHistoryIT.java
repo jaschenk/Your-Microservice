@@ -1,4 +1,4 @@
-package your.microservice.idp.integration.repository;
+package your.microservice.core.integration.repository;
 
 import org.junit.FixMethodOrder;
 import org.junit.Test;

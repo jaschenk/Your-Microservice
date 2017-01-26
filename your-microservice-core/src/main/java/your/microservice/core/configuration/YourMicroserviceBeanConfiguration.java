@@ -1,4 +1,4 @@
-package your.microservice.core.config;
+package your.microservice.core.configuration;
 
 import your.microservice.core.annotation.EnableYourMicroservice;
 import org.slf4j.Logger;

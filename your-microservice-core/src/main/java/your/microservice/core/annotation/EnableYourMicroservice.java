@@ -1,6 +1,6 @@
 package your.microservice.core.annotation;
 
-import your.microservice.core.config.YourMicroserviceBeanConfiguration;
+import your.microservice.core.configuration.YourMicroserviceBeanConfiguration;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.ElementType;

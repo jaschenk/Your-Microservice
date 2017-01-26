@@ -1,5 +1,6 @@
 package your.microservice.core.controllers.system;
 
+import org.springframework.security.core.Authentication;
 import your.microservice.AppInfo;
 import your.microservice.core.dm.dto.system.YourPulse;
 import your.microservice.core.system.SystemInstanceStatusService;
@@ -8,8 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * YourSystemPulseController
@@ -45,10 +45,9 @@ public class YourSystemPulseController {
      * getPulse
      * Obtain Pulse From Service Instance.
      *
+     * @param authentication Reference to Authenticated Entity.
      * @param serviceName Service Name Associated to this Instance.
      * @param version API Version
-     * @param httpServletRequest Reference
-     * @param httpServletResponse  Reference
      * @return Environments Containing Supported Environments.
      */
     @RequestMapping(
@@ -57,9 +56,8 @@ public class YourSystemPulseController {
             produces = APPLICATION_JSON_WITH_UTF8_ENCODING_VALUE
     )
     @ResponseBody
-    public YourPulse getPulse(@PathVariable String serviceName, @PathVariable String version,
-                                 HttpServletRequest httpServletRequest,
-                                 HttpServletResponse httpServletResponse) {
+    public YourPulse getPulse(Authentication authentication,
+                              @PathVariable String serviceName, @PathVariable String version) {
         /**
          * Initialize our Object to Return.
          */
@@ -86,17 +84,9 @@ public class YourSystemPulseController {
             pulse.setAdditionalInformation(systemInstanceStatusService.getCurrentSystemInstanceStatusBulletin());
         }
         /**
-         * Validate Authenticated.
-         */
-        //Account account = AccountResolver.INSTANCE.getAccount(httpServletRequest);
-        //if (account == null) {
-        //    httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-        //    return pulse;
-        //}
-        /**
          * Return Pulse DTO
          */
-        //LOGGER.info("Pulse sent to Consumer:["+account.getEmail()+"], "+pulse);
+        LOGGER.info("{} {} Pulse sent to Consumer:[{}], {}",  serviceName, version, authentication.getName(), pulse);
         return pulse;
     }
 }

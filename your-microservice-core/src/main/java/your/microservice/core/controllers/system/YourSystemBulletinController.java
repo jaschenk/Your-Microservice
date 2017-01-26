@@ -1,5 +1,6 @@
 package your.microservice.core.controllers.system;
 
+import org.springframework.security.core.Authentication;
 import your.microservice.core.system.SystemInstanceStatusService;
 import your.microservice.core.system.messaging.model.YourMSBulletinBroadcastNotification;
 import org.slf4j.Logger;
@@ -7,8 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * YourSystemBulletinController
@@ -42,10 +42,9 @@ public class YourSystemBulletinController {
      * getBulletin
      * Obtain Current System Bulletin.
      *
+     * @param authentication Reference to Authenticated Entity.
      * @param serviceName Service Name Associated to this Instance.
      * @param version API Version
-     * @param httpServletRequest Reference
-     * @param httpServletResponse  Reference
      * @return YourMSBulletinBroadcastNotification Current System Bulletin Information of current Cloud State for Consumer.
      */
     @RequestMapping(
@@ -54,20 +53,14 @@ public class YourSystemBulletinController {
             produces = APPLICATION_JSON_WITH_UTF8_ENCODING_VALUE
     )
     @ResponseBody
-    public YourMSBulletinBroadcastNotification getBulletin(@PathVariable String serviceName,
-                                                            @PathVariable String version,
-                                                            HttpServletRequest httpServletRequest,
-                                                            HttpServletResponse httpServletResponse) {
+    public YourMSBulletinBroadcastNotification getBulletin(Authentication authentication, @PathVariable String serviceName,
+                                                           @PathVariable String version) {
         /**
-         * Validate Authenticated.
+         * Log and return Bulletin
          */
-        //Account account = AccountResolver.INSTANCE.getAccount(httpServletRequest);
-        //if (account == null) {
-       //     httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-        //    return null;
-       // }
-        //LOGGER.info("Your Microservice Bulletin sent to Consumer:["+account.getEmail()+"], " +
-        //            systemInstanceStatusService.getCurrentSystemInstanceStatusBulletin().getYourBulletin());
+        LOGGER.info("Your Microservice {} {} Bulletin sent to Consumer:[{}] ==> {} ",
+                    serviceName, version, authentication.getName(),
+                    systemInstanceStatusService.getCurrentSystemInstanceStatusBulletin().getYourBulletin());
         return systemInstanceStatusService.getCurrentSystemInstanceStatusBulletin();
     }
 }
