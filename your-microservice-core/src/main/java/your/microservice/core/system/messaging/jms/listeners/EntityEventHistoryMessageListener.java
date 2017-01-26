@@ -5,8 +5,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
-import your.microservice.idp.model.base.YourEntityEventHistory;
-import your.microservice.idp.repository.IdentityProviderEntityManager;
+import your.microservice.core.security.idp.model.base.YourEntityEventHistory;
+import your.microservice.core.security.idp.repository.IdentityProviderEntityManager;
 
 /**
  * PersonEventHistoryMessageListener

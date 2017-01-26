@@ -1,7 +1,7 @@
 package your.microservice.core.system.messaging.jms;
 
 import org.springframework.jms.core.JmsTemplate;
-import your.microservice.idp.model.base.YourEntityEventHistory;
+import your.microservice.core.security.idp.model.base.YourEntityEventHistory;
 
 /**
  * JmsTemplateService

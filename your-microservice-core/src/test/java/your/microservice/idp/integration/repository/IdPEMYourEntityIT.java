@@ -12,9 +12,9 @@ import org.springframework.core.env.Environment;
 import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import your.microservice.MicroserviceTestApplication;
-import your.microservice.idp.model.base.YourEntity;
-import your.microservice.idp.model.types.YourEntityStatus;
-import your.microservice.idp.repository.IdentityProviderEntityManager;
+import your.microservice.core.security.idp.model.base.YourEntity;
+import your.microservice.core.security.idp.model.types.YourEntityStatus;
+import your.microservice.core.security.idp.repository.IdentityProviderEntityManager;
 
 import java.util.HashMap;
 import java.util.HashSet;

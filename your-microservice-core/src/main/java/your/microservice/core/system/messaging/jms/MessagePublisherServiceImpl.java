@@ -4,9 +4,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
-import your.microservice.idp.model.base.YourEntity;
-import your.microservice.idp.model.base.YourEntityEventHistory;
-import your.microservice.idp.repository.IdentityProviderEntityManager;
+import your.microservice.core.security.idp.model.base.YourEntity;
+import your.microservice.core.security.idp.model.base.YourEntityEventHistory;
+import your.microservice.core.security.idp.repository.IdentityProviderEntityManager;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
