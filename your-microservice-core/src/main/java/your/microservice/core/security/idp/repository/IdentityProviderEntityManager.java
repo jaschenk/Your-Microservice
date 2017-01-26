@@ -95,9 +95,10 @@ public interface IdentityProviderEntityManager {
     /**
      * createEventHistory
      *
-     * @param yourEntityEventHistory
+     * @param yourEntityEventHistory Entity Event Hisotry Object to be Persisted.
      */
     void createEventHistory(YourEntityEventHistory yourEntityEventHistory);
+
 
     List<YourEntityEventHistory> findAllYourEntityEventHistory(Long yourEntityId);
 
