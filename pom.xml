@@ -17,7 +17,7 @@
         <nimbus-jose-jwt.version>4.22</nimbus-jose-jwt.version>
         <!-- Spring Framework Versions -->
         <springframework.version>4.3.5.RELEASE</springframework.version>
-        <springframework.boot.version>1.3.5.RELEASE</springframework.boot.version>
+        <springframework.boot.version>1.4.4.RELEASE</springframework.boot.version>
         <!-- Spring Security -->
         <springframework.security.version>4.1.0.RELEASE</springframework.security.version>
         <!-- Spring Mobile Device Support -->
