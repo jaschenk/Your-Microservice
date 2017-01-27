@@ -129,6 +129,8 @@ public interface IdentityProviderEntityManager {
 
     List<YourEntity> findAllYourEntities();
 
+    Integer deleteYourEntityById(Long entityId);
+
 
 
     YourEntityOrganization findYourEntityOrganizationById(Long entityOrgId);
@@ -139,6 +141,8 @@ public interface IdentityProviderEntityManager {
 
     void saveYourEntityOrganization(YourEntityOrganization yourEntityOrganization);
 
+    Integer deleteYourEntityOrganizationById(Long entityOrgId);
+
 
 
     List<YourEntityRole> findAllYourEntityRoles();
@@ -148,5 +152,7 @@ public interface IdentityProviderEntityManager {
     YourEntityRole findYourEntityRoleByName(String name);
 
     void saveYourEntityRole(YourEntityRole yourEntityRole);
+
+    Integer deleteYourEntityRoleById(Long entityRoleId);
 
 }

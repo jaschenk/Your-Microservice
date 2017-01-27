@@ -54,14 +54,46 @@ public class IdPEMYourEntityEventHistoryIT {
      * Test Constants
      */
     private static final String USER_EMAIL = "joe.user@mail.com";
+    private static final String ADMIN_EMAIL = "admin.entity@mail.com";
 
     private static final String EVENT_TAG_NAME = "EVENT_TAG_NAME";
     private static final String EVENT_MESSAGE = "Test Event Message";
 
+    @Test
+    public void test01_CreateSomeEventHistoryActivities() {
+        LOGGER.info("Running: test01_CreateSomeEventHistoryActivities");
+
+        /**
+         * Obtain a Test YourEntity ...
+         */
+        YourEntity yourEntity = identityProviderEntityManager.findYourEntityByEmail(ADMIN_EMAIL);
+        assertNotNull(yourEntity);
+        assertEquals(ADMIN_EMAIL, yourEntity.getEntityEmailAddress());
+
+        Map<String, String> eventProperties = new HashMap<>();
+        eventProperties.put("ZERO_KEY", "ZERO_VALUE");
+
+        for (int i = 0; i < 100; i++) {
+            YourEntityEventHistory eventHistory =
+                    new YourEntityEventHistory(yourEntity, EVENT_TAG_NAME, EVENT_MESSAGE, eventProperties);
+            identityProviderEntityManager.createEventHistory(eventHistory);
+        }
+
+        List<YourEntityEventHistory> results =
+                identityProviderEntityManager.findAllYourEntityEventHistory(yourEntity.getEntityId());
+        assertNotNull(results);
+        assertEquals(100, results.size());
+
+        results = identityProviderEntityManager.findAllYourEntityEventHistory();
+        assertNotNull(results);
+        assertEquals(100, results.size());
+
+    }
 
     @Test
-    public void test01_EventHistory() {
-        LOGGER.info("Running: test01_EventHistory");
+    public void test02_ClearAllEventHistory() {
+        LOGGER.info("Running: test02_ClearAllEventHistory");
+
         /**
          * First clear our Event History.
          */
@@ -75,6 +107,12 @@ public class IdPEMYourEntityEventHistoryIT {
         List<YourEntityEventHistory> results = identityProviderEntityManager.findAllYourEntityEventHistory();
         assertNotNull(results);
         assertEquals(0, results.size());
+    }
+
+
+    @Test
+    public void test03_EventHistoryLifeCycle() {
+        LOGGER.info("Running: test03_EventHistoryLifeCycle");
 
         /**
          * Obtain a Test YourEntity ...
@@ -91,7 +129,8 @@ public class IdPEMYourEntityEventHistoryIT {
         identityProviderEntityManager.createEventHistory(eventHistory);
 
 
-        results = identityProviderEntityManager.findAllYourEntityEventHistory(yourEntity.getEntityId());
+        List<YourEntityEventHistory> results =
+                identityProviderEntityManager.findAllYourEntityEventHistory(yourEntity.getEntityId());
         assertNotNull(results);
         assertEquals(1, results.size());
         YourEntityEventHistory eventHistory_1 = results.get(0);
@@ -108,8 +147,8 @@ public class IdPEMYourEntityEventHistoryIT {
     }
 
     @Test
-    public void test02_EventHistory() {
-        LOGGER.info("Running: test02_EventHistory");
+    public void test04_MoreEventHistory() {
+        LOGGER.info("Running: test04_MoreEventHistory");
 
         List<YourEntityEventHistory> results = identityProviderEntityManager.findAllYourEntityEventHistory();
         assertNotNull(results);

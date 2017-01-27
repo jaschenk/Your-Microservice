@@ -345,8 +345,6 @@ public class IdentityProviderEntityManagerImpl implements IdentityProviderEntity
     @Override
     @Transactional(readOnly = true)
     public List<YourEntity> findAllYourEntities() {
-
-
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         final CriteriaQuery<YourEntity> criteriaQuery = criteriaBuilder.createQuery(YourEntity.class);
         final Root<YourEntity> yourEntityRoot = criteriaQuery.from(YourEntity.class);
@@ -355,6 +353,58 @@ public class IdentityProviderEntityManagerImpl implements IdentityProviderEntity
 
         return entityManager.createQuery(criteriaQuery).getResultList();
 
+    }
+
+    @Override
+    @Transactional
+    public void saveYourEntity(YourEntity yourEntity) {
+        if (yourEntity == null) {
+            return;
+        }
+        try {
+            if (yourEntity.getEntityId() == null) {
+                yourEntity.setCreatedByDate(Date.from(Instant.now()));
+                yourEntity.setCreatedByIdentifier("SYSTEM");
+            }
+            yourEntity.setUpdatedByDate(Date.from(Instant.now()));
+            yourEntity.setUpdatedByIdentifier("SYSTEM");
+            entityManager.persist(yourEntity);
+            entityManager.flush();
+        } catch (Exception e) {
+            LOGGER.error("Exception Saving YourEntity: {} {}", e.getMessage(), yourEntity, e);
+        }
+
+    }
+
+    /**
+     * deleteYourEntityById
+     * Will delete Graph of the YourEntity Object
+     *
+     * @param entityId Identity of Entity to be Deleted.
+     * @return Integer Count of Objects Deleted or Zero.
+     */
+    @Override
+    @Transactional
+    public Integer deleteYourEntityById(Long entityId) {
+        Integer count = 0;
+        try {
+            CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+            final CriteriaQuery<YourEntity> criteriaQuery = criteriaBuilder.createQuery(YourEntity.class);
+            final Root<YourEntity> yourEntityRoot = criteriaQuery.from(YourEntity.class);
+
+            criteriaQuery.select(yourEntityRoot);
+            criteriaQuery.where(criteriaBuilder.equal(yourEntityRoot.get("entityId"), entityId));
+            YourEntity yourEntity = entityManager.createQuery(criteriaQuery).getSingleResult();
+            if (yourEntity != null) {
+                    entityManager.remove(yourEntity);
+                    entityManager.flush();
+                    count++;
+            }
+            return count;
+        } catch (Exception e) {
+            LOGGER.error("Exception encountered attempting to deleteYourEntityById: {}", e.getMessage(), e);
+            return count;
+        }
     }
 
     @Override
@@ -394,6 +444,57 @@ public class IdentityProviderEntityManagerImpl implements IdentityProviderEntity
         criteriaQuery.select(yourEntityRoot);
 
         return entityManager.createQuery(criteriaQuery).getResultList();
+    }
+
+    /**
+     * deleteYourEntityOrganizationById
+     * Will delete Graph of the YourEntity Object
+     *
+     * @param entityOrgId Identity of Entity to be Deleted.
+     * @return Integer Count of Objects Deleted or Zero.
+     */
+    @Override
+    @Transactional
+    public Integer deleteYourEntityOrganizationById(Long entityOrgId) {
+        Integer count = 0;
+        try {
+            CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+            final CriteriaQuery<YourEntityOrganization> criteriaQuery = criteriaBuilder.createQuery(YourEntityOrganization.class);
+            final Root<YourEntityOrganization> yourEntityRoot = criteriaQuery.from(YourEntityOrganization.class);
+
+            criteriaQuery.select(yourEntityRoot);
+            criteriaQuery.where(criteriaBuilder.equal(yourEntityRoot.get("entityOrgId"), entityOrgId));
+            YourEntityOrganization yourEntity = entityManager.createQuery(criteriaQuery).getSingleResult();
+            if (yourEntity != null) {
+                entityManager.remove(yourEntity);
+                entityManager.flush();
+                count++;
+            }
+            return count;
+        } catch (Exception e) {
+            LOGGER.error("Exception encountered attempting to deleteYourEntittOrganizationById: {}", e.getMessage(), e);
+            return count;
+        }
+    }
+
+    @Override
+    @Transactional
+    public void saveYourEntityOrganization(YourEntityOrganization yourEntityOrganization) {
+        if (yourEntityOrganization == null) {
+            return;
+        }
+        try {
+            if (yourEntityOrganization.getEntityOrgId() == null) {
+                yourEntityOrganization.setCreatedByDate(Date.from(Instant.now()));
+                yourEntityOrganization.setCreatedByIdentifier("SYSTEM");
+            }
+            yourEntityOrganization.setUpdatedByDate(Date.from(Instant.now()));
+            yourEntityOrganization.setUpdatedByIdentifier("SYSTEM");
+            entityManager.persist(yourEntityOrganization);
+            entityManager.flush();
+        } catch (Exception e) {
+            LOGGER.error("Exception Saving YourEntityOrganization: {} {}", e.getMessage(), yourEntityOrganization, e);
+        }
     }
 
 
@@ -456,45 +557,35 @@ public class IdentityProviderEntityManagerImpl implements IdentityProviderEntity
         }
     }
 
-
+    /**
+     * deleteYourEntityRoleById
+     * Will delete Graph of the YourEntity Object
+     *
+     * @param entityRoleId Identity of Entity to be Deleted.
+     * @return Integer Count of Objects Deleted or Zero.
+     */
     @Override
     @Transactional
-    public void saveYourEntity(YourEntity yourEntity) {
-        if (yourEntity == null) {
-            return;
-        }
+    public Integer deleteYourEntityRoleById(Long entityRoleId) {
+        Integer count = 0;
         try {
-            if (yourEntity.getEntityId() == null) {
-                yourEntity.setCreatedByDate(Date.from(Instant.now()));
-                yourEntity.setCreatedByIdentifier("SYSTEM");
-            }
-            yourEntity.setUpdatedByDate(Date.from(Instant.now()));
-            yourEntity.setUpdatedByIdentifier("SYSTEM");
-            entityManager.persist(yourEntity);
-            entityManager.flush();
-        } catch (Exception e) {
-            LOGGER.error("Exception Saving YourEntity: {} {}", e.getMessage(), yourEntity, e);
-        }
+            CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+            final CriteriaQuery<YourEntityRole> criteriaQuery = criteriaBuilder.createQuery(YourEntityRole.class);
+            final Root<YourEntityRole> yourEntityRoot = criteriaQuery.from(YourEntityRole.class);
 
+            criteriaQuery.select(yourEntityRoot);
+            criteriaQuery.where(criteriaBuilder.equal(yourEntityRoot.get("entityRoleId"), entityRoleId));
+            YourEntityRole yourEntity = entityManager.createQuery(criteriaQuery).getSingleResult();
+            if (yourEntity != null) {
+                entityManager.remove(yourEntity);
+                entityManager.flush();
+                count++;
+            }
+            return count;
+        } catch (Exception e) {
+            LOGGER.error("Exception encountered attempting to deleteYourEntityRoleById: {}", e.getMessage(), e);
+            return count;
+        }
     }
 
-    @Override
-    @Transactional
-    public void saveYourEntityOrganization(YourEntityOrganization yourEntityOrganization) {
-        if (yourEntityOrganization == null) {
-            return;
-        }
-        try {
-            if (yourEntityOrganization.getEntityOrgId() == null) {
-                yourEntityOrganization.setCreatedByDate(Date.from(Instant.now()));
-                yourEntityOrganization.setCreatedByIdentifier("SYSTEM");
-            }
-            yourEntityOrganization.setUpdatedByDate(Date.from(Instant.now()));
-            yourEntityOrganization.setUpdatedByIdentifier("SYSTEM");
-            entityManager.persist(yourEntityOrganization);
-            entityManager.flush();
-        } catch (Exception e) {
-            LOGGER.error("Exception Saving YourEntityOrganization: {} {}", e.getMessage(), yourEntityOrganization, e);
-        }
-    }
 }
