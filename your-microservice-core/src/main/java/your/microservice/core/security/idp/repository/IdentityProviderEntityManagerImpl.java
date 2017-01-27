@@ -170,6 +170,36 @@ public class IdentityProviderEntityManagerImpl implements IdentityProviderEntity
         }
     }
 
+    /**
+     * purgeTokenHistory
+     *
+     * @return Integer Number of Elements deleted or Zero.
+     */
+    @Override
+    @Transactional
+    public Integer purgeTokenHistory() {
+        Integer count = 0;
+        try {
+            CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+            final CriteriaQuery<YourEntityTokenHistory> criteriaQuery = criteriaBuilder.createQuery(YourEntityTokenHistory.class);
+            final Root<YourEntityTokenHistory> yourEntityRoot = criteriaQuery.from(YourEntityTokenHistory.class);
+            /**
+             * Select All Entities...
+             */
+            criteriaQuery.select(yourEntityRoot);
+            List<YourEntityTokenHistory> results = entityManager.createQuery(criteriaQuery).getResultList();
+            if (results != null && results.size() > 0) {
+                for(YourEntityTokenHistory entity : results) {
+                    count += deleteTokenHistory(entity.getJti());
+              }
+            }
+              return count;
+        } catch (Exception e) {
+            LOGGER.error("Exception encountered attempting to deleteTokenHistory: {}", e.getMessage(), e);
+            return count;
+        }
+    }
+
     @Override
     @Transactional
     public Integer deleteTokenHistory(String jti) {
@@ -179,7 +209,7 @@ public class IdentityProviderEntityManagerImpl implements IdentityProviderEntity
             final Root<YourEntityTokenHistory> yourEntityRoot = delete.from(YourEntityTokenHistory.class);
 
             // Create Date path and parameter expressions:
-            Expression<Date> jtiExpression = yourEntityRoot.get("jti");
+            Expression<String> jtiExpression = yourEntityRoot.get("jti");
             delete.where(criteriaBuilder.equal(jtiExpression, jti));
 
             Integer count = entityManager.createQuery(delete).executeUpdate();
@@ -246,6 +276,46 @@ public class IdentityProviderEntityManagerImpl implements IdentityProviderEntity
         final Root<YourEntityEventHistory> yourEntityRoot = criteriaQuery.from(YourEntityEventHistory.class);
         criteriaQuery.select(yourEntityRoot);
         return entityManager.createQuery(criteriaQuery).getResultList();
+    }
+
+    /**
+     * deleteEventHistory
+     * Will delete all of Event History, used by Admin Only.
+     *
+     * @return Integer Count of Objects Deleted or Zero.
+     */
+    @Override
+    @Transactional
+    public Integer deleteEventHistory() {
+        Integer count = 0;
+        try {
+            CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+            final CriteriaQuery<YourEntityEventHistory> criteriaQuery = criteriaBuilder.createQuery(YourEntityEventHistory.class);
+            final Root<YourEntityEventHistory> yourEntityRoot = criteriaQuery.from(YourEntityEventHistory.class);
+            /**
+             * Select All Entities...
+             */
+            criteriaQuery.select(yourEntityRoot);
+            List<YourEntityEventHistory> results = entityManager.createQuery(criteriaQuery).getResultList();
+            if (results != null && results.size() > 0) {
+                for(YourEntityEventHistory entity : results) {
+
+                    CriteriaBuilder _criteriaBuilder = entityManager.getCriteriaBuilder();
+                    final CriteriaDelete<YourEntityEventHistory> delete = _criteriaBuilder.createCriteriaDelete(YourEntityEventHistory.class);
+                    final Root<YourEntityEventHistory> yourEntityRootForDeletion = delete.from(YourEntityEventHistory.class);
+
+                    Expression<Long> idExpression = yourEntityRootForDeletion.get("id");
+                    delete.where(criteriaBuilder.equal(idExpression, entity.getId()));
+
+                    count += entityManager.createQuery(delete).executeUpdate();
+                    entityManager.flush();
+                }
+            }
+            return count;
+        } catch (Exception e) {
+            LOGGER.error("Exception encountered attempting to deleteTokenHistory: {}", e.getMessage(), e);
+            return count;
+        }
     }
 
     @Override

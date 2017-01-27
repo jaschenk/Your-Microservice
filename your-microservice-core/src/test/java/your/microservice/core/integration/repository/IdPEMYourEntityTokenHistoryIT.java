@@ -59,6 +59,13 @@ public class IdPEMYourEntityTokenHistoryIT {
         LOGGER.info("Running: test01_TokenHistoryLifecycle");
 
         /**
+         * Clear our Token History
+         */
+        Integer count = identityProviderEntityManager.purgeTokenHistory();
+        assertNotNull(count);
+        LOGGER.info("Token History Entities Deleted:[{}]",count);
+
+        /**
          * Test creating a JTI
          */
         String jti = UUID.randomUUID().toString();

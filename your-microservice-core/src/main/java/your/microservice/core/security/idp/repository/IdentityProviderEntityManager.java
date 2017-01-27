@@ -70,6 +70,13 @@ public interface IdentityProviderEntityManager {
     Integer incrementTokenHistoryUsage(String jti);
 
     /**
+     * purgeTokenHistory
+     *
+     * @return Integer Number of Elements deleted or Zero.
+     */
+    Integer purgeTokenHistory();
+
+    /**
      * deleteTokenHistory
      *
      * @return Integer Count of Objects Deleted or Zero.
@@ -98,6 +105,14 @@ public interface IdentityProviderEntityManager {
      * @param yourEntityEventHistory Entity Event Hisotry Object to be Persisted.
      */
     void createEventHistory(YourEntityEventHistory yourEntityEventHistory);
+
+    /**
+     * deleteEventHistory
+     * Will delete all of Event History, used by Admin Only.
+     *
+     * @return Integer Count of Objects Deleted or Zero.
+     */
+    Integer deleteEventHistory();
 
 
     List<YourEntityEventHistory> findAllYourEntityEventHistory(Long yourEntityId);

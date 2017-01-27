@@ -62,7 +62,16 @@ public class IdPEMYourEntityEventHistoryIT {
     @Test
     public void test01_EventHistory() {
         LOGGER.info("Running: test01_EventHistory");
+        /**
+         * First clear our Event History.
+         */
+        Integer count = identityProviderEntityManager.deleteEventHistory();
+        assertNotNull(count);
+        LOGGER.info("Event History Entities Deleted:[{}]", count);
 
+        /**
+         * Validate Event History Empty.
+         */
         List<YourEntityEventHistory> results = identityProviderEntityManager.findAllYourEntityEventHistory();
         assertNotNull(results);
         assertEquals(0, results.size());
