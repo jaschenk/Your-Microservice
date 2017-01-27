@@ -1,7 +1,6 @@
 package your.microservice.core.security.idp.model.base;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import org.hibernate.annotations.Cascade;
 import your.microservice.core.security.idp.model.types.YourEntityStatusConverter;
 import your.microservice.core.security.idp.model.types.YourEntityStatus;
 
@@ -68,7 +67,6 @@ public class YourEntity implements Serializable {
     @Column(name="value")
     @CollectionTable(name="YourEntityProperties",
             joinColumns=@JoinColumn(name="yourEntityProperties_id"))
-    @Cascade({org.hibernate.annotations.CascadeType.ALL})
     private Map<String, String> entityProperties = new HashMap<>();
 
     /**

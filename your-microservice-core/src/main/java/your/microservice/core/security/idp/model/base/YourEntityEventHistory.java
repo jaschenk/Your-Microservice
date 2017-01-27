@@ -3,7 +3,6 @@ package your.microservice.core.security.idp.model.base;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import org.hibernate.annotations.Cascade;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
@@ -102,7 +101,6 @@ public class YourEntityEventHistory implements Serializable {
     @MapKeyColumn(name="name")
     @Column(name="value")
     @CollectionTable(name="EventTagProperties", joinColumns=@JoinColumn(name="eventTagProperties_id"))
-    @Cascade({org.hibernate.annotations.CascadeType.ALL})
     private Map<String, String> eventTagProperties = new HashMap<>();
 
     /**

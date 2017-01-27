@@ -300,16 +300,10 @@ public class IdentityProviderEntityManagerImpl implements IdentityProviderEntity
             if (results != null && results.size() > 0) {
                 for(YourEntityEventHistory entity : results) {
 
-                    CriteriaBuilder _criteriaBuilder = entityManager.getCriteriaBuilder();
-                    final CriteriaDelete<YourEntityEventHistory> delete = _criteriaBuilder.createCriteriaDelete(YourEntityEventHistory.class);
-                    final Root<YourEntityEventHistory> yourEntityRootForDeletion = delete.from(YourEntityEventHistory.class);
-
-                    Expression<Long> idExpression = yourEntityRootForDeletion.get("id");
-                    delete.where(criteriaBuilder.equal(idExpression, entity.getId()));
-
-                    count += entityManager.createQuery(delete).executeUpdate();
-                    entityManager.flush();
+                    entityManager.remove(entity);
+                    count++;
                 }
+                entityManager.flush();
             }
             return count;
         } catch (Exception e) {
