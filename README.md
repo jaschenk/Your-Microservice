@@ -32,6 +32,11 @@ To Build this project, simple ensure your have the above Pre-requisites and
 ## Overview:
 Your Microservice ...
 
+
+## Errata
+* Applied workaround for issue with Spring Boot repackaging and Failsafe: 
+  https://github.com/spring-projects/spring-boot/issues/6254
+
 ## Acknowledgements
 * Initial IdP code forked from: https://github.com/brahalla/Cerberus
 
