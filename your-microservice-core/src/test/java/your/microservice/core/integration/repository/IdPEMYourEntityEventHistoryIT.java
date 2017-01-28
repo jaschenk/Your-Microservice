@@ -64,6 +64,13 @@ public class IdPEMYourEntityEventHistoryIT {
         LOGGER.info("Running: test01_CreateSomeEventHistoryActivities");
 
         /**
+         * First clear our Event History.
+         */
+        Integer count = identityProviderEntityManager.deleteEventHistory();
+        assertNotNull(count);
+        LOGGER.info("Event History Entities Deleted:[{}]", count);
+
+        /**
          * Obtain a Test YourEntity ...
          */
         YourEntity yourEntity = identityProviderEntityManager.findYourEntityByEmail(ADMIN_EMAIL);
@@ -82,11 +89,11 @@ public class IdPEMYourEntityEventHistoryIT {
         List<YourEntityEventHistory> results =
                 identityProviderEntityManager.findAllYourEntityEventHistory(yourEntity.getEntityId());
         assertNotNull(results);
-        assertEquals(100, results.size());
+        assertEquals(100,results.size());
 
         results = identityProviderEntityManager.findAllYourEntityEventHistory();
         assertNotNull(results);
-        assertEquals(100, results.size());
+        assertEquals(100,results.size());
 
     }
 
