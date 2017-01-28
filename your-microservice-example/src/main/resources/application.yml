@@ -32,7 +32,7 @@ your.microservice:
          # IdP KeyStore Definition
          keystore.credentials: ks-yourMS
          keystore.entry.name: Your-Microservice-IdP
-         keystore.filename: ./.yourMicroservice-IdP.keystore
+         keystore.filename:
 
          #
          # IdP Properties

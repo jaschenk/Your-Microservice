@@ -8,8 +8,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.env.Environment;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 import your.microservice.MicroserviceTestApplication;
 import your.microservice.core.security.idp.model.base.YourEntity;
 import your.microservice.core.security.idp.model.base.YourEntityEventHistory;
@@ -89,11 +92,11 @@ public class IdPEMYourEntityEventHistoryIT {
         List<YourEntityEventHistory> results =
                 identityProviderEntityManager.findAllYourEntityEventHistory(yourEntity.getEntityId());
         assertNotNull(results);
-        assertEquals(100,results.size());
+        assertEquals(100, results.size());
 
         results = identityProviderEntityManager.findAllYourEntityEventHistory();
         assertNotNull(results);
-        assertEquals(100,results.size());
+        assertEquals(100, results.size());
 
     }
 

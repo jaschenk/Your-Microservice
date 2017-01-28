@@ -83,6 +83,12 @@ public class YourMicroserviceToken_nimbus_Impl implements YourMicroserviceToken 
             = "Invalid Token, Your Microservice Manifest failed Verification.";
 
     /**
+     * Default Keystore File Name.
+     */
+    private static final String TEMPORARY_KEYSTORE_FILENAME_PREFIX =
+            ".yourMicroservice-IdP";
+
+    /**
      * KEYSTORE_FILE_NAME_PATH
      *
      * KeyStore File Name Path, full Path of
@@ -91,6 +97,7 @@ public class YourMicroserviceToken_nimbus_Impl implements YourMicroserviceToken 
      */
     @Value("${your.microservice.security.keystore.filename}")
     private String KEYSTORE_FILE_NAME_PATH;
+    private File resolvedKeystoreFile;
 
     /**
      * KEYSTORE_CREDENTIALS
@@ -151,19 +158,22 @@ public class YourMicroserviceToken_nimbus_Impl implements YourMicroserviceToken 
         LOGGER.info("{}YourMicroserviceToken Component Initialization Commencing...",
                 LOGGING_HEADER);
         /**
+         * Resolve the Keystore Location based upon our Provided Properties.
+         */
+        if(!resolveKeystoreFile()) {
+                String message = "Unable to Initialize the YourMicroserviceToken Implementation, " +
+                        "No KeyStore File Path Specified or was invalid! Update value in property: 'your.microservice.security.keystore', unable to continue...";
+                LOGGER.error("{}{}", LOGGING_HEADER, message);
+                shutdownManager.initiateShutdown(
+                        LOGGING_HEADER+message, 9);
+                return;
+        }
+        /**
          * Check for proper runtime properties.
          */
         if (KEYSTORE_CREDENTIALS == null || KEYSTORE_CREDENTIALS.isEmpty()) {
             String message = "Unable to Initialize the YourMicroserviceToken Implementation, " +
                     "No KeyStore Credentials Specified, specify property: 'your.microservice.security.keystore.credentials', unable to continue...";
-            LOGGER.error("{}{}", LOGGING_HEADER, message);
-            shutdownManager.initiateShutdown(
-                    LOGGING_HEADER+message, 9);
-            return;
-        }
-        if (KEYSTORE_FILE_NAME_PATH == null || KEYSTORE_FILE_NAME_PATH.isEmpty()) {
-            String message = "Unable to Initialize the YourMicroserviceToken Implementation, " +
-                    "No KeyStore File Path Specified, specify property: 'your.microservice.security.keystore', unable to continue...";
             LOGGER.error("{}{}", LOGGING_HEADER, message);
             shutdownManager.initiateShutdown(
                     LOGGING_HEADER+message, 9);
@@ -241,7 +251,7 @@ public class YourMicroserviceToken_nimbus_Impl implements YourMicroserviceToken 
             /**
              * Access KeyStore.
              */
-            KeyStore keyStore = accessKeyStore(KEYSTORE_FILE_NAME_PATH, KEYSTORE_CREDENTIALS);
+            KeyStore keyStore = accessKeyStore(resolvedKeystoreFile, KEYSTORE_CREDENTIALS);
             KeyStore.PasswordProtection keyPassword =
                     new KeyStore.PasswordProtection(KEYSTORE_ENTRY_CREDENTIALS.toCharArray());
             /**
@@ -260,7 +270,7 @@ public class YourMicroserviceToken_nimbus_Impl implements YourMicroserviceToken 
             if (entry != null) {
                 keyFound = ((KeyStore.SecretKeyEntry) entry).getSecretKey();
                 LOGGER.info("{}Found Established Key from specified KeyStore: '{}'",
-                        LOGGING_HEADER, KEYSTORE_FILE_NAME_PATH);
+                        LOGGING_HEADER, resolvedKeystoreFile.getAbsolutePath());
             } else {
                 /**
                  * Generate a new Secret Key for AES Encryption
@@ -277,10 +287,10 @@ public class YourMicroserviceToken_nimbus_Impl implements YourMicroserviceToken 
                  * initially created KeyStore.
                  */
                 LOGGER.info("{}Storing Secret Key to specified KeyStore: '{}'.",
-                        LOGGING_HEADER, KEYSTORE_FILE_NAME_PATH);
+                        LOGGING_HEADER, resolvedKeystoreFile.getAbsolutePath());
                 KeyStore.SecretKeyEntry keyStoreEntry = new KeyStore.SecretKeyEntry(secretKey);
                 keyStore.setEntry(KEYSTORE_ENTRY_NAME, keyStoreEntry, keyPassword);
-                keyStore.store(new FileOutputStream(KEYSTORE_FILE_NAME_PATH), KEYSTORE_CREDENTIALS.toCharArray());
+                keyStore.store(new FileOutputStream(resolvedKeystoreFile), KEYSTORE_CREDENTIALS.toCharArray());
                 /**
                  * retrieve the stored key back
                  */
@@ -345,17 +355,81 @@ public class YourMicroserviceToken_nimbus_Impl implements YourMicroserviceToken 
         }
     }
 
+    private boolean resolveKeystoreFile() {
+        boolean resolved = false;
+        /**
+         * Determine if the File NAme Path has been specified for our KeyStore.
+         * If it has not, assume a test, and attempt to establish a Test Keystore Filename,
+         * which if established, can only be used once for the duration of the runtime instance.
+         */
+        if (KEYSTORE_FILE_NAME_PATH == null || KEYSTORE_FILE_NAME_PATH.isEmpty()) {
+            /**
+             * Establish a Test Temporary Keystore for this runtime instance's existence.
+             */
+            try{
+                File temp = File.createTempFile(TEMPORARY_KEYSTORE_FILENAME_PREFIX, ".keystore");
+                /**
+                 * Remove it for now ...
+                 */
+                if (temp.exists()) {
+                    temp.delete();
+                }
+                KEYSTORE_FILE_NAME_PATH = temp.getAbsolutePath();
+            } catch(IOException e){
+                LOGGER.error("{}Attempting Creating of Temporary Keystore Failed: {}",
+                        LOGGING_HEADER, e.getMessage(),e);
+               return false;
+            }
+            /**
+             * Recursively re-attempt the resolution.
+             */
+            if (resolvedKeystoreFile != null) {
+                /**
+                 * We already attempted resolution twice, now abandon further attempts...
+                 */
+                return resolved;
+            }
+            return resolveKeystoreFile();
+        }
+        /**
+         * Attempt to resolve the Keystore File Path
+         */
+            resolvedKeystoreFile = new File(KEYSTORE_FILE_NAME_PATH);
+            if (resolvedKeystoreFile.exists()&&resolvedKeystoreFile.isFile()&&resolvedKeystoreFile.canRead()&&
+                    resolvedKeystoreFile.canWrite()) {
+              return true;
+            } else if (!resolvedKeystoreFile.exists()) {
+
+               resolved = true;
+
+
+
+            } else {
+                /**
+                 * Here we have a permission issue, either a Directory, or we can not Read or Write to the
+                 * specified Keystore, we have to fail, as we do not want to assume anything and run the risk
+                 * of running an unsecured Microservice.
+                 */
+                String message = "Unable to Initialize the YourMicroserviceToken Implementation, " +
+                        "No KeyStore File Path Specified, specify property: 'your.microservice.security.keystore', unable to continue...";
+                LOGGER.error("{}{}", LOGGING_HEADER, message);
+            }
+        /**
+         * return Resolution
+         */
+        return resolved;
+    }
+
     /**
      * accessKeyStore
      * Access KeyStore, or if not available, create the KeyStore.
      *
-     * @param fileName Location of KeyStore file.
+     * @param file Object of KeyStore file.
      * @param pw Credentials for KeyStore.
      * @return KeyStore Obtained KeyStore.
      * @throws Exception Thrown when issue accessing or creating a new KeyStore.
      */
-    private KeyStore accessKeyStore(String fileName, String pw) throws Exception {
-        File file = new File(fileName);
+    private KeyStore accessKeyStore(File file, String pw) throws Exception {
         final KeyStore keyStore = KeyStore.getInstance("JCEKS");
         /**
          * Check if KeyStore File Exists?
@@ -375,7 +449,7 @@ public class YourMicroserviceToken_nimbus_Impl implements YourMicroserviceToken 
              * KeyStore file not created yet => create it
              */
             keyStore.load(null, null);
-            keyStore.store(new FileOutputStream(fileName), pw.toCharArray());
+            keyStore.store(new FileOutputStream(file), pw.toCharArray());
         }
         /**
          * Return KeyStore.
