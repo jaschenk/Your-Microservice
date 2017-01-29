@@ -197,15 +197,37 @@ public class BulletinZoneWatcherProcessingServiceImpl implements BulletinZoneWat
      * Helper Method to Prepare a Temporary Bulletin Drop Zone.
      */
     protected void formulateTemporaryBulletinDropZone() {
-        File tempFileDir = new File (System.getProperty("java.io.tmpdir") + File.separator +
-                DEFAULT_BULLETIN_DIRECTORY_NAME);
-        if (BulletinDropZoneFileUtility.isZoneDirectoryValid(tempFileDir)) {
-            dropZoneFileDirectoryName = tempFileDir.getAbsolutePath();
+        File temp = null;
+        try{
+            temp = File.createTempFile(DEFAULT_BULLETIN_DIRECTORY_NAME, ".directory");
+            /**
+             * Remove the file for now ...
+             */
+            if (temp.exists()) {
+                temp.delete();
+            }
+            /**
+             * Now Create the Temporary Directory
+             */
+            temp.mkdirs();
+        } catch(IOException ioe) {
+            LOGGER.error("Attempting Creation of Temporary Bulletin Dropzone Directory Failed: {}",
+                    ioe.getMessage(),ioe);
+            return;
+        }
+
+        if (BulletinDropZoneFileUtility.isZoneDirectoryValid(temp)) {
+            dropZoneFileDirectoryName = temp.getAbsolutePath();
+            LOGGER.info("Temporary Bulletin Dropzone Directory:[{}] has been created for this Runtime Instance.",
+                    dropZoneFileDirectoryName);
+            LOGGER.info("If you would like to reuse this Temporary Dropzone, " +
+                    "assign the Dropzone Property with the appropriate File Directory Path Value.");
         } else {
-          LOGGER.error("Attempted to construct a Temporary Directory Named:["+tempFileDir.getAbsolutePath()+
+          LOGGER.error("Attempted to construct a Temporary Directory Named:["+temp.getAbsolutePath()+
             "], however, not a valid Bulletin Drop Zone Directory.");
             dropZoneFileDirectoryName = null;
         }
+
     }
 
     /**

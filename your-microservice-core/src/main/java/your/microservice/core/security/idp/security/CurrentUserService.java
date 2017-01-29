@@ -1,4 +1,4 @@
-package your.microservice.core.security.idp.service.legacy;
+package your.microservice.core.security.idp.security;
 
 import your.microservice.core.security.idp.model.security.YourMicroserviceUserDetails;
 import org.springframework.security.core.GrantedAuthority;

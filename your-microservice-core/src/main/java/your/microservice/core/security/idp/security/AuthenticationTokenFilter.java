@@ -5,7 +5,6 @@ import com.nimbusds.jwt.JWTClaimsSet;
 import your.microservice.core.security.idp.jwt.YourMicroserviceInvalidTokenException;
 import your.microservice.core.security.idp.jwt.YourMicroserviceToken;
 import your.microservice.core.security.idp.repository.IdentityProviderEntityManager;
-import your.microservice.core.security.idp.service.legacy.YourMicroserviceUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;

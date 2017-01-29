@@ -1,12 +1,12 @@
 package your.microservice.core.security.idp.model.security;
 
-import your.microservice.core.security.idp.service.authority.YourMicroserviceAdminAuthority;
+import your.microservice.core.security.idp.security.authority.YourMicroserviceAdminAuthority;
 import your.microservice.core.security.idp.model.base.YourEntity;
 import your.microservice.core.security.idp.model.base.YourEntityRole;
 import your.microservice.core.security.idp.model.types.YourEntityStatus;
-import your.microservice.core.security.idp.service.authority.YourMicroservicePendingUserAuthority;
-import your.microservice.core.security.idp.service.authority.YourMicroserviceProcessAuthority;
-import your.microservice.core.security.idp.service.authority.YourMicroserviceUserAuthority;
+import your.microservice.core.security.idp.security.authority.YourMicroservicePendingUserAuthority;
+import your.microservice.core.security.idp.security.authority.YourMicroserviceProcessAuthority;
+import your.microservice.core.security.idp.security.authority.YourMicroserviceUserAuthority;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 

@@ -1,4 +1,4 @@
-package your.microservice.core.security.idp.service.authority;
+package your.microservice.core.security.idp.security.authority;
 
 import org.springframework.security.core.GrantedAuthority;
 

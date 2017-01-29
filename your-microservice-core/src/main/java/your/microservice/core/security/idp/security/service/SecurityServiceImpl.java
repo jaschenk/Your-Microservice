@@ -1,6 +1,5 @@
-package your.microservice.core.security.idp.service.impl;
+package your.microservice.core.security.idp.security.service;
 
-import your.microservice.core.security.idp.service.SecurityService;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;

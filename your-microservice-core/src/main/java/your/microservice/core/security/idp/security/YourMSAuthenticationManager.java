@@ -1,9 +1,8 @@
-package your.microservice.core.security.idp.service.legacy;
+package your.microservice.core.security.idp.security;
 
 import your.microservice.core.system.messaging.jms.MessagePublisherService;
 import your.microservice.core.util.TimeDuration;
 import your.microservice.core.security.idp.model.security.YourMicroserviceUserDetails;
-import your.microservice.core.security.idp.security.YourMicroserviceSecurityConstants;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

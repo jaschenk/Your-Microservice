@@ -63,3 +63,8 @@ debug: false
 server.tomcat.remote_ip_header: x-forwarded-for
 server.tomcat.protocol_header: x-forwarded-proto
 #
+
+#
+# System Bulletin Drop Zone Directory Specification
+bulletin.dropzone.directory:
+

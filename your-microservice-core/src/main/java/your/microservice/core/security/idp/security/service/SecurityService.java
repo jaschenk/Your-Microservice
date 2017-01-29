@@ -1,4 +1,4 @@
-package your.microservice.core.security.idp.service;
+package your.microservice.core.security.idp.security.service;
 
 public interface SecurityService {
 

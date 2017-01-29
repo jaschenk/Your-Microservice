@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 /**
  * LoggingMetricRegistryListener
  *
- * @author jeff.a.schenk@gmail.com on 8/9/15.
+ * @author jeff.a.schenk@gmail.com
  */
 @Component
 public class LoggingMetricRegistryListener implements MetricRegistryListener {

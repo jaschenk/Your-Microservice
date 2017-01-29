@@ -1,4 +1,4 @@
-package your.microservice.core.security.idp.service.legacy;
+package your.microservice.core.security.idp.security;
 
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * YourMSWebAuthenticationDetailsSource
  *
- * @author jeff.a.schenk@gmail.com on 11/14/15.
+ * @author jeff.a.schenk@gmail.com
  */
 @Component
 public class YourMSWebAuthenticationDetailsSource extends WebAuthenticationDetailsSource {

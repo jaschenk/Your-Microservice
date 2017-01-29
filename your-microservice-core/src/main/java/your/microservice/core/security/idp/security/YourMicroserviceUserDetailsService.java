@@ -1,4 +1,4 @@
-package your.microservice.core.security.idp.service.legacy;
+package your.microservice.core.security.idp.security;
 
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
