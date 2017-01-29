@@ -22,6 +22,25 @@ Microservices Architecture Services and Various Components.
 applied.  [Download Here.](http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html)
 3. Maven 
 
+## Overview:
+Your Microservice ...
+
+
+### Components:
+Your Microservice is comprised of the following primary components:
+* Your Microservice Annotation Definition
+* Your Microservice Configuration to back our Annotation Definition
+* IdP -- Identity Provider, Full JWT Token Based Authentication.
+** Persistent Store -- Using H2 In Memory Database for Testing and Example Usage.
+*** Any JDBC Compliant Database is acceptable.
+** Data Model
+*** ..
+* Common Services
+** Bulletin
+** Pulse
+* REST Client to Interact with Other Microservice Entities.
+
+
 ### Building
 To Build this project, simple ensure your have the above Pre-requisites and
  issue the following Maven command to build:
@@ -29,8 +48,9 @@ To Build this project, simple ensure your have the above Pre-requisites and
         mvn clean verify package
    ```  
 
-## Overview:
-Your Microservice ...
+
+### Running Example
+
 
 
 ## Errata
