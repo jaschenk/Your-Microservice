@@ -1,17 +1,18 @@
 # Your Microservice
 Currently a Work in progress ...
 
-This provides an approach so that you can easily create various Microservices 
-for 'Your' Eco-System using a common core. 
-This allows you to wrap those specific individual Microservices 
+This project provides an approach so that you can easily create various Microservices
+for 'Your' Eco-System using a Common core.
+This project allows you to wrap those specific individual Microservices
 with a Standards Framework to bootstrap 'Your' Eco-System.  
 
 These standard facilities can be shared 
 throughout your Eco-System Product Suite for Developing, Building and Deploying 
 Microservices Architecture Services and Various Components.
 
-## Components
 
+## Overview:
+Your Microservice ...
 
 ## Local Setup
 
@@ -20,13 +21,10 @@ Microservices Architecture Services and Various Components.
 1. Java [JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 2. Java Cryptography Extension (JCE) Unlimited Strength Jurisdiction Policy Files for Java 8 should be
 applied.  [Download Here.](http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html)
-3. Maven 
-
-## Overview:
-Your Microservice ...
+3. Maven
 
 
-### Components:
+## Components:
 Your Microservice is comprised of the following primary components:
 * Your Microservice Annotation Definition
 * Your Microservice Configuration to back our Annotation Definition
@@ -38,7 +36,7 @@ Your Microservice is comprised of the following primary components:
 * Common Services
   * Bulletin
   * Pulse
-* REST Client to Interact with Other Microservice Entities.
+* REST Client to Interact with Other Your Microservice Instances.
 
 
 ### Building
@@ -49,7 +47,7 @@ To Build this project, simple ensure your have the above Pre-requisites and
    ```  
 
 
-### Running Your Example Microservice
+### Running Your Microservice Example
 
 
 
