@@ -11,12 +11,12 @@ throughout your Eco-System Product Suite for Developing, Building and Deploying
 Microservices Architecture Services and Various Components.
 
 
-## Overview:
+## Overview
 Your Microservice ...
 
 ## Local Setup
 
-### Pre-requisites:
+### Pre-requisites
 
 1. Java [JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 2. Java Cryptography Extension (JCE) Unlimited Strength Jurisdiction Policy Files for Java 8 should be
@@ -24,9 +24,9 @@ applied.  [Download Here.](http://www.oracle.com/technetwork/java/javase/downloa
 3. Maven
 
 
-## Components:
+## Components
 Your Microservice is comprised of the following primary components:
-* Your Microservice Annotation Definition
+* Your Microservice Annotation Definition.
 * Your Microservice Configuration to back our Annotation Definition
 * IdP -- Identity Provider, Full JWT Token Based Authentication.
   * Persistent Store -- Using H2 In Memory Database for Testing and Example Usage.
