@@ -48,12 +48,32 @@ To Build this project, simple ensure your have the above Pre-requisites and
 
 
 ### Running Your Microservice Example
+Once the project has been built, simple change to the **your-microservice-example** 
+directory contained in the project and proceed depending upon your applicable Operating System. 
 
+Using the default settings, you will bootstrap the example Microservice on Port **9090**.
+
+#### *NIX
+   ```
+    $  cd your-microservice-example
+    $  ./bin/run_your_microservice_example.sh
+   ```
+
+
+#### WIN
+   ```
+    $  cd your-microservice-example
+    $  bin\run_your_microservice_example.bat
+   ```
 
 
 ## Errata
 * Applied workaround for issue with Spring Boot repackaging and Failsafe: 
   https://github.com/spring-projects/spring-boot/issues/6254
+  
+* SSL has not been configured, using any type of Token Based Authentication Requires SSL!  
+  If you are intending on running this or any variant, you MUST CONFIGURE and RUN SSL!
+
 
 ## Acknowledgements
 * Initial IdP code forked from: https://github.com/brahalla/Cerberus
