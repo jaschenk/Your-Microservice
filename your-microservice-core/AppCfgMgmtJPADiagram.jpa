@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<jpa:entity-mappings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:java="http://jcp.org/en/jsr/detail?id=270" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:jpa="http://java.sun.com/xml/ns/persistence/orm" v="3.1" sm="false" xs="false" id="_14858386848052" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm orm_2_1.xsd">
+    <jpa:entity xre="false" compositePrimaryKeyClass="ApplicationPK" abs="false" class="Application" superclassId="_1486100173522" v="true" m="false" rootElement="_14858386848052" id="_1486100145122">
+        <jpa:ts e="true"/>
+        <jpa:hc e="true"/>
+        <jpa:eq e="true"/>
+        <jpa:ath>jaschenk</jpa:ath>
+        <jpa:attributes>
+            <jpa:many-to-many own="true" collection-type="java.util.List" connected-entity-id="_1486100466683" connected-attribute-id="_148610065844017" v="true" name="environments" id="_148610065843216">
+                <jpa:bv/>
+            </jpa:many-to-many>
+        </jpa:attributes>
+        <jpa:nq e="false" name="Application.findAll">
+            <jpa:query>Select e from Application e</jpa:query>
+        </jpa:nq>
+        <jpa:nq e="false" name="Application.findByEnvironment">
+            <jpa:query>Select a from Application a where a.environment=:environment</jpa:query>
+        </jpa:nq>
+        <jpa:el/>
+    </jpa:entity>
+    <jpa:entity xre="false" compositePrimaryKeyClass="RootEntityPK" abs="true" class="RootEntity" v="true" m="false" rootElement="_14858386848052" id="_1486100173522">
+        <jpa:ts e="true"/>
+        <jpa:ath>jaschenk</jpa:ath>
+        <jpa:attributes>
+            <jpa:basic attribute-type="String" v="true" name="name" id="_14861003189266">
+                <jpa:bv/>
+            </jpa:basic>
+            <jpa:basic attribute-type="String" v="true" name="description" id="_14861003456497">
+                <jpa:bv/>
+            </jpa:basic>
+            <jpa:basic attribute-type="String" v="true" name="createdDateTime" id="_14861003606898">
+                <jpa:bv/>
+            </jpa:basic>
+            <jpa:basic attribute-type="String" v="true" name="createdBy" id="_14861003857289">
+                <jpa:bv/>
+            </jpa:basic>
+            <jpa:basic attribute-type="String" v="true" name="updatedDateTime" id="_148610041144610">
+                <jpa:bv/>
+            </jpa:basic>
+            <jpa:basic attribute-type="String" v="true" name="updateBy" id="_148610042100611">
+                <jpa:bv/>
+            </jpa:basic>
+            <jpa:basic attribute-type="String" v="true" name="status" id="_148610043423712">
+                <jpa:bv/>
+            </jpa:basic>
+            <jpa:id attribute-type="Long" v="true" name="id" id="_14861001735233">
+                <jpa:bv/>
+                <jpa:generated-value strategy="AUTO"/>
+            </jpa:id>
+            <jpa:version attribute-type="long" v="true" name="version" id="_14861002930455">
+                <jpa:bv/>
+            </jpa:version>
+        </jpa:attributes>
+        <jpa:nq e="false" name="RootEntity.findAll">
+            <jpa:query>Select e from RootEntity e</jpa:query>
+        </jpa:nq>
+        <jpa:nq e="false" name="RootEntity.findByName">
+            <jpa:query>Select r from RootEntity r where r.name=:name</jpa:query>
+        </jpa:nq>
+        <jpa:nq e="false" name="RootEntity.findByDescription">
+            <jpa:query>Select r from RootEntity r where r.description=:description</jpa:query>
+        </jpa:nq>
+        <jpa:nq e="false" name="RootEntity.findByCreatedDateTime">
+            <jpa:query>Select r from RootEntity r where r.createdDateTime=:createdDateTime</jpa:query>
+        </jpa:nq>
+        <jpa:nq e="false" name="RootEntity.findByCreatedBy">
+            <jpa:query>Select r from RootEntity r where r.createdBy=:createdBy</jpa:query>
+        </jpa:nq>
+        <jpa:nq e="false" name="RootEntity.findByUpdatedDateTime">
+            <jpa:query>Select r from RootEntity r where r.updatedDateTime=:updatedDateTime</jpa:query>
+        </jpa:nq>
+        <jpa:nq e="false" name="RootEntity.findByUpdateBy">
+            <jpa:query>Select r from RootEntity r where r.updateBy=:updateBy</jpa:query>
+        </jpa:nq>
+        <jpa:nq e="false" name="RootEntity.findByStatus">
+            <jpa:query>Select r from RootEntity r where r.status=:status</jpa:query>
+        </jpa:nq>
+        <jpa:el/>
+    </jpa:entity>
+    <jpa:entity xre="false" compositePrimaryKeyClass="EnvironmentPK" abs="false" class="Environment" superclassId="_1486100173522" v="true" m="false" rootElement="_14858386848052" id="_1486100466683">
+        <jpa:ts e="true"/>
+        <jpa:ath>jaschenk</jpa:ath>
+        <jpa:attributes>
+            <jpa:many-to-many collection-type="java.util.List" connected-entity-id="_1486100145122" connected-attribute-id="_148610065843216" v="true" name="applications" id="_148610065844017">
+                <jpa:bv/>
+            </jpa:many-to-many>
+        </jpa:attributes>
+        <jpa:nq e="false" name="Environment.findAll">
+            <jpa:query>Select e from Environment e</jpa:query>
+        </jpa:nq>
+        <jpa:el/>
+    </jpa:entity>
+    <jpa:entity xre="false" compositePrimaryKeyClass="PropertyPK" abs="false" class="Property" superclassId="_1486100173522" v="true" m="false" rootElement="_14858386848052" id="_1486100788922">
+        <jpa:ts e="true"/>
+        <jpa:ath>jaschenk</jpa:ath>
+        <jpa:attributes>
+            <jpa:basic attribute-type="String" v="true" name="encryptedValue" id="_148610082470426">
+                <jpa:bv/>
+            </jpa:basic>
+            <jpa:one-to-many own="true" collection-type="java.util.List" connected-entity-id="_1486100856928" v="true" name="valueElements" id="_148610100446530">
+                <jpa:bv/>
+            </jpa:one-to-many>
+        </jpa:attributes>
+        <jpa:nq e="false" name="Property.findAll">
+            <jpa:query>Select e from Property e</jpa:query>
+        </jpa:nq>
+        <jpa:nq e="false" name="Property.findByEncryptedValue">
+            <jpa:query>Select p from Property p where p.encryptedValue=:encryptedValue</jpa:query>
+        </jpa:nq>
+        <jpa:el/>
+    </jpa:entity>
+    <jpa:entity xre="false" compositePrimaryKeyClass="ValueElementPK" abs="false" class="ValueElement" superclassId="_1486100173522" v="true" m="false" rootElement="_14858386848052" id="_1486100856928">
+        <jpa:ts e="true"/>
+        <jpa:ath>jaschenk</jpa:ath>
+        <jpa:attributes>
+            <jpa:basic attribute-type="String" v="true" name="value" id="_148610095080129">
+                <jpa:bv/>
+            </jpa:basic>
+        </jpa:attributes>
+        <jpa:nq e="false" name="ValueElements.findAll">
+            <jpa:query>Select e from ValueElements e</jpa:query>
+        </jpa:nq>
+        <jpa:nq e="false" name="Value.findByValueElements">
+            <jpa:query>Select v from ValueElements v where v.ValueElements=:ValueElements</jpa:query>
+        </jpa:nq>
+        <jpa:el/>
+    </jpa:entity>
+    <jpa:snp loc="BEFORE_PACKAGE" e="true">/**
+ * This file was generated by the JPA Modeler
+ */</jpa:snp>
+    <jpa:inf e="true" n="java.io.Serializable"/>
+    <jpa:c/>
+    <jpa:diagram>
+        <plane elementRef="_14858386848052">
+            <shape elementRef="_1486100145122">
+                <Bounds x="31.0" y="427.0" width="175.0" height="55.0"/>
+            </shape>
+            <shape elementRef="_1486100173522">
+                <Bounds x="83.0" y="34.0" width="170.0" height="238.0"/>
+            </shape>
+            <shape elementRef="_1486100466683">
+                <Bounds x="336.0" y="384.0" width="184.0" height="55.0"/>
+            </shape>
+            <shape elementRef="_1486100788922">
+                <Bounds x="410.0" y="92.0" width="158.0" height="87.0"/>
+            </shape>
+            <shape elementRef="_1486100856928">
+                <Bounds x="538.0" y="272.0" width="193.0" height="55.0"/>
+            </shape>
+        </plane>
+    </jpa:diagram>
+</jpa:entity-mappings>
