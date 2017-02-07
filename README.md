@@ -1,4 +1,4 @@
-# Your Microservice
+# Your Microservice Overview
 Currently a Work in progress ...
 
 This project provides an approach so that you can easily create various Microservices
@@ -11,10 +11,8 @@ throughout your Eco-System Product Suite for Developing, Building and Deploying
 Microservices Architecture Services and Various Components.
 
 
-## Overview
-Your Microservice ...
-
 ## Local Setup
+Simply ensure you have the necessary Pre-requisites and you should be good to go...
 
 ### Pre-requisites
 
@@ -32,10 +30,10 @@ Your Microservice is comprised of the following primary components:
   * Persistent Store -- Using H2 In Memory Database for Testing and Example Usage.
    Any JDBC Compliant Database is acceptable.
   * Data Model
-  * ..
 * Common Services
-  * Bulletin
-  * Pulse
+  * Bulletin -- Provides ability to inject System Bulletin Updates via File System.  
+  The Bulletin Service provides a means to respond to current state of runtime Application.
+  * Pulse -- Provides simple status of current Runtime Application.
 * REST Client to Interact with Other Your Microservice Instances.
 
 
@@ -66,6 +64,15 @@ Using the default settings, you will bootstrap the example Microservice on Port 
     $  bin\run_your_microservice_example.bat
    ```
 
+### Interfacing with IdP
+* ...
+* ...
+
+
+## ToDo's
+* Orchestration Layer -- Build out the Orchestration layer to provide 
+Microservices to work in concert with other Microservices.
+
 
 ## Errata
 * Applied workaround for issue with Spring Boot repackaging and Failsafe: 
@@ -73,7 +80,6 @@ Using the default settings, you will bootstrap the example Microservice on Port 
   
 * SSL has not been configured, using any type of Token Based Authentication Requires SSL!  
   If you are intending on running this or any variant, you MUST CONFIGURE and RUN SSL!
-
 
 ## Acknowledgements
 * Initial IdP code forked from: https://github.com/brahalla/Cerberus
