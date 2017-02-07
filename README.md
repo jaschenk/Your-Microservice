@@ -51,6 +51,23 @@ directory contained in the project and proceed depending upon your applicable Op
 
 Using the default settings, you will bootstrap the example Microservice on Port **9090**.
 
+#### Default Data
+To simulate some form of real Data, the H2 Database is seeded with a number of entries to support
+an initial login to the back-end facilities.
+
+Upon bootstrap of the Data Layer, the SQL Script located with the Core Resources to executed to Load the
+ initial Data into the H2 database.
+   ```
+    db\h2\insert-data.sql
+   ```
+
+Remember, the **H2 Database** is an In-memory database, so upon subsequent 
+restarts, all data is cleared and initialized per above SQL script.
+
+For a Production implementation, you would remove this initialization capability to use an
+established Database.
+
+
 #### *NIX
    ```
     $  cd your-microservice-example
