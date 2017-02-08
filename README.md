@@ -89,14 +89,14 @@ http://localhost:8082
 
 
 
-#### *NIX
+#### Running on *NIX
 ```
 $  cd your-microservice-example
 $  ./bin/run_your_microservice_example.sh
 ```
 
 
-#### WIN
+#### Running on WIN
 ```
 $  cd your-microservice-example
 $  bin\run_your_microservice_example.bat
@@ -107,8 +107,11 @@ $  bin\run_your_microservice_example.bat
 * ...
 * ...
 
-### Summary of Ports Used
+### Summary of Default Ports Used
 
+* 8082: Embedded H2 Server
+* 9044: JPDA Debugging 
+* 9090: Your Microservice Example Http
 
 ## Your Microservice Domain Model
 The Your Microservice Domain Model provides a simple but extensible Data Model to represent Entities, Entity Roles, Entity Organizations, event History and the IdP Token History.
