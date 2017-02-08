@@ -11,6 +11,8 @@ import org.springframework.security.web.authentication.preauth.PreAuthenticatedC
 import org.springframework.stereotype.Service;
 import your.microservice.core.security.idp.repository.IdentityProviderEntityManager;
 
+import javax.persistence.NoResultException;
+
 /**
  * YourMicroserviceUserDetailsService
  *
@@ -31,16 +33,25 @@ public class YourMicroserviceUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String uName) throws UsernameNotFoundException {
+        YourEntity yourEntity =  null;
         if (uName == null || uName.isEmpty()) {
             throw new PreAuthenticatedCredentialsNotFoundException("No User Email Address Supplied for Obtaining User, Ignoring!");
         }
-        LOGGER.info("Authenticating:[{}]",uName);
-        YourEntity yourEntity = identityProviderEntityManager.findYourEntityByEmail(uName);
-        if (yourEntity == null) {
-            LOGGER.warn("YourEntity Object Not Found based Upon Email:[{}]",uName);
-            throw new UsernameNotFoundException("No User with email address '" + uName + "' could be found.");
+        try {
+            LOGGER.info("Authenticating:[{}]", uName);
+            yourEntity = identityProviderEntityManager.findYourEntityByEmail(uName);
+            if (yourEntity == null) {
+                raiseNotFoundCondition(uName);
+            }
+        } catch(NoResultException nre) {
+                raiseNotFoundCondition(uName);
         }
         LOGGER.info("YourEntity Object Found based Upon Email:[{}]",uName);
         return new YourMicroserviceUserDetails(yourEntity);
+    }
+    
+    private void raiseNotFoundCondition(String uName) {
+        LOGGER.warn("YourEntity Object Not Found based Upon Email:[{}]",uName);
+        throw new UsernameNotFoundException("No User with email address '" + uName + "' could be found.");
     }
 }
