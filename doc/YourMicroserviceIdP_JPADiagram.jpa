@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<jpa:entity-mappings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:java="http://jcp.org/en/jsr/detail?id=270" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:jpa="http://java.sun.com/xml/ns/persistence/orm" pkg="your.microservice.core.security.idp.model.base" v="3.1" status="GENERATED" sm="false" xs="false" id="_14865285934901" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm orm_2_1.xsd">
+    <jpa:entity xre="false" abs="false" class="YourEntityTokenHistory" v="true" m="false" rootElement="_14865285934901" id="_14865285970932">
+        <jpa:annotation e="true" n="@com.fasterxml.jackson.annotation.JsonInclude(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL)"/>
+        <jpa:inf e="true" n="java.io.Serializable"/>
+        <jpa:attributes>
+            <jpa:basic attribute-type="String" v="true" name="subject" ft="false" id="_14865285971364">
+                <jpa:bv>
+                    <jpa:nn/>
+                </jpa:bv>
+                <jpa:column name="subject" nullable="false" length="256"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="your.microservice.core.security.idp.model.types.YourEntityTokenStatus" v="true" name="status" ft="false" id="_14865285971365">
+                <jpa:bv>
+                    <jpa:nn/>
+                </jpa:bv>
+                <jpa:column name="status" nullable="false" length="32"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="java.util.Date" v="true" name="issuedAt" ft="false" id="_14865285971376">
+                <jpa:an e="true" n="@com.fasterxml.jackson.databind.annotation.JsonSerialize(using=your.microservice.core.dm.serialization.JsonDateSerializer.class)"/>
+                <jpa:bv/>
+                <jpa:column name="issuedat" nullable="false"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="java.util.Date" v="true" name="expiration" ft="false" id="_14865285971377">
+                <jpa:an e="true" n="@com.fasterxml.jackson.databind.annotation.JsonSerialize(using=your.microservice.core.dm.serialization.JsonDateSerializer.class)"/>
+                <jpa:bv/>
+                <jpa:column name="expiration" nullable="false"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="java.util.Date" v="true" name="notUsedBefore" ft="false" id="_14865285971378">
+                <jpa:an e="true" n="@com.fasterxml.jackson.databind.annotation.JsonSerialize(using=your.microservice.core.dm.serialization.JsonDateSerializer.class)"/>
+                <jpa:bv/>
+                <jpa:column name="notusedbefore" nullable="false"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="java.util.Date" v="true" name="lastUsed" ft="false" id="_14865285971379">
+                <jpa:an e="true" n="@com.fasterxml.jackson.databind.annotation.JsonSerialize(using=your.microservice.core.dm.serialization.JsonDateSerializer.class)"/>
+                <jpa:bv/>
+                <jpa:column name="lastused" nullable="false"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="Long" v="true" name="usageCount" ft="false" id="_148652859714010">
+                <jpa:bv/>
+                <jpa:column name="usagecount" nullable="false"/>
+            </jpa:basic>
+            <jpa:id attribute-type="String" v="true" name="jti" ft="false" id="_14865285971303">
+                <jpa:bv/>
+                <jpa:column name="jti" unique="true" nullable="false" length="64"/>
+            </jpa:id>
+        </jpa:attributes>
+    </jpa:entity>
+    <jpa:entity xre="false" abs="false" class="YourEntity" v="true" m="false" rootElement="_14865285934901" id="_148652859725911">
+        <jpa:inf e="true" n="java.io.Serializable"/>
+        <jpa:attributes>
+            <jpa:basic attribute-type="String" v="true" name="entityGivenName" ft="false" id="_148652859726712">
+                <jpa:bv>
+                    <jpa:nn/>
+                </jpa:bv>
+                <jpa:column name="givenname" nullable="false" length="64"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="String" v="true" name="entitySurname" ft="false" id="_148652859726713">
+                <jpa:bv>
+                    <jpa:nn/>
+                </jpa:bv>
+                <jpa:column name="surname" nullable="false" length="64"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="String" v="true" name="entityEmailAddress" ft="false" id="_148652859726814">
+                <jpa:bv>
+                    <jpa:nn/>
+                </jpa:bv>
+                <jpa:column name="email" unique="true" nullable="false" length="128"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="String" v="true" name="credentials" ft="false" id="_148652859726815">
+                <jpa:bv>
+                    <jpa:nn/>
+                </jpa:bv>
+                <jpa:column name="credentials" nullable="false" length="64"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="String" v="true" name="createdByIdentifier" ft="false" id="_148652859726817">
+                <jpa:bv>
+                    <jpa:nn/>
+                </jpa:bv>
+                <jpa:column name="createdbyid" nullable="false" length="128"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="String" v="true" name="updatedByIdentifier" ft="false" id="_148652859726818">
+                <jpa:bv>
+                    <jpa:nn/>
+                </jpa:bv>
+                <jpa:column name="updatedbyid" nullable="false" length="128"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="java.util.Date" v="true" name="createdByDate" ft="false" id="_148652859726819">
+                <jpa:bv>
+                    <jpa:nn/>
+                </jpa:bv>
+                <jpa:column name="createdbydate" nullable="false"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="java.util.Date" v="true" name="updatedByDate" ft="false" id="_148652859726820">
+                <jpa:bv>
+                    <jpa:nn/>
+                </jpa:bv>
+                <jpa:column name="updatedbydate" nullable="false"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="your.microservice.core.security.idp.model.types.YourEntityStatus" v="true" name="status" ft="false" id="_148652859731924">
+                <jpa:bv>
+                    <jpa:nn/>
+                </jpa:bv>
+                <jpa:column name="status" nullable="false" length="32"/>
+            </jpa:basic>
+            <jpa:many-to-many own="true" collection-type="java.util.Set" connected-entity-id="_148652859763942" connected-attribute-id="_148652859765450" fetch="EAGER" v="true" name="yourEntityOrganizations" ft="false" id="_148652859731422">
+                <jpa:bv/>
+                <jpa:join-table name="yourentity_organizations">
+                    <jpa:join-column name="yourentity_entityId" rc="entityId"/>
+                    <jpa:inverse-join-column name="yourentityorg_entityId" rc="entityOrgId"/>
+                </jpa:join-table>
+                <jpa:cascade>
+                    <jpa:cascade-all/>
+                </jpa:cascade>
+            </jpa:many-to-many>
+            <jpa:many-to-many own="true" collection-type="java.util.Set" connected-entity-id="_148652859757332" connected-attribute-id="_148652859758040" fetch="EAGER" v="true" name="yourEntityRoles" ft="false" id="_148652859731823">
+                <jpa:bv/>
+                <jpa:join-table name="yourentity_roles">
+                    <jpa:join-column name="yourentity_entityId" rc="entityId"/>
+                    <jpa:inverse-join-column name="yourentityrole_entityId" rc="entityRoleId"/>
+                </jpa:join-table>
+                <jpa:cascade>
+                    <jpa:cascade-all/>
+                </jpa:cascade>
+            </jpa:many-to-many>
+            <jpa:element-collection target-class="java.lang.String" fetch="EAGER" collection-type="java.util.Map" mkt="NEW" mkat="java.lang.String" v="true" name="entityProperties" ft="false" id="_148652859726921">
+                <jpa:bv/>
+                <jpa:mkc name="name"/>
+                <jpa:column name="value"/>
+                <jpa:collection-table name="YourEntityProperties">
+                    <jpa:join-column name="yourEntityProperties_id"/>
+                </jpa:collection-table>
+            </jpa:element-collection>
+            <jpa:id attribute-type="Long" v="true" name="entityId" ft="false" id="_148652859726816">
+                <jpa:bv/>
+                <jpa:column name="entityId" unique="true" nullable="false"/>
+                <jpa:generated-value strategy="IDENTITY"/>
+            </jpa:id>
+        </jpa:attributes>
+    </jpa:entity>
+    <jpa:entity xre="false" abs="false" class="YourEntityEventHistory" v="true" m="false" rootElement="_14865285934901" id="_148652859746725">
+        <jpa:inf e="true" n="java.io.Serializable"/>
+        <jpa:attributes>
+            <jpa:basic attribute-type="String" v="true" name="eventTagName" ft="false" id="_148652859750627">
+                <jpa:bv>
+                    <jpa:nn/>
+                </jpa:bv>
+                <jpa:column name="eventtagname" nullable="false" length="64"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="String" v="true" name="eventMessage" ft="false" id="_148652859751028">
+                <jpa:bv>
+                    <jpa:nn/>
+                </jpa:bv>
+                <jpa:column name="eventmessage" nullable="false" length="256"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="java.util.Date" v="true" name="createdByDate" ft="false" id="_148652859751831">
+                <jpa:bv>
+                    <jpa:nn/>
+                </jpa:bv>
+                <jpa:column name="createdbydate" nullable="false"/>
+            </jpa:basic>
+            <jpa:many-to-one optional="false" primaryKey="false" connected-entity-id="_148652859725911" fetch="EAGER" v="true" name="yourEntity" ft="false" id="_148652859746726">
+                <jpa:an e="true" n="@com.fasterxml.jackson.annotation.JsonBackReference"/>
+                <jpa:bv/>
+                <jpa:join-column name="entityId" nullable="false" updatable="false"/>
+            </jpa:many-to-one>
+            <jpa:element-collection target-class="java.lang.String" fetch="EAGER" collection-type="java.util.Map" mkt="NEW" mkat="java.lang.String" v="true" name="eventTagProperties" ft="false" id="_148652859751029">
+                <jpa:bv/>
+                <jpa:mkc name="name"/>
+                <jpa:column name="value"/>
+                <jpa:collection-table name="EventTagProperties">
+                    <jpa:join-column name="eventTagProperties_id"/>
+                </jpa:collection-table>
+            </jpa:element-collection>
+            <jpa:id attribute-type="Long" v="true" name="id" ft="false" id="_148652859751830">
+                <jpa:bv/>
+                <jpa:column name="id" unique="true" nullable="false"/>
+                <jpa:generated-value strategy="IDENTITY"/>
+            </jpa:id>
+        </jpa:attributes>
+    </jpa:entity>
+    <jpa:entity xre="false" abs="false" class="YourEntityRole" v="true" m="false" rootElement="_14865285934901" id="_148652859757332">
+        <jpa:inf e="true" n="java.io.Serializable"/>
+        <jpa:attributes>
+            <jpa:basic attribute-type="String" v="true" name="name" ft="false" id="_148652859757333">
+                <jpa:bv>
+                    <jpa:nn/>
+                </jpa:bv>
+                <jpa:column name="name" unique="true" nullable="false" length="64"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="String" v="true" name="createdByIdentifier" ft="false" id="_148652859757435">
+                <jpa:bv>
+                    <jpa:nn/>
+                </jpa:bv>
+                <jpa:column name="createdbyid" nullable="false" length="128"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="String" v="true" name="updatedByIdentifier" ft="false" id="_148652859757536">
+                <jpa:bv>
+                    <jpa:nn/>
+                </jpa:bv>
+                <jpa:column name="updatedbyid" nullable="false" length="128"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="java.util.Date" v="true" name="createdByDate" ft="false" id="_148652859757537">
+                <jpa:bv>
+                    <jpa:nn/>
+                </jpa:bv>
+                <jpa:column name="createdbydate" nullable="false"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="java.util.Date" v="true" name="updatedByDate" ft="false" id="_148652859757538">
+                <jpa:bv>
+                    <jpa:nn/>
+                </jpa:bv>
+                <jpa:column name="updatedbydate" nullable="false"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="your.microservice.core.security.idp.model.types.YourEntityStatus" v="true" name="status" ft="false" id="_148652859758041">
+                <jpa:bv>
+                    <jpa:nn/>
+                </jpa:bv>
+                <jpa:column name="status" nullable="false" length="32"/>
+            </jpa:basic>
+            <jpa:many-to-many own="false" collection-type="java.util.Set" connected-entity-id="_148652859725911" connected-attribute-id="_148652859731823" fetch="EAGER" v="true" name="yourRoleEntities" ft="false" id="_148652859758040">
+                <jpa:bv/>
+            </jpa:many-to-many>
+            <jpa:element-collection target-class="java.lang.String" fetch="EAGER" collection-type="java.util.Map" mkt="NEW" mkat="java.lang.String" v="true" name="entityRoleProperties" ft="false" id="_148652859757539">
+                <jpa:bv/>
+                <jpa:mkc name="name"/>
+                <jpa:column name="value"/>
+                <jpa:collection-table name="YourEntityRoleProperties">
+                    <jpa:join-column name="yourEntityRoleProperties_id"/>
+                </jpa:collection-table>
+            </jpa:element-collection>
+            <jpa:id attribute-type="Long" v="true" name="entityRoleId" ft="false" id="_148652859757434">
+                <jpa:bv/>
+                <jpa:column name="entityRoleId" unique="true" nullable="false"/>
+                <jpa:generated-value strategy="IDENTITY"/>
+            </jpa:id>
+        </jpa:attributes>
+    </jpa:entity>
+    <jpa:entity xre="false" abs="false" class="YourEntityOrganization" v="true" m="false" rootElement="_14865285934901" id="_148652859763942">
+        <jpa:inf e="true" n="java.io.Serializable"/>
+        <jpa:attributes>
+            <jpa:basic attribute-type="String" v="true" name="name" ft="false" id="_148652859764043">
+                <jpa:bv>
+                    <jpa:nn/>
+                </jpa:bv>
+                <jpa:column name="name" unique="true" nullable="false" length="64"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="String" v="true" name="createdByIdentifier" ft="false" id="_148652859764045">
+                <jpa:bv>
+                    <jpa:nn/>
+                </jpa:bv>
+                <jpa:column name="createdbyid" nullable="false" length="128"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="String" v="true" name="updatedByIdentifier" ft="false" id="_148652859764046">
+                <jpa:bv>
+                    <jpa:nn/>
+                </jpa:bv>
+                <jpa:column name="updatedbyid" nullable="false" length="128"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="java.util.Date" v="true" name="createdByDate" ft="false" id="_148652859764047">
+                <jpa:bv>
+                    <jpa:nn/>
+                </jpa:bv>
+                <jpa:column name="createdbydate" nullable="false"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="java.util.Date" v="true" name="updatedByDate" ft="false" id="_148652859764148">
+                <jpa:bv>
+                    <jpa:nn/>
+                </jpa:bv>
+                <jpa:column name="updatedbydate" nullable="false"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="your.microservice.core.security.idp.model.types.YourEntityStatus" v="true" name="status" ft="false" id="_148652859765451">
+                <jpa:bv>
+                    <jpa:nn/>
+                </jpa:bv>
+                <jpa:column name="status" nullable="false" length="32"/>
+            </jpa:basic>
+            <jpa:many-to-many own="false" collection-type="java.util.Set" connected-entity-id="_148652859725911" connected-attribute-id="_148652859731422" fetch="EAGER" v="true" name="yourOrganizationEntities" ft="false" id="_148652859765450">
+                <jpa:bv/>
+            </jpa:many-to-many>
+            <jpa:element-collection target-class="java.lang.String" fetch="EAGER" collection-type="java.util.Map" mkt="NEW" mkat="java.lang.String" v="true" name="entityOrgProperties" ft="false" id="_148652859764149">
+                <jpa:bv/>
+                <jpa:mkc name="name"/>
+                <jpa:column name="value"/>
+                <jpa:collection-table name="YourEntityOrgProperties">
+                    <jpa:join-column name="yourEntityOrgProperties_id"/>
+                </jpa:collection-table>
+            </jpa:element-collection>
+            <jpa:id attribute-type="Long" v="true" name="entityOrgId" ft="false" id="_148652859764044">
+                <jpa:bv/>
+                <jpa:column name="entityOrgId" unique="true" nullable="false"/>
+                <jpa:generated-value strategy="IDENTITY"/>
+            </jpa:id>
+        </jpa:attributes>
+    </jpa:entity>
+    <jpa:snp loc="BEFORE_PACKAGE" e="true">/**
+ * This file was generated by the JPA Modeler
+ */</jpa:snp>
+    <jpa:inf e="true" n="java.io.Serializable"/>
+    <jpa:diagram>
+        <plane elementRef="_14865285934901"/>
+    </jpa:diagram>
+</jpa:entity-mappings>
