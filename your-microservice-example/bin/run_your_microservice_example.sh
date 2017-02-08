@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # Define Our SpringBoot JAR
-YMSE_JAR=your-microservice-example-1.0.0.0-SNAPSHOT-exec.jar
+YMSE_JAR=your-microservice-example-1.0.0.1-SNAPSHOT-exec.jar
 DEBUG_PORT=9044
 #
 # ********************************
