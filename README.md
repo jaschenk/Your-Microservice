@@ -103,9 +103,27 @@ $  bin\run_your_microservice_example.bat
 ```
 
 ### Interfacing with IdP
+Interfacing with the Your Microservices requires a Http tool to send requests
+and provide responses.
+
+For JWTs, I am using the JWT Library **nimbus-jose-jwt** for providing a Java interface to JWT capabilities.
+
+In my examples, I used Postman to perform these operations.  However, any tool, such as **cUrl** can be
+used to interface with Your-Microservice.
+
+#### Initial Login to obtain an Accessing Token
+By providing a **username** and **password** to authenticate against the Your Microservice IdP, you will
+ receive a JWT, which you will use on all subsequent operations until the Token Expires. 
+
+Specify the necessary Headers to specify to Accept **application/json**/
+![Login Request Headers](https://raw.githubusercontent.com/jaschenk/Your-Microservice/develop/doc/images/IdP_AuthRequest_via_Postman_Headers.png)
+
+Specify the necessary Body, which includes the Authentication Data to obtain an Access Token. 
+![Login Request Headers](https://raw.githubusercontent.com/jaschenk/Your-Microservice/develop/doc/images/IdP_AuthRequest_via_Postman_Body.png)
+
 
 * ...
-* ...
+
 
 ### Summary of Default Ports Used
 
