@@ -25,7 +25,7 @@ public class Application {
 
     @PostConstruct
     void applicationPostConstruction() {
-        LOGGER.info("Template/Example Microservice Bootstrap Initialization...");
+        LOGGER.info("Example Microservice Bootstrap Initialization...");
     }
 
     /**

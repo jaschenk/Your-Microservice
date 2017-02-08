@@ -112,7 +112,7 @@ public class AuthenticationController {
      * @throws AuthenticationException Thrown when Failure Occurs, Handlers will Response Accordingly.
      */
     @ApiOperation(value="Authentication to obtain Access Token", httpMethod = "POST", hidden = true)
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST, consumes = {"application/json", "application/json;charset=UTF8"})
     public ResponseEntity<?> authenticationRequest(@RequestBody AuthenticationRequest authenticationRequest,
                                                    Device device,
                                                    HttpServletRequest request) throws AuthenticationException {
@@ -164,7 +164,7 @@ public class AuthenticationController {
      */
     @ApiOperation(value="Authentication to obtain Access Token using Swagger Console",
             httpMethod = "POST", hidden = false)
-    @RequestMapping(value="/", method = RequestMethod.POST)
+    @RequestMapping(value="/", method = RequestMethod.POST, consumes = {"application/json", "application/json;charset=UTF8"})
     public ResponseEntity<?> swaggerAuthenticationRequest(@RequestBody AuthenticationRequest authenticationRequest,
                                                    HttpServletRequest request) throws AuthenticationException {
         /**
