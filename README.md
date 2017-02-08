@@ -115,14 +115,37 @@ used to interface with Your-Microservice.
 By providing a **username** and **password** to authenticate against the Your Microservice IdP, you will
  receive a JWT, which you will use on all subsequent operations until the Token Expires. 
 
-Specify the necessary Headers to specify to Accept **application/json**/
+Specify the necessary Headers to specify to Accept **application/json**.
 ![Login Request Headers](https://raw.githubusercontent.com/jaschenk/Your-Microservice/develop/doc/images/IdP_AuthRequest_via_Postman_Headers.png)
 
 Specify the necessary Body, which includes the Authentication Data to obtain an Access Token. 
-![Login Request Headers](https://raw.githubusercontent.com/jaschenk/Your-Microservice/develop/doc/images/IdP_AuthRequest_via_Postman_Body.png)
+![Login Request Body](https://raw.githubusercontent.com/jaschenk/Your-Microservice/develop/doc/images/IdP_AuthRequest_via_Postman_Body.png)
 
+Upon successful Authentication of the Entity credentials, you will receive a valid construct which 
+includes the Bearer JWT, which is then used on all subsequent requests.
+![Login Response Body](https://raw.githubusercontent.com/jaschenk/Your-Microservice/develop/doc/images/IdP_AuthResponse_via_Postman_Body.png)
+ 
+An entry in the **Token History** Table will be created to track this Token and allow this
+Token Store to be shared among Microservices to provide a centralized Token Store.  Other approaches, of course, can be considered.
+![Token History Entity](https://raw.githubusercontent.com/jaschenk/Your-Microservice/develop/doc/images/IdP_TokenHistory.png)
+  
+ 
+#### Using obtained JWT
 
-* ...
+##### Bulletin Resource
+Access the **Bulletin** resource follows:
+![Access Bulletin](https://raw.githubusercontent.com/jaschenk/Your-Microservice/develop/doc/images/IdP_BulletinRequestResponse_via_Postman.png)
+
+##### Pulse Resource
+Access the **Pulse** resource follows:
+![Access Bulletin](https://raw.githubusercontent.com/jaschenk/Your-Microservice/develop/doc/images/IdP_PulseRequestResponse_via_Postman.png)
+
+##### Logout
+Logging out of the Microservice, simple destroys the associated Token on the backing store.
+![Logout](https://raw.githubusercontent.com/jaschenk/Your-Microservice/develop/doc/images/IdP_PulseRequestResponse_via_Postman.png)
+Once sucessfully logged out of the Microservice, you will need to obtain a new Access Token to
+perform any subsequent access.
+
 
 
 ### Summary of Default Ports Used
