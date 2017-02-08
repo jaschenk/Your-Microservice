@@ -82,7 +82,7 @@ established Database.
 ### Your Microservice Domain Model
 The Your Microservice Domain Model provides a simple but extensible Data Model to represent Entities, Entity Roles
 
-![Your Microservice Domain Model](https://github.com/jaschenk/Your-Microservice/tree/develop/doc/images/YourMicroserviceIdP_JPADiagram.png)
+![Your Microservice Domain Model](https://github.com/jaschenk/Your-Microservice/doc/images/YourMicroserviceIdP_JPADiagram.png)
 
 ### Interfacing with IdP
 * ...
