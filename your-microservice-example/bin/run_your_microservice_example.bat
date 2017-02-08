@@ -1,6 +1,6 @@
 @echo off
 REM # Define Our SpringBoot JAR
-SET YMSE_JAR=your-microservice-example-1.0.0.0-SNAPSHOT-exec.jar
+SET YMSE_JAR=your-microservice-example-1.0.0.0-exec.jar
 SET DEBUG_PORT=9044
 REM #
 REM # ********************************

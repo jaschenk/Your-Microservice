@@ -88,7 +88,7 @@ public class EnableMicroserviceIT {
         /**
          * Access Open End Point to Obtain API Information.
          *
-         * AppInfo: {"buildVersion":"1.0.0.0-SNAPSHOT","buildTimestamp":"2017-01-26 17:40:24Z",
+         * AppInfo: {"buildVersion":"1.0.0.0","buildTimestamp":"2017-01-26 17:40:24Z",
          *           "buildName":"your-microservice-core","buildDescription":"Your Microservice Core Enable",
          *           "buildArtifactId":"your-microservice-core","buildGroupId":"your-microservice"}
 

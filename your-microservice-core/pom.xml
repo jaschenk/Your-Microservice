@@ -4,14 +4,14 @@
 
 	<groupId>your-microservice</groupId>
     <artifactId>your-microservice-core</artifactId>
-    <version>1.0.0.0-SNAPSHOT</version>
+    <version>1.0.0.0</version>
     <packaging>jar</packaging>
     <description>Your Microservice Core Enabler</description>
 
     <parent>
          <groupId>your-microservice</groupId>
     	<artifactId>your-microservice-parent</artifactId>
-    	<version>1.0.0.0-SNAPSHOT</version>
+    	<version>1.0.0.0</version>
     </parent>
 
     <!-- Build Properties -->
