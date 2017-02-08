@@ -7,6 +7,7 @@ import your.microservice.core.security.idp.model.base.*;
 import your.microservice.core.security.idp.model.types.YourEntityTokenStatus;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.*;
 
@@ -322,9 +323,11 @@ public class IdentityProviderEntityManagerImpl implements IdentityProviderEntity
 
         criteriaQuery.select(yourEntityRoot);
         criteriaQuery.where(criteriaBuilder.equal(yourEntityRoot.get("entityId"), entityId));
-
-        return entityManager.createQuery(criteriaQuery).getSingleResult();
-
+        try {
+            return entityManager.createQuery(criteriaQuery).getSingleResult();
+        } catch(NoResultException nre) {
+            return null;
+        }
     }
 
     @Override
@@ -337,9 +340,11 @@ public class IdentityProviderEntityManagerImpl implements IdentityProviderEntity
 
         criteriaQuery.select(yourEntityRoot);
         criteriaQuery.where(criteriaBuilder.equal(yourEntityRoot.get("entityEmailAddress"), email));
-
-        return entityManager.createQuery(criteriaQuery).getSingleResult();
-
+        try {
+            return entityManager.createQuery(criteriaQuery).getSingleResult();
+        } catch(NoResultException nre) {
+            return null;
+        }
     }
 
     @Override

@@ -378,7 +378,8 @@ public class YourMicroserviceToken_nimbus_Impl implements YourMicroserviceToken 
                 LOGGER.info("{}Temporary Keystore;[{}] has been created for this Runtime Instance.",
                         LOGGING_HEADER, KEYSTORE_FILE_NAME_PATH);
                 LOGGER.info("{}If you would like to reuse this Temporary Keystore, " +
-                        "copy the Keystore File and assign the Keystore Property with the appropriate File Path Value.");
+                        "copy the Keystore File and assign the Keystore Property with the appropriate File Path Value.",
+                        LOGGING_HEADER);
             } catch(IOException e){
                 LOGGER.error("{}Attempting Creation of Temporary Keystore Failed: {}",
                         LOGGING_HEADER, e.getMessage(),e);
