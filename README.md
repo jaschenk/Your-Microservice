@@ -1,6 +1,4 @@
 # Your Microservice Overview
-Currently a Work in progress ...
-
 This project provides an approach so that you can easily create various Microservices
 for 'Your' Eco-System using a Common core.
 This project allows you to wrap those specific individual Microservices
@@ -10,6 +8,7 @@ These standard facilities can be shared
 throughout your Eco-System Product Suite for Developing, Building and Deploying 
 Microservices Architecture Services and Various Components.
 
+The one nice feature is that Security with a IdP using JWTs is first and included in this core.
 
 ## Local Setup
 Simply ensure you have the necessary Pre-requisites and you should be good to go...
@@ -29,7 +28,6 @@ Your Microservice is comprised of the following primary components:
 * IdP -- Identity Provider, Full JWT Token Based Authentication.
   * Persistent Store -- Using H2 In Memory Database for Testing and Example Usage.
    Any JDBC Compliant Database is acceptable.
-  * Data Model
 * Common Services
   * Bulletin -- Provides ability to inject System Bulletin Updates via File System.  
   The Bulletin Service provides a means to respond to current state of runtime Application.
@@ -80,6 +78,11 @@ established Database.
     $  cd your-microservice-example
     $  bin\run_your_microservice_example.bat
    ```
+
+### Your Microservice Domain Model
+The Your Microservice Domain Model provides a simple but extensible Data Model to represent Entities, Entity Roles
+
+![Your Microservice Domain Model](https://github.com/jaschenk/Your-Microservice/tree/develop/doc/images/YourMicroserviceIdP_JPADiagram.png)
 
 ### Interfacing with IdP
 * ...
