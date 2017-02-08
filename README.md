@@ -143,7 +143,8 @@ Access the **Pulse** resource follows:
 ##### Logout
 Logging out of the Microservice, simple destroys the associated Token on the backing store.
 ![Logout](https://raw.githubusercontent.com/jaschenk/Your-Microservice/develop/doc/images/IdP_PulseRequestResponse_via_Postman.png)
-Once sucessfully logged out of the Microservice, you will need to obtain a new Access Token to
+
+Once successfully logged out of the Microservice, you will need to obtain a new Access Token to
 perform any subsequent access.
 
 
