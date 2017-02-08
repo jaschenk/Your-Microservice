@@ -32,6 +32,9 @@ import java.util.Map;
 import java.util.UUID;
 
 import static org.junit.Assert.*;
+import static your.microservice.testutil.IntegrationTestSetupBean.ADMIN_EMAIL;
+import static your.microservice.testutil.IntegrationTestSetupBean.CLEAR_TEXT_CREDENTIALS;
+import static your.microservice.testutil.IntegrationTestSetupBean.USER_EMAIL;
 
 /**
  * IdPAccessIT
@@ -79,9 +82,6 @@ public class IdPAccessIT {
     /**
      * Test Constants
      */
-    private static final String USER_EMAIL = "joe.user@mail.com";
-    private static final String ADMIN_EMAIL = "admin.entity@mail.com";
-    private static final String CREDENTIALS = "TestPassword";
     private static final String SERVICE_NAME = "testmicroservice";
 
     private static final String BULLETIN_ENPOINT = "/api/" + SERVICE_NAME + "/v1/system/bulletin";
@@ -125,7 +125,7 @@ public class IdPAccessIT {
         RestIdPClientAccessObject restIdPClientAccessObject =
                 restIdPClientAccessor.getAccessToken(
                         integrationTestSetupBean.getHostPath() + RestIdPClientAccessor.YOUR_MICROSERVICE_IDP_TOKEN_REQUEST_RESOURCE_PATH,
-                        USER_EMAIL, CREDENTIALS);
+                        USER_EMAIL, CLEAR_TEXT_CREDENTIALS);
         assertNotNull(restIdPClientAccessObject);
         assertNotNull(restIdPClientAccessObject.getAccessToken());
         assertTrue(restIdPClientAccessObject.getExpires() >= 3600);
@@ -162,7 +162,7 @@ public class IdPAccessIT {
         RestIdPClientAccessObject restIdPClientAccessObject =
                 restIdPClientAccessor.getAccessToken(
                         integrationTestSetupBean.getHostPath() + RestIdPClientAccessor.YOUR_MICROSERVICE_IDP_TOKEN_REQUEST_RESOURCE_PATH,
-                        USER_EMAIL, CREDENTIALS);
+                        USER_EMAIL, CLEAR_TEXT_CREDENTIALS);
         assertNotNull(restIdPClientAccessObject);
         assertNotNull(restIdPClientAccessObject.getAccessToken());
         assertTrue(restIdPClientAccessObject.getExpires() >= 3600);
@@ -182,7 +182,7 @@ public class IdPAccessIT {
         RestIdPClientAccessObject restIdPClientAccessObject =
                 restIdPClientAccessor.getAccessToken(
                         integrationTestSetupBean.getHostPath() + RestIdPClientAccessor.YOUR_MICROSERVICE_IDP_TOKEN_REQUEST_RESOURCE_PATH,
-                        USER_EMAIL, CREDENTIALS);
+                        USER_EMAIL, CLEAR_TEXT_CREDENTIALS);
         assertNotNull(restIdPClientAccessObject);
 
         LOGGER.debug(" Access Token: [{}]", restIdPClientAccessObject.getAccessToken());
@@ -216,7 +216,7 @@ public class IdPAccessIT {
          * Authentication and Obtain Access Token.
          */
         RestIdPClientAccessObject RestIdPClientAccessObject =
-                restIdPClientAccessor.getAccessToken(integrationTestSetupBean.getHostPath() + RestIdPClientAccessor.YOUR_MICROSERVICE_IDP_TOKEN_REQUEST_RESOURCE_PATH, USER_EMAIL, CREDENTIALS);
+                restIdPClientAccessor.getAccessToken(integrationTestSetupBean.getHostPath() + RestIdPClientAccessor.YOUR_MICROSERVICE_IDP_TOKEN_REQUEST_RESOURCE_PATH, USER_EMAIL, CLEAR_TEXT_CREDENTIALS);
         assertNotNull(RestIdPClientAccessObject);
         /**
          * Get Resource.
@@ -277,7 +277,7 @@ public class IdPAccessIT {
          * Authentication and Obtain Access Token.
          */
         RestIdPClientAccessObject RestIdPClientAccessObject =
-                restIdPClientAccessor.getAccessToken(integrationTestSetupBean.getHostPath() + RestIdPClientAccessor.YOUR_MICROSERVICE_IDP_TOKEN_REQUEST_RESOURCE_PATH, USER_EMAIL, CREDENTIALS);
+                restIdPClientAccessor.getAccessToken(integrationTestSetupBean.getHostPath() + RestIdPClientAccessor.YOUR_MICROSERVICE_IDP_TOKEN_REQUEST_RESOURCE_PATH, USER_EMAIL, CLEAR_TEXT_CREDENTIALS);
         assertNotNull(RestIdPClientAccessObject);
         /**
          * Get Resource.
@@ -312,7 +312,7 @@ public class IdPAccessIT {
          * Authentication and Obtain Access Token.
          */
         RestIdPClientAccessObject RestIdPClientAccessObject =
-                restIdPClientAccessor.getAccessToken(integrationTestSetupBean.getHostPath() + RestIdPClientAccessor.YOUR_MICROSERVICE_IDP_TOKEN_REQUEST_RESOURCE_PATH, USER_EMAIL, CREDENTIALS);
+                restIdPClientAccessor.getAccessToken(integrationTestSetupBean.getHostPath() + RestIdPClientAccessor.YOUR_MICROSERVICE_IDP_TOKEN_REQUEST_RESOURCE_PATH, USER_EMAIL, CLEAR_TEXT_CREDENTIALS);
         assertNotNull(RestIdPClientAccessObject);
         /**
          * Get Resource.
@@ -339,7 +339,7 @@ public class IdPAccessIT {
          * Authentication and Obtain Access Token.
          */
         RestIdPClientAccessObject RestIdPClientAccessObject =
-                restIdPClientAccessor.getAccessToken(integrationTestSetupBean.getHostPath() + RestIdPClientAccessor.YOUR_MICROSERVICE_IDP_TOKEN_REQUEST_RESOURCE_PATH, USER_EMAIL, CREDENTIALS);
+                restIdPClientAccessor.getAccessToken(integrationTestSetupBean.getHostPath() + RestIdPClientAccessor.YOUR_MICROSERVICE_IDP_TOKEN_REQUEST_RESOURCE_PATH, USER_EMAIL, CLEAR_TEXT_CREDENTIALS);
         assertNotNull(RestIdPClientAccessObject);
         /**
          * Post Resource.
@@ -365,7 +365,7 @@ public class IdPAccessIT {
          * Authentication and Obtain Access Token.
          */
         RestIdPClientAccessObject RestIdPClientAccessObject =
-                restIdPClientAccessor.getAccessToken(integrationTestSetupBean.getHostPath() + RestIdPClientAccessor.YOUR_MICROSERVICE_IDP_TOKEN_REQUEST_RESOURCE_PATH, USER_EMAIL, CREDENTIALS);
+                restIdPClientAccessor.getAccessToken(integrationTestSetupBean.getHostPath() + RestIdPClientAccessor.YOUR_MICROSERVICE_IDP_TOKEN_REQUEST_RESOURCE_PATH, USER_EMAIL, CLEAR_TEXT_CREDENTIALS);
         assertNotNull(RestIdPClientAccessObject);
         /**
          * Put Resource.
@@ -391,7 +391,7 @@ public class IdPAccessIT {
          * Authentication and Obtain Access Token.
          */
         RestIdPClientAccessObject RestIdPClientAccessObject =
-                restIdPClientAccessor.getAccessToken(integrationTestSetupBean.getHostPath() + RestIdPClientAccessor.YOUR_MICROSERVICE_IDP_TOKEN_REQUEST_RESOURCE_PATH, USER_EMAIL, CREDENTIALS);
+                restIdPClientAccessor.getAccessToken(integrationTestSetupBean.getHostPath() + RestIdPClientAccessor.YOUR_MICROSERVICE_IDP_TOKEN_REQUEST_RESOURCE_PATH, USER_EMAIL, CLEAR_TEXT_CREDENTIALS);
         assertNotNull(RestIdPClientAccessObject);
         /**
          * Delete Resource.
@@ -416,7 +416,7 @@ public class IdPAccessIT {
         RestIdPClientAccessObject restIdPClientAccessObject =
                 restIdPClientAccessor.getAccessToken(
                         integrationTestSetupBean.getHostPath() + RestIdPClientAccessor.YOUR_MICROSERVICE_IDP_TOKEN_REQUEST_RESOURCE_PATH,
-                        USER_EMAIL, CREDENTIALS);
+                        USER_EMAIL, CLEAR_TEXT_CREDENTIALS);
         assertNotNull(restIdPClientAccessObject);
 
         LOGGER.debug(" Access Token: [{}]", restIdPClientAccessObject.getAccessToken());
@@ -449,7 +449,7 @@ public class IdPAccessIT {
         RestIdPClientAccessObject restIdPClientAccessObject =
                 restIdPClientAccessor.getAccessToken(
                         integrationTestSetupBean.getHostPath() + RestIdPClientAccessor.YOUR_MICROSERVICE_IDP_TOKEN_REQUEST_RESOURCE_PATH,
-                        ADMIN_EMAIL, CREDENTIALS);
+                        ADMIN_EMAIL, CLEAR_TEXT_CREDENTIALS);
         assertNotNull(restIdPClientAccessObject);
 
         LOGGER.debug(" Access Token: [{}]", restIdPClientAccessObject.getAccessToken());

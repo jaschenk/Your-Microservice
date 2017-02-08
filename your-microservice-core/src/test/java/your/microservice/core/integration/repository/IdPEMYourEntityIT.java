@@ -22,6 +22,8 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static your.microservice.testutil.IntegrationTestSetupBean.USER_EMAIL;
+import static your.microservice.testutil.IntegrationTestSetupBean.USER_EMAIL_101;
 
 /**
  * IdPEMYourEntityTokenHistoryIT
@@ -50,12 +52,6 @@ public class IdPEMYourEntityIT {
      */
     @Autowired
     private IdentityProviderEntityManager identityProviderEntityManager;
-
-    /**
-     * Test Constants
-     */
-    private static final String USER_EMAIL = "joe.user@mail.com";
-    private static final String USER_EMAIL_101 = "joe.user+101@mail.com";
 
 
     @Test

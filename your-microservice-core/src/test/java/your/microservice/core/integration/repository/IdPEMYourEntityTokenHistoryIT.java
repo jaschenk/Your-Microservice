@@ -19,6 +19,7 @@ import java.time.Instant;
 import java.util.*;
 
 import static org.junit.Assert.*;
+import static your.microservice.testutil.IntegrationTestSetupBean.USER_EMAIL;
 
 /**
  * IdPEMYourEntityTokenHistoryIT
@@ -47,12 +48,6 @@ public class IdPEMYourEntityTokenHistoryIT {
      */
     @Autowired
     private IdentityProviderEntityManager identityProviderEntityManager;
-
-    /**
-     * Test Constants
-     */
-    private static final String USER_EMAIL = "joe.user@mail.com";
-
 
     @Test
     public void test01_TokenHistoryLifecycle() {

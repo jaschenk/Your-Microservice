@@ -17,6 +17,7 @@ import your.microservice.MicroserviceTestApplication;
 import your.microservice.core.security.idp.model.base.YourEntity;
 import your.microservice.core.security.idp.model.base.YourEntityEventHistory;
 import your.microservice.core.security.idp.repository.IdentityProviderEntityManager;
+import your.microservice.testutil.IntegrationTestSetupBean;
 
 import java.util.HashMap;
 import java.util.List;
@@ -53,15 +54,6 @@ public class IdPEMYourEntityEventHistoryIT {
     @Autowired
     private IdentityProviderEntityManager identityProviderEntityManager;
 
-    /**
-     * Test Constants
-     */
-    private static final String USER_EMAIL = "joe.user@mail.com";
-    private static final String ADMIN_EMAIL = "admin.entity@mail.com";
-
-    private static final String EVENT_TAG_NAME = "EVENT_TAG_NAME";
-    private static final String EVENT_MESSAGE = "Test Event Message";
-
     @Test
     public void test01_CreateSomeEventHistoryActivities() {
         LOGGER.info("Running: test01_CreateSomeEventHistoryActivities");
@@ -76,16 +68,17 @@ public class IdPEMYourEntityEventHistoryIT {
         /**
          * Obtain a Test YourEntity ...
          */
-        YourEntity yourEntity = identityProviderEntityManager.findYourEntityByEmail(ADMIN_EMAIL);
+        YourEntity yourEntity = identityProviderEntityManager.findYourEntityByEmail(IntegrationTestSetupBean.ADMIN_EMAIL);
         assertNotNull(yourEntity);
-        assertEquals(ADMIN_EMAIL, yourEntity.getEntityEmailAddress());
+        assertEquals(IntegrationTestSetupBean.ADMIN_EMAIL, yourEntity.getEntityEmailAddress());
 
         Map<String, String> eventProperties = new HashMap<>();
         eventProperties.put("ZERO_KEY", "ZERO_VALUE");
 
         for (int i = 0; i < 100; i++) {
             YourEntityEventHistory eventHistory =
-                    new YourEntityEventHistory(yourEntity, EVENT_TAG_NAME, EVENT_MESSAGE, eventProperties);
+                    new YourEntityEventHistory(yourEntity, IntegrationTestSetupBean.EVENT_TAG_NAME,
+                            IntegrationTestSetupBean.EVENT_MESSAGE, eventProperties);
             identityProviderEntityManager.createEventHistory(eventHistory);
         }
 
@@ -127,15 +120,16 @@ public class IdPEMYourEntityEventHistoryIT {
         /**
          * Obtain a Test YourEntity ...
          */
-        YourEntity yourEntity = identityProviderEntityManager.findYourEntityByEmail(USER_EMAIL);
+        YourEntity yourEntity = identityProviderEntityManager.findYourEntityByEmail(IntegrationTestSetupBean.USER_EMAIL);
         assertNotNull(yourEntity);
-        assertEquals(USER_EMAIL, yourEntity.getEntityEmailAddress());
+        assertEquals(IntegrationTestSetupBean.USER_EMAIL, yourEntity.getEntityEmailAddress());
 
         Map<String, String> eventProperties = new HashMap<>();
         eventProperties.put("ONE_KEY", "ONE_VALUE");
 
         YourEntityEventHistory eventHistory =
-                new YourEntityEventHistory(yourEntity, EVENT_TAG_NAME, EVENT_MESSAGE, eventProperties);
+                new YourEntityEventHistory(yourEntity, IntegrationTestSetupBean.EVENT_TAG_NAME,
+                        IntegrationTestSetupBean.EVENT_MESSAGE, eventProperties);
         identityProviderEntityManager.createEventHistory(eventHistory);
 
 
@@ -145,8 +139,8 @@ public class IdPEMYourEntityEventHistoryIT {
         assertEquals(1, results.size());
         YourEntityEventHistory eventHistory_1 = results.get(0);
         assertEquals(eventHistory.getId(), eventHistory_1.getId());
-        assertEquals(EVENT_TAG_NAME, eventHistory_1.getEventTagName());
-        assertEquals(EVENT_MESSAGE, eventHistory_1.getEventMessage());
+        assertEquals(IntegrationTestSetupBean.EVENT_TAG_NAME, eventHistory_1.getEventTagName());
+        assertEquals(IntegrationTestSetupBean.EVENT_MESSAGE, eventHistory_1.getEventMessage());
         assertNotNull(eventHistory_1.getEventTagProperties());
         assertEquals("ONE_VALUE", eventHistory_1.getEventTagProperties().get("ONE_KEY"));
 
@@ -167,9 +161,9 @@ public class IdPEMYourEntityEventHistoryIT {
         /**
          * Obtain a Test YourEntity ...
          */
-        YourEntity yourEntity = identityProviderEntityManager.findYourEntityByEmail(USER_EMAIL);
+        YourEntity yourEntity = identityProviderEntityManager.findYourEntityByEmail(IntegrationTestSetupBean.USER_EMAIL);
         assertNotNull(yourEntity);
-        assertEquals(USER_EMAIL, yourEntity.getEntityEmailAddress());
+        assertEquals(IntegrationTestSetupBean.USER_EMAIL, yourEntity.getEntityEmailAddress());
 
         Map<String, String> eventProperties = new HashMap<>();
         eventProperties.put("TWO_KEY", "TWO_VALUE");
@@ -177,7 +171,8 @@ public class IdPEMYourEntityEventHistoryIT {
         for (int i = 0; i < 100; i++) {
 
             YourEntityEventHistory eventHistory =
-                    new YourEntityEventHistory(yourEntity, EVENT_TAG_NAME, EVENT_MESSAGE, eventProperties);
+                    new YourEntityEventHistory(yourEntity, IntegrationTestSetupBean.EVENT_TAG_NAME,
+                            IntegrationTestSetupBean.EVENT_MESSAGE, eventProperties);
             identityProviderEntityManager.createEventHistory(eventHistory);
         }
 

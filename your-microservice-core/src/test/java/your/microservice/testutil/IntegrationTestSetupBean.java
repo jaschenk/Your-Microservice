@@ -27,13 +27,15 @@ public class IntegrationTestSetupBean {
     public static final String APPLICATION_JSON_WITH_UTF8_ENCODING_VALUE = "application/json;charset=UTF-8";
 
     /**
-     * Test Data Constants
-     */
-    /**
      * Test Constants
      */
-    public static final String USER_EMAIL = "joe.user@mail.com";
+    public static final String USER_EMAIL = "user.entity@mail.com";
+    public static final String USER_EMAIL_101 = "user.entity+101@mail.com";
+    public static final String ADMIN_EMAIL = "admin.entity@mail.com";
     public static final String CLEAR_TEXT_CREDENTIALS = "TestPassword";
+    
+    public static final String EVENT_TAG_NAME = "EVENT_TAG_NAME";
+    public static final String EVENT_MESSAGE = "Test Event Message";
 
     /**
      * System Instance Setup Bean, to obtain the Port we were booted on.
